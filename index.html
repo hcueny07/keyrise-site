@@ -40,6 +40,9 @@
 
 <main>
 <section class="hero">
+  <canvas class="hero-map" aria-hidden="true"></canvas>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <span class="drag-hint" aria-hidden="true">Drag to explore</span>
   <div class="wrap">
     <div>
       <span class="badge"><b>New</b> Now on iPhone for real estate teams</span>
@@ -357,5 +360,6 @@ refresh();
   items.forEach((el) => io.observe(el));
 })();
 </script>
+<script src="hero-map.js" defer></script>
 </body>
 </html>
