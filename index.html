@@ -66,6 +66,26 @@
 
 <div class="strip"><div class="wrap"><span><b>Contracts</b> read in seconds</span><span><b>Every Georgia date</b> tracked</span><span><b>Remine, FMLS, GAMLS</b> reports supported</span><span><b>DocuSign</b>-ready forms</span></div></div>
 
+<section class="split" id="inside" aria-label="Inside Vinto">
+  <div class="split-stage">
+    <div class="wrap split-grid">
+      <div class="split-copy">
+        <span class="eyebrow">Inside the app</span>
+        <h2>Open it up.<br><em class="serif gold-text">It's all in there.</em></h2>
+        <p>Your leads, your listings and your broker's file review, layered into one phone. Scroll to take it apart.</p>
+      </div>
+      <div class="split-scene">
+        <div class="split-fit"><div class="split-phone" data-split></div></div>
+        <ol class="split-labels">
+          <li style="--i:0"><span class="split-line"></span><div><b class="split-num" data-to="3">0</b><span class="split-k">Leads</span><p>Automatic follow-ups on day 1, 3 and 7, so no lead goes cold.</p></div></li>
+          <li style="--i:1"><span class="split-line"></span><div><b class="split-num" data-to="20">0</b><span class="split-k">Listings</span><p>Listing steps tracked for every house, from agreement to closing.</p></div></li>
+          <li style="--i:2"><span class="split-line"></span><div><b class="split-num" data-to="11">0</b><span class="split-k">Broker review</span><p>Georgia documents checked before the file reaches your broker.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="features">
   <div class="wrap">
     <div class="head">
@@ -232,6 +252,95 @@ document.querySelectorAll(".toggle").forEach(t => t.addEventListener("click", e 
 }));
 document.getElementById("y").textContent = new Date().getFullYear();
 refresh();
+</script>
+<script>
+// Scroll-driven "split phone": the hero phone is cloned into three bands that pull apart as you scroll.
+(function () {
+  const host = document.querySelector('[data-split]');
+  const src = document.querySelector('.hero .phone');
+  if (!host || !src) return;
+  const section = host.closest('.split');
+  const cuts = [0, 1/3, 2/3, 1];
+  const bands = [];
+  for (let i = 0; i < 3; i++) {
+    const band = document.createElement('div');
+    band.className = 'band';
+    const slice = document.createElement('div');
+    slice.className = 'slice';
+    slice.style.top = (cuts[i] * 100) + '%';
+    slice.style.height = ((cuts[i + 1] - cuts[i]) * 100) + '%';
+    const clone = src.cloneNode(true);
+    clone.style.marginTop = (-cuts[i] * 642) + 'px';
+    clone.removeAttribute('aria-hidden');
+    slice.appendChild(clone);
+    band.appendChild(slice);
+    if (i > 0) { const c = document.createElement('div'); c.className = 'cap cap-top'; c.style.top = (cuts[i] * 100) + '%'; band.appendChild(c); }
+    if (i < 2) { const c = document.createElement('div'); c.className = 'cap cap-bottom'; c.style.top = (cuts[i + 1] * 100) + '%'; band.appendChild(c); }
+    host.appendChild(band);
+    bands.push(band);
+  }
+  host.setAttribute('aria-hidden', 'true');
+  const labels = [...section.querySelectorAll('.split-labels li')];
+  const nums = [...section.querySelectorAll('.split-num')];
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v) => Math.max(0, Math.min(1, v));
+  const ease = (t) => t * t * (3 - 2 * t);
+  let lastS = 0;
+  function fit() {
+    const narrow = innerWidth < 900;
+    const s = Math.min(1, (innerHeight * (narrow ? 0.5 : 0.66)) / 642, narrow ? (innerWidth * 0.46) / 320 : 1);
+    if (Math.abs(s - lastS) > 0.001) { section.style.setProperty('--s', s.toFixed(4)); lastS = s; }
+    return s;
+  }
+  let ticking = false;
+  function frame() {
+    ticking = false;
+    const r = section.getBoundingClientRect();
+    const run = section.offsetHeight - innerHeight;
+    const t = still ? 1 : clamp(-r.top / Math.max(run, 1));
+    const p = ease(clamp((t - 0.08) / 0.5));          // how far apart the bands are
+    const gap = 642 * 0.17;
+    const scale = fit();
+    bands.forEach((b, i) => {
+      const k = i - 1;
+      b.style.transform = 'translate3d(0,' + (k * gap * p).toFixed(2) + 'px,0) rotateY(' + (k * 14 * p).toFixed(2) + 'deg) rotateX(' + (-k * 4 * p).toFixed(2) + 'deg)';
+    });
+    host.style.setProperty('--p', p.toFixed(3));
+    labels.forEach((li, i) => {
+      const a = still ? 1 : ease(clamp((t - 0.42 - i * 0.07) / 0.14));
+      li.style.setProperty('--a', a.toFixed(3));
+      li.style.setProperty('--y', ((i - 1) * gap * p * scale).toFixed(2) + 'px');
+    });
+    const c = still ? 1 : ease(clamp((t - 0.5) / 0.35));
+    nums.forEach((n) => { n.textContent = Math.round(Number(n.dataset.to) * c); });
+  }
+  function ask() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
+  addEventListener('scroll', ask, { passive: true });
+  addEventListener('resize', ask);
+  frame();
+})();
+</script>
+<script>
+// Hero phone follows the pointer a little; sections fade up as they come into view.
+(function () {
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const phone = document.querySelector('.hero .phone');
+  const hero = document.querySelector('.hero');
+  if (phone && hero && !still && matchMedia('(pointer: fine)').matches) {
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+      phone.style.setProperty('--ry', (x * 16 - 4).toFixed(2) + 'deg');
+      phone.style.setProperty('--rx', (-y * 10 + 2).toFixed(2) + 'deg');
+    });
+    hero.addEventListener('pointerleave', () => { phone.style.removeProperty('--ry'); phone.style.removeProperty('--rx'); });
+  }
+  const items = document.querySelectorAll('#features .head, .tile, .privacy .head, .check, #pricing .head, .plan');
+  if (!('IntersectionObserver' in window) || still) return;
+  items.forEach((el, i) => { el.classList.add('reveal'); el.style.setProperty('--d', ((i % 4) * 0.07) + 's'); });
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  items.forEach((el) => io.observe(el));
+})();
 </script>
 </body>
 </html>
