@@ -1,4 +1,4 @@
-# Keyrise website
+# Vinto website
 
 Static site for keyrise (home + pricing, privacy policy, support). Hosted free on GitHub Pages.
 
