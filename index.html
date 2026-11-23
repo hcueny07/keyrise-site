@@ -30,6 +30,7 @@
     <a class="brand" href="./"><img src="img/mark.png" alt=""><span>VINTO</span></a>
     <nav class="nav">
       <a href="#features">Product</a>
+      <a href="#portal">Client portal</a>
       <a href="#privacy">Privacy</a>
       <a href="#pricing">Pricing</a>
       <a href="support.html">Support</a>
@@ -42,10 +43,11 @@
 <section class="hero">
   <canvas class="hero-map" aria-hidden="true"></canvas>
   <div class="hero-shade" aria-hidden="true"></div>
-  <span class="drag-hint" aria-hidden="true">Drag to explore</span>
+  <span class="drag-hint" aria-hidden="true">Drag the map</span>
+  <span class="drag-cursor" aria-hidden="true">DRAG</span>
   <div class="wrap">
     <div>
-      <span class="badge"><b>New</b> Now on iPhone for real estate teams</span>
+      <a class="badge" href="#portal"><b>New</b> Client portal for every buyer and seller →</a>
       <h1>Every deal.<br>Every date.<br><em class="serif gold-text">Won.</em></h1>
       <p class="lede">Vinto is the command center for real estate agents. It reads your contracts, counts down every deadline and tells you exactly what to do today.</p>
       <div class="actions">
@@ -126,6 +128,65 @@
         <p>Buyers and sellers see their live timeline, what you need from them, a moving countdown and a wire-fraud warning. Buyers rate homes on their tour and check the drive to work. Sellers see what buyers are saying and fill in a welcome guide for the next owners. Fewer “where are we?” calls, and never a price or commission on screen.</p>
         <div class="chiprow"><span>Live timeline</span><span>Client checklist</span><span>Tour ratings</span><span>Commute check</span><span>Buyer feedback</span><span>Home handoff guide</span><span>Offer comparison</span><span>Update texts</span></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="portal-sec" id="portal">
+  <div class="portal-glow" aria-hidden="true"></div>
+  <div class="wrap portal-grid">
+    <div class="portal-copy">
+      <span class="eyebrow">Client portal · New</span>
+      <h2>Your clients stop texting <em class="serif gold-text">“where are we?”</em></h2>
+      <p>Every buyer and seller gets their own private portal the moment you add them. It updates itself from your deal, so they always know what’s next, and you get your evenings back.</p>
+      <ul class="portal-points">
+        <li><b>Live timeline</b><span>Every date in order, the next step lit up, a countdown to closing.</span></li>
+        <li><b>“What we need from you”</b><span>Clients check off their own to-dos. You see it the second they do.</span></li>
+        <li><b>Tour ratings + commute</b><span>Buyers rate each home on the tour and see the drive to work.</span></li>
+        <li><b>Seller feedback + home guide</b><span>Sellers see what buyers are saying and write a welcome guide for the next owners.</span></li>
+      </ul>
+      <div class="actions">
+        <a class="btn btn-gold" href="portal.html#demo=buyer" target="_blank" rel="noopener">Open a live sample <span class="arrow">→</span></a>
+        <a class="btn btn-glass" href="portal.html#demo=seller" target="_blank" rel="noopener">Seller view</a>
+      </div>
+      <div class="portal-stats">
+        <div><b>0</b><span>passwords to forget</span></div>
+        <div><b>1</b><span>private link per client</span></div>
+        <div><b>$0</b><span>prices or commission shown</span></div>
+      </div>
+    </div>
+    <div class="portal-stage" aria-hidden="true">
+      <div class="browser">
+        <div class="browser-bar"><i></i><i></i><i></i><span>vintorealty.com/portal</span></div>
+        <div class="pv">
+          <div class="pv-hero">
+            <small>VINTO · YOUR HOME PORTAL</small>
+            <h4>Hi Maya,<br><em>here’s where things stand.</em></h4>
+            <div class="pv-count"><b data-count="25">0</b><span>days to closing</span></div>
+          </div>
+          <div class="pv-body">
+            <div class="pv-card">
+              <div class="pv-k">Your timeline</div>
+              <ol class="pv-steps">
+                <li>Binding agreement</li><li>Earnest money</li><li>Due diligence ends</li><li>Appraisal</li><li>Closing</li>
+              </ol>
+            </div>
+            <div class="pv-card">
+              <div class="pv-k">What we need from you</div>
+              <div class="pv-check"><i></i>Send your pre-approval letter</div>
+              <div class="pv-check"><i></i>Pick a homeowners insurance company</div>
+            </div>
+            <div class="pv-card pv-tour">
+              <div class="pv-k">Saturday tour</div>
+              <div class="pv-home"><span>412 Oak Hollow Ln</span><em class="pv-like">👍 Love it</em></div>
+              <div class="pv-home"><span>18 Lake Dr</span><em>Drive to work · 22 min</em></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="float f1"><span class="live-dot"></span>Updated live</div>
+      <div class="float f2">🔒 Private link, no password</div>
+      <div class="float f3">Never a price or commission</div>
     </div>
   </div>
 </section>
@@ -353,11 +414,43 @@ refresh();
     });
     hero.addEventListener('pointerleave', () => { phone.style.removeProperty('--ry'); phone.style.removeProperty('--rx'); });
   }
-  const items = document.querySelectorAll('#features .head, .tile, .privacy .head, .check, #pricing .head, .plan');
+  const items = document.querySelectorAll('#features .head, .tile, .portal-copy, .portal-stage, .privacy .head, .check, #pricing .head, .plan');
   if (!('IntersectionObserver' in window) || still) return;
   items.forEach((el, i) => { el.classList.add('reveal'); el.style.setProperty('--d', ((i % 4) * 0.07) + 's'); });
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
   items.forEach((el) => io.observe(el));
+})();
+</script>
+<script>
+// Portal preview: steps check off, the countdown counts, a home gets liked, then it loops. Tiles get a cursor spotlight.
+(function () {
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.tile').forEach(function (t) {
+    t.addEventListener('pointermove', function (e) { var r = t.getBoundingClientRect(); t.style.setProperty('--mx', (e.clientX - r.left) + 'px'); t.style.setProperty('--my', (e.clientY - r.top) + 'px'); });
+  });
+  var stage = document.querySelector('.portal-stage');
+  if (!stage) return;
+  var steps = [].slice.call(stage.querySelectorAll('.pv-steps li')), checks = [].slice.call(stage.querySelectorAll('.pv-check')), like = stage.querySelector('.pv-like'), num = stage.querySelector('[data-count]');
+  function set(n) {
+    steps.forEach(function (li, i) { li.classList.toggle('done', i < n); li.classList.toggle('next', i === n); });
+    checks.forEach(function (c, i) { c.classList.toggle('on', n > i + 1); });
+    like.classList.toggle('on', n >= 3);
+  }
+  var target = +num.getAttribute('data-count'), n = 0, started = false;
+  function count() { var v = 0; var id = setInterval(function () { v++; num.textContent = v; if (v >= target) clearInterval(id); }, 40); }
+  function run() {
+    if (started) return; started = true; count();
+    if (still) { set(2); return; }
+    setInterval(function () { n = (n + 1) % 5; set(n); }, 1600);
+  }
+  set(0);
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { if (es[0].isIntersecting) run(); }, { threshold: .3 }).observe(stage); else run();
+  // Tilt toward the cursor
+  var b = stage.querySelector('.browser');
+  if (!still && matchMedia('(pointer: fine)').matches) {
+    stage.addEventListener('pointermove', function (e) { var r = stage.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; b.style.transform = 'rotateY(' + (x * 12 - 4) + 'deg) rotateX(' + (-y * 8 + 2) + 'deg)'; });
+    stage.addEventListener('pointerleave', function () { b.style.transform = ''; });
+  }
 })();
 </script>
 <script src="hero-map.js" defer></script>

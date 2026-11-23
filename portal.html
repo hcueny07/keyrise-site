@@ -94,6 +94,8 @@ footer a { color: var(--gold); text-decoration: none; }
 .center { text-align: center; padding: 80px 16px; color: var(--muted); }
 .gsec { margin-top: 18px; }
 .gsec h3 { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin: 0; }
+.demo-bar { position: sticky; top: 0; z-index: 9; text-align: center; font-size: 13px; padding: 9px 14px; background: #D6BD86; color: #070B0A; font-weight: 500; }
+.demo-bar a { color: #070B0A; font-weight: 700; }
 .gsec p { margin: 6px 0 0; white-space: pre-wrap; }
 @media (max-width: 420px) { h1 { font-size: 30px; } .facts { grid-template-columns: 1fr; } }
 </style>
@@ -124,10 +126,10 @@ footer a { color: var(--gold); text-decoration: none; }
     ['neighborhood', 'Favorite local spots', 'Coffee, restaurants, parks, neighbors to meet']
   ];
 
-  function rpc(name, body) {
+  var rpc = function (name, body) {
     return fetch(BASE + name, { method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
-  }
+  };
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function parseDay(k) { var p = String(k).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
   function today() { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
@@ -137,6 +139,8 @@ footer a { color: var(--gold); text-decoration: none; }
   function maps(q) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); }
   function drive(from, to) { return 'https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=' + encodeURIComponent(from) + '&destination=' + encodeURIComponent(to); }
 
+  var demo = hash.get('demo');
+  if (demo) return showDemo(demo);
   if (guideToken) return showGuide();
   if (!token) { app.innerHTML = '<div class="center">This link is missing part of its address. Ask your agent to send it again.</div>'; return; }
   load();
@@ -303,6 +307,35 @@ footer a { color: var(--gold); text-decoration: none; }
       rpc('client_save_guide', { t: token, answers: answers }).then(function (ok) { s.textContent = ok ? 'Saved. Thank you!' : 'Couldn’t save. Try again.'; })
         .catch(function () { s.textContent = 'Couldn’t save. Try again.'; });
     });
+  }
+
+
+  // A live sample with made-up data (linked from vintorealty.com). Nothing is saved.
+  function showDemo(kind) {
+    function key(n) { var d = new Date(); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+    rpc = function (name) { return Promise.resolve(name === 'client_status' ? null : true); };
+    var seller = kind === 'seller';
+    var d = {
+      street: seller ? '88 Haven Ridge Ln' : '412 Oak Hollow Ln', stage: seller ? 'Active' : 'Under contract',
+      first: seller ? 'Jordan' : 'Maya', role: seller ? 'Seller' : 'Buyer', brokerage: 'Sample Realty', closing: seller ? null : key(25),
+      dates: seller ? [{ label: 'Listing photos', date: key(-6), done: true }, { label: 'Listing goes live', date: key(-2), done: true }, { label: 'Open house', date: key(4), done: false }]
+        : [{ label: 'Binding agreement', date: key(-9), done: true }, { label: 'Earnest money due', date: key(-6), done: true }, { label: 'Due diligence ends', date: key(2), done: false }, { label: 'Appraisal', date: key(11), done: false }, { label: 'Financing contingency', date: key(14), done: false }, { label: 'Final walkthrough', date: key(24), done: false }, { label: 'Closing', date: key(25), done: false }],
+      items: seller ? [{ id: 'a', label: 'Sign the seller’s disclosure', done: true }, { id: 'b', label: 'Share HOA contact info and documents', done: false, due: key(3) }, { id: 'c', label: 'Fill in your home handoff guide below', done: false }]
+        : [{ id: 'a', label: 'Send your mortgage pre-approval letter', done: true }, { id: 'b', label: 'Schedule the home inspection', done: true }, { id: 'c', label: 'Pick a homeowners insurance company and send it to your lender', done: false, due: key(10) }],
+      tour: seller ? null : { day: 'Saturday', homes: [{ address: '412 Oak Hollow Ln, Alpharetta, GA', time: '10:00 AM' }, { address: '18 Lake Dr, Milton, GA', time: '10:45 AM' }, { address: '7 Birch Ct, Roswell, GA', time: '11:30 AM' }] },
+      ratings: seller ? [] : [{ address: '412 Oak Hollow Ln, Alpharetta, GA', rating: 1, note: 'Loved the backyard and the kitchen island' }],
+      commute: seller ? null : 'Ponce City Market, Atlanta, GA',
+      buyerFeedback: seller ? ['Loved the kitchen and the natural light.', 'Great school district. Backyard is a little small for them.', 'Clean and move-in ready. Comparing with one other home.'] : [],
+      showingsThisWeek: seller ? 6 : null,
+      guide: seller ? { answers: { trash_day: 'Trash Tuesday, recycling every other Friday (Waste Pro)', paint: 'Walls: Sherwin-Williams Agreeable Gray. Trim: Pure White' }, submitted: null } : null,
+      facts: seller ? [{ label: 'Bedrooms and baths', value: '5 bedrooms, 4 baths' }, { label: 'Year built', value: '2008' }] : [{ label: 'Bedrooms and baths', value: '4 bedrooms, 3 baths' }, { label: 'Schools', value: 'Milton High School' }, { label: 'HOA', value: 'Swim and tennis community' }],
+      updated: new Date().toISOString()
+    };
+    render(d);
+    var b = document.createElement('div');
+    b.className = 'demo-bar';
+    b.innerHTML = 'Sample portal with made-up data. <a href="#demo=' + (seller ? 'buyer' : 'seller') + '" onclick="setTimeout(function(){location.reload()},0)">See the ' + (seller ? 'buyer' : 'seller') + ' view</a> · <a href="https://vintorealty.com/#pricing">Get Vinto</a>';
+    document.body.insertBefore(b, document.body.firstChild);
   }
 
   function showGuide() {

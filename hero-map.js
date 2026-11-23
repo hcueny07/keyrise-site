@@ -67,35 +67,46 @@
 
   // ---------- View ----------
   var vw = 0, vh = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
-  var cam = { x: W / 2, y: H / 2 }, vel = { x: 0.18, y: 0.07 }, target = null, mouse = { x: 0, y: 0 }, par = { x: 0, y: 0 };
+  var cam = { x: W / 2, y: H / 2 }, goal = { x: W / 2, y: H / 2 }, vel = { x: 0.18, y: 0.07 }, mouse = { x: 0, y: 0 }, par = { x: 0, y: 0 }, samples = [];
   function resize() {
-    var r = hero.getBoundingClientRect();
-    vw = r.width; vh = r.height;
+    vw = canvas.offsetWidth; vh = canvas.offsetHeight;
     canvas.width = Math.round(vw * dpr); canvas.height = Math.round(vh * dpr);
-    canvas.style.width = vw + 'px'; canvas.style.height = vh + 'px';
   }
   resize(); addEventListener('resize', resize);
 
-  // Drag to move (mouse/pen only; touch keeps scrolling the page)
-  var drag = null;
+  // Drag to move (mouse/pen only; touch keeps scrolling the page). The camera eases toward where you drag
+  // and keeps gliding when you let go.
+  var drag = null, ring = document.querySelector('.drag-cursor');
+  function overUi(t) { return t && t.closest && t.closest('a,button,.phone,.badge,input'); }
   hero.addEventListener('pointerdown', function (e) {
-    if (e.pointerType === 'touch' || e.target.closest('a,button,.phone')) return;
-    drag = { x: e.clientX, y: e.clientY, cx: cam.x, cy: cam.y, t: performance.now() };
+    if (e.pointerType === 'touch' || overUi(e.target)) return;
+    drag = { x: e.clientX, y: e.clientY, gx: goal.x, gy: goal.y };
+    samples = [{ x: e.clientX, y: e.clientY, t: performance.now() }];
+    vel.x = 0; vel.y = 0;
     hero.classList.add('dragging');
+    e.preventDefault();
   });
   addEventListener('pointermove', function (e) {
     mouse.x = e.clientX / innerWidth - 0.5; mouse.y = e.clientY / innerHeight - 0.5;
+    if (ring) {
+      var r = hero.getBoundingClientRect(), inside = e.clientY >= r.top && e.clientY <= r.bottom && e.pointerType !== 'touch';
+      ring.style.transform = 'translate3d(' + (e.clientX - r.left) + 'px,' + (e.clientY - r.top) + 'px,0)';
+      ring.classList.toggle('on', inside && !overUi(e.target));
+    }
     if (!drag) return;
-    cam.x = drag.cx - (e.clientX - drag.x); cam.y = drag.cy - (e.clientY - drag.y);
-    vel.x = 0; vel.y = 0;
+    goal.x = drag.gx - (e.clientX - drag.x) * 1.4;
+    goal.y = drag.gy - (e.clientY - drag.y) * 1.9;
+    samples.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+    if (samples.length > 6) samples.shift();
   });
-  addEventListener('pointerup', function (e) {
+  addEventListener('pointerup', function () {
     if (!drag) return;
-    var dt = Math.max(16, performance.now() - drag.t);
-    vel.x = Math.max(-1.2, Math.min(1.2, -(e.clientX - drag.x) / dt * 4));
-    vel.y = Math.max(-1.2, Math.min(1.2, -(e.clientY - drag.y) / dt * 4));
+    var a = samples[0], b = samples[samples.length - 1], dt = Math.max(16, b.t - a.t);
+    vel.x = Math.max(-14, Math.min(14, -(b.x - a.x) / dt * 16 * 1.4));
+    vel.y = Math.max(-14, Math.min(14, -(b.y - a.y) / dt * 16 * 1.9));
     drag = null; hero.classList.remove('dragging');
   });
+  hero.addEventListener('pointerleave', function () { if (ring) ring.classList.remove('on'); });
 
   var visible = true;
   if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) requestAnimationFrame(frame); }).observe(hero);
@@ -103,15 +114,16 @@
   function frame(t) {
     if (!visible) return;
     if (!drag && !still) {
-      cam.x += vel.x; cam.y += vel.y;
-      // settle back to a gentle drift
-      vel.x += (0.18 - vel.x) * 0.01; vel.y += (0.07 - vel.y) * 0.01;
+      goal.x += vel.x; goal.y += vel.y;
+      // glide, then settle back into a slow drift
+      vel.x += (0.22 - vel.x) * 0.035; vel.y += (0.08 - vel.y) * 0.035;
     }
-    // keep the camera inside the world
-    var mx = vw / 2 + 40, my = vh / 2 + 40;
-    if (cam.x < mx) { cam.x = mx; vel.x = Math.abs(vel.x); } if (cam.x > W - mx) { cam.x = W - mx; vel.x = -Math.abs(vel.x); }
-    if (cam.y < my) { cam.y = my; vel.y = Math.abs(vel.y); } if (cam.y > H - my) { cam.y = H - my; vel.y = -Math.abs(vel.y); }
-    par.x += (mouse.x * 30 - par.x) * 0.05; par.y += (mouse.y * 20 - par.y) * 0.05;
+    var mx = vw / 2 + 60, my = vh / 2 + 60;
+    if (goal.x < mx) { goal.x = mx; vel.x = Math.abs(vel.x) * 0.5; } if (goal.x > W - mx) { goal.x = W - mx; vel.x = -Math.abs(vel.x) * 0.5; }
+    if (goal.y < my) { goal.y = my; vel.y = Math.abs(vel.y) * 0.5; } if (goal.y > H - my) { goal.y = H - my; vel.y = -Math.abs(vel.y) * 0.5; }
+    cam.x += (goal.x - cam.x) * 0.14; cam.y += (goal.y - cam.y) * 0.14;
+    par.x += (mouse.x * 40 - par.x) * 0.05; par.y += (mouse.y * 26 - par.y) * 0.05;
+    canvas.style.setProperty('--tilt', (mouse.x * 4).toFixed(2) + 'deg');
 
     var ox = cam.x - vw / 2 + par.x, oy = cam.y - vh / 2 + par.y;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
