@@ -74,54 +74,22 @@
   }
   resize(); addEventListener('resize', resize);
 
-  // Drag to move (mouse/pen only; touch keeps scrolling the page). The camera eases toward where you drag
-  // and keeps gliding when you let go.
-  var drag = null, ring = document.querySelector('.drag-cursor');
-  function overUi(t) { return t && t.closest && t.closest('a,button,.phone,.badge,input'); }
-  hero.addEventListener('pointerdown', function (e) {
-    if (e.pointerType === 'touch' || overUi(e.target)) return;
-    drag = { x: e.clientX, y: e.clientY, gx: goal.x, gy: goal.y };
-    samples = [{ x: e.clientX, y: e.clientY, t: performance.now() }];
-    vel.x = 0; vel.y = 0;
-    hero.classList.add('dragging');
-    e.preventDefault();
-  });
-  addEventListener('pointermove', function (e) {
-    mouse.x = e.clientX / innerWidth - 0.5; mouse.y = e.clientY / innerHeight - 0.5;
-    if (ring) {
-      var r = hero.getBoundingClientRect(), inside = e.clientY >= r.top && e.clientY <= r.bottom && e.pointerType !== 'touch';
-      ring.style.transform = 'translate3d(' + (e.clientX - r.left) + 'px,' + (e.clientY - r.top) + 'px,0)';
-      ring.classList.toggle('on', inside && !overUi(e.target));
-    }
-    if (!drag) return;
-    goal.x = drag.gx - (e.clientX - drag.x) * 1.4;
-    goal.y = drag.gy - (e.clientY - drag.y) * 1.9;
-    samples.push({ x: e.clientX, y: e.clientY, t: performance.now() });
-    if (samples.length > 6) samples.shift();
-  });
-  addEventListener('pointerup', function () {
-    if (!drag) return;
-    var a = samples[0], b = samples[samples.length - 1], dt = Math.max(16, b.t - a.t);
-    vel.x = Math.max(-14, Math.min(14, -(b.x - a.x) / dt * 16 * 1.4));
-    vel.y = Math.max(-14, Math.min(14, -(b.y - a.y) / dt * 16 * 1.9));
-    drag = null; hero.classList.remove('dragging');
-  });
-  hero.addEventListener('pointerleave', function () { if (ring) ring.classList.remove('on'); });
+  // No dragging: the camera cruises the city on its own along a slow, looping path. The mouse only adds a little parallax.
+  addEventListener('pointermove', function (e) { if (e.pointerType === 'touch') return; mouse.x = e.clientX / innerWidth - 0.5; mouse.y = e.clientY / innerHeight - 0.5; });
 
   var visible = true;
   if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) requestAnimationFrame(frame); }).observe(hero);
 
   function frame(t) {
     if (!visible) return;
-    if (!drag && !still) {
-      goal.x += vel.x; goal.y += vel.y;
-      // glide, then settle back into a slow drift
-      vel.x += (0.22 - vel.x) * 0.035; vel.y += (0.08 - vel.y) * 0.035;
+    var mx = vw / 2 + 60, my = vh / 2 + 60, tt = (t || 0) / 1000;
+    if (!still) {
+      var ax = Math.max(0, W / 2 - mx), ay = Math.max(0, H / 2 - my);
+      goal.x = W / 2 + ax * Math.sin(tt * 0.07 + 0.6) * 0.92;
+      goal.y = H / 2 + ay * Math.sin(tt * 0.05 + 2.1) * 0.92;
     }
-    var mx = vw / 2 + 60, my = vh / 2 + 60;
-    if (goal.x < mx) { goal.x = mx; vel.x = Math.abs(vel.x) * 0.5; } if (goal.x > W - mx) { goal.x = W - mx; vel.x = -Math.abs(vel.x) * 0.5; }
-    if (goal.y < my) { goal.y = my; vel.y = Math.abs(vel.y) * 0.5; } if (goal.y > H - my) { goal.y = H - my; vel.y = -Math.abs(vel.y) * 0.5; }
-    cam.x += (goal.x - cam.x) * 0.14; cam.y += (goal.y - cam.y) * 0.14;
+    goal.x = Math.min(W - mx, Math.max(mx, goal.x)); goal.y = Math.min(H - my, Math.max(my, goal.y));
+    cam.x += (goal.x - cam.x) * 0.06; cam.y += (goal.y - cam.y) * 0.06;
     par.x += (mouse.x * 40 - par.x) * 0.05; par.y += (mouse.y * 26 - par.y) * 0.05;
     canvas.style.setProperty('--tilt', (mouse.x * 4).toFixed(2) + 'deg');
 

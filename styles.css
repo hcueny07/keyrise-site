@@ -267,27 +267,15 @@ footer a:hover { color: var(--champagne); }
 .plan .offer { margin-top: 14px; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.45; background: rgba(214,189,134,.12); border: 1px solid rgba(214,189,134,.28); color: rgba(255,255,255,.85); }
 .plan .offer b { display: block; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--champagne); margin-bottom: 2px; }
 
-/* Interactive night map behind the hero */
+/* Night map behind the hero */
 .hero-map { position: absolute; z-index: 0; display: block; left: -25%; top: -30%; width: 150%; height: 145%;
   transform-origin: 50% 70%; transform: perspective(1100px) rotateX(42deg) rotateZ(var(--tilt, 0deg)); will-change: transform; }
-.drag-cursor { position: absolute; z-index: 3; left: 0; top: 0; width: 74px; height: 74px; margin: -37px 0 0 -37px; border-radius: 50%;
-  border: 1px solid rgba(214,189,134,.55); background: rgba(7,11,10,.25); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
-  display: grid; place-items: center; font-size: 10.5px; font-weight: 600; letter-spacing: .2em; color: var(--champagne); pointer-events: none;
-  opacity: 0; scale: .6; transition: opacity .25s, scale .25s; }
-.drag-cursor.on { opacity: 1; scale: 1; }
-.hero.dragging .drag-cursor { scale: .82; background: rgba(214,189,134,.14); }
 .hero .wrap > div, .hero .phone { position: relative; z-index: 3; }
 .hero::after { display: none; }
 .hero::before { z-index: 1; pointer-events: none; }
 .hero-shade { position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(90deg, rgba(7,11,10,.9) 0%, rgba(7,11,10,.6) 36%, rgba(7,11,10,0) 62%, rgba(7,11,10,.2) 100%),
               linear-gradient(0deg, rgba(7,11,10,1) 0%, rgba(7,11,10,0) 18%); }
-.hero { cursor: none; }
-.hero a, .hero button, .hero .phone { cursor: pointer; }
-.hero.dragging { cursor: none; }
-.hero.dragging * { user-select: none; }
-.drag-hint { position: absolute; z-index: 2; left: 50%; bottom: 22px; transform: translateX(-50%); font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.45); border: 1px solid rgba(255,255,255,.14); padding: 7px 14px; border-radius: 999px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-@media (pointer: coarse) { .drag-hint, .drag-cursor { display: none; } .hero { cursor: auto; } }
 @media (max-width: 900px) { .hero-shade { background: linear-gradient(180deg, rgba(7,11,10,.55) 0%, rgba(7,11,10,.85) 55%, rgba(7,11,10,1) 100%); } }
 
 /* ---------- Client portal showcase ---------- */
