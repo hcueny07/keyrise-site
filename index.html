@@ -142,7 +142,8 @@
         <span class="tag">For brokerages</span>
         <h3>Brokerage</h3>
         <div class="price"><span class="amount" data-price="brokerage">$11.99</span><span class="per">per agent / month</span></div>
-        <p class="alt" data-alt="brokerage">$250 one-time setup · or pay yearly and get 2 months free</p>
+        <p class="alt" data-alt="brokerage">$200 one-time setup · or pay yearly and get 2 months free</p>
+        <p class="offer" data-offer-until="2027-01-01"><b>Launch offer</b> Sign up before Jan 1 and prepay 3 months, and the $200 setup fee is waived.</p>
         <div class="toggle" role="group" aria-label="Billing period" data-for="brokerage"><button aria-pressed="true" data-period="month">Monthly</button><button aria-pressed="false" data-period="year">Yearly</button></div>
         <ul>
           <li>Every Vinto feature for every agent</li>
@@ -217,14 +218,14 @@ const PAY = {
 };
 const EMAIL = "support@vintorealty.com";
 const PRICES = {
-  brokerage: { month: ["$11.99", "per agent / month", "$250 one-time setup · or pay yearly and get 2 months free"],
-               year: ["$119.90", "per agent / year", "$250 one-time setup · 2 months free"] },
+  brokerage: { month: ["$11.99", "per agent / month", "$200 one-time setup · or pay yearly and get 2 months free"],
+               year: ["$119.90", "per agent / year", "$200 one-time setup · 2 months free"] },
   individual: { month: ["$19.99", "per month", "or $199 a year (save $40)"],
                 year: ["$199", "per year", "2 months free"] },
 };
 const SUBJECT = { brokerage: "Vinto for my brokerage", individual: "Vinto for me", demo: "Vinto demo" };
 const BODY = {
-  brokerage: "Hi Hudson,\n\nI'd like to set up Vinto for our brokerage.\n\nBrokerage name:\nNumber of agents:\nBest phone:\nBilling: monthly / yearly\n",
+  brokerage: "Hi Hudson,\n\nI'd like to set up Vinto for our brokerage.\n\nBrokerage name:\nNumber of agents:\nBest phone:\nBilling: monthly / yearly\nLaunch offer (prepay 3 months, setup fee waived, before Jan 1): yes / no\n",
   individual: "Hi Hudson,\n\nI'd like to start Vinto as an individual agent.\n\nName:\nBrokerage:\nBilling: monthly / yearly\n",
   demo: "Hi Hudson,\n\nI'd like a Vinto demo.\n\nName:\nBrokerage:\nBest times:\n",
 };
@@ -244,6 +245,7 @@ function refresh() {
     document.querySelector('[data-alt="' + plan + '"]').textContent = alt;
   }
 }
+document.querySelectorAll('[data-offer-until]').forEach(el => { if (new Date() >= new Date(el.dataset.offerUntil + 'T00:00:00-05:00')) el.remove(); });
 document.querySelectorAll(".toggle").forEach(t => t.addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
   period[t.dataset.for] = b.dataset.period;
