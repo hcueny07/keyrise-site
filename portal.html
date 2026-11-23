@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Your home portal · Vinto</title>
+<meta name="theme-color" content="#070B0A">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --obsidian: #070B0A; --ink: #0E1513; --ivory: #F4F3EF; --paper: #FFFFFF; --line: #E6E3DA; --line2: #EEEBE4;
+  --muted: #55595A; --faint: #7B7F80; --gold: #9C7B3C; --champagne: #D6BD86; --champagne-2: #F0DEB4;
+  --green: #2F8F6B; --red: #B42318; --cream: #F8F3E7;
+  --sans: "Inter", -apple-system, "Helvetica Neue", Arial, sans-serif; --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--ivory); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 680px; margin: 0 auto; padding: 0 16px; }
+header.hero { background: radial-gradient(ellipse 80% 70% at 80% 0%, rgba(214,189,134,.16), transparent 60%), var(--obsidian); color: #fff; padding: 22px 0 34px; }
+.brand { display: flex; align-items: center; justify-content: space-between; font-size: 12px; letter-spacing: .3em; font-weight: 600; color: rgba(255,255,255,.75); }
+.brand img { width: 24px; height: 24px; vertical-align: middle; margin-right: 8px; }
+.brand small { letter-spacing: .08em; font-weight: 500; color: rgba(255,255,255,.5); text-transform: none; font-size: 12.5px; }
+h1 { font-size: 34px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 600; margin: 26px 0 0; }
+h1 em, h2 em { font-family: var(--serif); font-style: italic; font-weight: 400; background: linear-gradient(100deg, var(--champagne-2), var(--champagne) 45%, #B8964F); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.street { margin-top: 10px; color: rgba(255,255,255,.7); font-size: 16px; }
+.stage { display: inline-block; margin-top: 16px; padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; background: rgba(214,189,134,.16); color: var(--champagne); border: 1px solid rgba(214,189,134,.3); }
+.count { margin-top: 22px; display: flex; align-items: baseline; gap: 10px; }
+.count b { font-size: 54px; font-weight: 600; letter-spacing: -0.05em; line-height: 1; font-variant-numeric: tabular-nums; }
+.count span { color: rgba(255,255,255,.65); font-size: 15px; }
+main { padding: 18px 0 60px; }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 22px; margin-top: 14px; }
+.eyebrow { font-size: 11.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+h2 { font-size: 21px; letter-spacing: -0.02em; font-weight: 600; margin: 6px 0 0; }
+.sub { color: var(--muted); font-size: 14.5px; margin-top: 4px; }
+.steps { list-style: none; margin: 16px 0 0; padding: 0; }
+.steps li { position: relative; padding: 0 0 16px 30px; }
+.steps li::before { content: ""; position: absolute; left: 7px; top: 20px; bottom: 0; width: 2px; background: var(--line2); }
+.steps li:last-child::before { display: none; }
+.dot { position: absolute; left: 0; top: 4px; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--line); background: #fff; }
+.steps li.done .dot { background: var(--green); border-color: var(--green); }
+.steps li.done .dot::after { content: "✓"; color: #fff; font-size: 10px; position: absolute; left: 2px; top: -1px; font-weight: 700; }
+.steps li.next .dot { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(214,189,134,.25); }
+.steps b { font-weight: 600; display: block; }
+.steps li.done b { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(0,0,0,.2); }
+.steps .when { font-size: 13.5px; color: var(--faint); }
+.steps li.next .when { color: var(--gold); font-weight: 600; }
+.check { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-top: 1px solid var(--line2); cursor: pointer; }
+.check:first-of-type { border-top: 0; }
+.box { flex: none; width: 22px; height: 22px; border-radius: 7px; border: 1.5px solid var(--gold); display: grid; place-items: center; margin-top: 1px; }
+.check.on .box { background: var(--gold); }
+.check.on .box::after { content: "✓"; color: #fff; font-size: 13px; font-weight: 700; }
+.check.on .lbl { color: var(--faint); text-decoration: line-through; }
+.check small { display: block; color: var(--faint); font-size: 13px; }
+.home { padding: 14px 0; border-top: 1px solid var(--line2); }
+.home:first-of-type { border-top: 0; }
+.home .row { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.home .time { font-size: 13px; font-weight: 600; color: var(--gold); white-space: nowrap; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.links a, .pill { font-size: 13.5px; font-weight: 500; color: var(--ink); text-decoration: none; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--ivory); }
+.rate { display: flex; gap: 8px; margin-top: 10px; }
+.rate button { font: 600 14px var(--sans); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; }
+.rate button.on.up { background: #E8F4EE; border-color: var(--green); color: var(--green); }
+.rate button.on.down { background: #FBECEA; border-color: var(--red); color: var(--red); }
+.note { width: 100%; margin-top: 8px; font: 14.5px var(--sans); padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; resize: vertical; min-height: 42px; }
+.quote { padding: 12px 14px; margin-top: 10px; background: var(--cream); border-radius: 12px; font-size: 15px; }
+.quote::before { content: "“"; color: var(--gold); font-family: var(--serif); font-size: 26px; line-height: 0; margin-right: 4px; vertical-align: -8px; }
+.stat { display: flex; align-items: baseline; gap: 8px; margin-top: 12px; }
+.stat b { font-size: 34px; font-weight: 600; letter-spacing: -0.04em; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.facts div { background: var(--ivory); border-radius: 12px; padding: 10px 12px; }
+.facts small { display: block; font-size: 12px; color: var(--faint); }
+.facts span { font-weight: 600; font-size: 15px; }
+.move li { list-style: none; display: grid; grid-template-columns: 84px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line2); }
+.move { margin: 12px 0 0; padding: 0; }
+.move li:first-child { border-top: 0; }
+.move .d { font-size: 13px; font-weight: 600; color: var(--gold); }
+.move li.past { opacity: .5; }
+.warn { margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: #FBECEA; color: #7A1A12; font-size: 14px; }
+label.f { display: block; font-size: 13.5px; font-weight: 600; margin-top: 14px; }
+label.f small { font-weight: 400; color: var(--faint); }
+input.t, textarea.t { width: 100%; margin-top: 6px; font: 15px var(--sans); padding: 11px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; }
+textarea.t { min-height: 70px; resize: vertical; }
+.btn { display: inline-block; margin-top: 16px; font: 600 15px var(--sans); padding: 13px 20px; border-radius: 999px; border: 0; cursor: pointer; background: linear-gradient(180deg, var(--champagne-2), var(--champagne)); color: var(--obsidian); }
+.saved { color: var(--green); font-weight: 600; font-size: 14px; margin-left: 10px; }
+.empty { color: var(--faint); font-size: 14.5px; margin-top: 10px; }
+footer { text-align: center; color: var(--faint); font-size: 13px; padding: 10px 16px 40px; }
+footer a { color: var(--gold); text-decoration: none; }
+.center { text-align: center; padding: 80px 16px; color: var(--muted); }
+.gsec { margin-top: 18px; }
+.gsec h3 { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin: 0; }
+.gsec p { margin: 6px 0 0; white-space: pre-wrap; }
+@media (max-width: 420px) { h1 { font-size: 30px; } .facts { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="app"><div class="center">Loading your portal…</div></div>
+<footer>Powered by <a href="https://vintorealty.com" target="_blank" rel="noopener">Vinto</a>. This page is private to you. Please don’t share the link.</footer>
+
+<script>
+(function () {
+  var BASE = 'https://ovwsmktnufozcyaqaqfz.supabase.co/rest/v1/rpc/';
+  var KEY = 'sb_publishable_IvKFJC5hSi_ydgtLY5wk-A_FeJHikgb';
+  var hash = new URLSearchParams(location.hash.slice(1));
+  var token = hash.get('t'), guideToken = hash.get('g');
+  var app = document.getElementById('app');
+
+  // Home guide questions (the seller fills these in; the buyer sees the finished guide).
+  var GUIDE = [
+    ['wifi', 'Internet and Wi-Fi', 'Provider, and where the router is'],
+    ['trash_day', 'Trash and recycling', 'Pickup days and the company'],
+    ['utilities', 'Utilities', 'Power, water, gas companies'],
+    ['hvac', 'Heating and air', 'Filter size, service company, age'],
+    ['appliances', 'Appliances and warranties', 'Makes, ages, any warranties that transfer'],
+    ['paint', 'Paint colors', 'Brand and color names by room'],
+    ['outdoor', 'Yard, sprinklers and pool', 'Sprinkler schedule, pool service, plants to know'],
+    ['vendors', 'Service people you trust', 'Plumber, electrician, handyman, pest control'],
+    ['quirks', 'Good to know', 'Breaker panel, water shutoff, any quirks'],
+    ['neighborhood', 'Favorite local spots', 'Coffee, restaurants, parks, neighbors to meet']
+  ];
+
+  function rpc(name, body) {
+    return fetch(BASE + name, { method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+  }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function parseDay(k) { var p = String(k).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function today() { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function daysUntil(k) { return Math.round((parseDay(k) - today()) / 86400000); }
+  function fmt(k) { return parseDay(k).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
+  function rel(k) { var n = daysUntil(k); return n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : n === -1 ? 'Yesterday' : n > 1 ? 'In ' + n + ' days' : Math.abs(n) + ' days ago'; }
+  function maps(q) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); }
+  function drive(from, to) { return 'https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=' + encodeURIComponent(from) + '&destination=' + encodeURIComponent(to); }
+
+  if (guideToken) return showGuide();
+  if (!token) { app.innerHTML = '<div class="center">This link is missing part of its address. Ask your agent to send it again.</div>'; return; }
+  load();
+
+  function load() {
+    rpc('client_status', { t: token }).then(function (d) {
+      if (!d) { app.innerHTML = '<div class="center">This link isn’t active anymore. Ask your agent for a new one.</div>'; return; }
+      render(d);
+    }).catch(function () { app.innerHTML = '<div class="center">We couldn’t load your portal right now. Please try again in a minute.</div>'; });
+  }
+
+  function render(d) {
+    var buyer = /buyer/i.test(d.role || ''), seller = /seller/i.test(d.role || '');
+    var dates = d.dates || [], next = null;
+    for (var i = 0; i < dates.length; i++) if (!dates[i].done) { next = dates[i]; break; }
+    var html = '<header class="hero"><div class="wrap">' +
+      '<div class="brand"><span><img src="img/mark.png" alt="">VINTO</span><small>' + esc(d.brokerage || '') + '</small></div>' +
+      '<h1>Hi ' + esc(String(d.first || 'there').replace(/^the\s+/i, '')) + ',<br><em>here’s where things stand.</em></h1>' +
+      '<div class="street">' + esc(d.street) + '</div>' +
+      '<span class="stage">' + esc(d.stage || '') + '</span>';
+    if (d.closing && daysUntil(d.closing) >= 0) html += '<div class="count"><b>' + daysUntil(d.closing) + '</b><span>days to closing · ' + fmt(d.closing) + '</span></div>';
+    html += '</div></header><main><div class="wrap">';
+
+    // 1. Deal tracker
+    html += '<section class="card"><div class="eyebrow">Your timeline</div><h2>Every step, in order</h2>';
+    if (dates.length) {
+      html += '<ol class="steps">';
+      dates.forEach(function (x) {
+        var cls = x.done ? 'done' : (next && x === next ? 'next' : '');
+        html += '<li class="' + cls + '"><span class="dot"></span><b>' + esc(x.label) + '</b><span class="when">' + (x.done ? 'Done' : fmt(x.date) + ' · ' + rel(x.date)) + '</span></li>';
+      });
+      html += '</ol>';
+    } else html += '<p class="empty">Your agent will add your dates here as soon as they’re set.</p>';
+    html += '</section>';
+
+    // 2. What we need from you
+    var items = d.items || [];
+    if (items.length) {
+      var open = items.filter(function (x) { return !x.done; }).length;
+      html += '<section class="card"><div class="eyebrow">What we need from you</div><h2>' + (open ? open + ' thing' + (open === 1 ? '' : 's') + ' left' : 'All done. Thank you!') + '</h2><p class="sub">Tap to check off. Your agent sees it right away. Send documents to your agent directly, never by replying to an unknown email.</p><div style="margin-top:8px">';
+      items.forEach(function (x) {
+        html += '<div class="check' + (x.done ? ' on' : '') + '" data-item="' + esc(x.id) + '" role="checkbox" aria-checked="' + (x.done ? 'true' : 'false') + '" tabindex="0"><span class="box"></span><span class="lbl">' + esc(x.label) + (x.due ? '<small>Due ' + fmt(x.due) + '</small>' : '') + '</span></div>';
+      });
+      html += '</div></section>';
+    }
+
+    // 3. Buyers: showing tour with ratings and commute
+    if (buyer && d.tour && d.tour.homes && d.tour.homes.length) {
+      var ratings = {};
+      (d.ratings || []).forEach(function (r) { ratings[r.address] = r; });
+      html += '<section class="card"><div class="eyebrow">Your showing tour' + (d.tour.day ? ' · ' + esc(d.tour.day) : '') + '</div><h2>Homes you’re seeing</h2><p class="sub">Rate each one after you see it. Your agent sees your thoughts instantly.</p>';
+      d.tour.homes.forEach(function (h, idx) {
+        var r = ratings[h.address] || {};
+        html += '<div class="home" data-home="' + idx + '"><div class="row"><b>' + esc(h.address) + '</b><span class="time">' + esc(h.time || '') + '</span></div>' +
+          '<div class="links"><a href="' + maps(h.address) + '" target="_blank" rel="noopener">Map</a>' +
+          (d.commute ? '<a href="' + drive(h.address, d.commute) + '" target="_blank" rel="noopener">Drive to ' + esc(String(d.commute).split(',')[0]) + '</a>' : '') + '</div>' +
+          '<div class="rate"><button class="up' + (r.rating === 1 ? ' on' : '') + '" data-r="1">👍 Love it</button><button class="down' + (r.rating === -1 ? ' on' : '') + '" data-r="-1">👎 Not for us</button></div>' +
+          '<textarea class="note" placeholder="Anything to remember? (optional)">' + esc(r.note || '') + '</textarea></div>';
+      });
+      html += '</section>';
+    }
+
+    // 4. Sellers: what buyers are saying
+    if (seller && d.stage !== 'Closed') {
+      var fb = d.buyerFeedback || [];
+      html += '<section class="card"><div class="eyebrow">Showings</div><h2>What buyers are saying</h2>' +
+        '<div class="stat"><b>' + (d.showingsThisWeek || 0) + '</b><span class="sub">showing' + (d.showingsThisWeek === 1 ? '' : 's') + ' this week</span></div>';
+      if (fb.length) fb.forEach(function (q) { html += '<div class="quote">' + esc(q) + '</div>'; });
+      else html += '<p class="empty">Feedback from buyers’ agents will show up here, with no names.</p>';
+      html += '</section>';
+    }
+
+    // 5. Moving countdown
+    if (d.closing && daysUntil(d.closing) >= -1) html += moving(d.closing, buyer);
+
+    // 6. Sellers: home guide
+    if (seller) html += guideForm(d.guide);
+
+    // 7. House facts
+    var facts = d.facts || [];
+    if (facts.length) {
+      html += '<section class="card"><div class="eyebrow">The house</div><h2>Key details</h2><div class="facts">';
+      facts.slice(0, 14).forEach(function (f) { html += '<div><small>' + esc(f.label) + '</small><span>' + esc(f.value) + '</span></div>'; });
+      html += '</div></section>';
+    }
+
+    html += '<p class="empty" style="text-align:center;margin-top:22px">Updated ' + new Date(d.updated || Date.now()).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + '. Questions? Text your agent anytime.</p>';
+    html += '</div></main>';
+    app.innerHTML = html;
+    wire(d);
+  }
+
+  function moving(closing, buyer) {
+    var steps = buyer ? [
+      [30, 'Book movers and get quotes'],
+      [21, 'Set up power, water, gas and internet starting closing day'],
+      [14, 'Forward your mail (USPS) and update your address'],
+      [10, 'Get homeowners insurance to your lender'],
+      [5, 'Call your closing attorney to confirm wire instructions by phone'],
+      [2, 'Final walkthrough with your agent'],
+      [0, 'Closing day: bring your photo ID']
+    ] : [
+      [30, 'Book movers and start packing rooms you don’t use'],
+      [21, 'Schedule utilities to stop the day after closing'],
+      [14, 'Forward your mail (USPS) and update your address'],
+      [7, 'Gather keys, remotes, codes and manuals for the buyer'],
+      [3, 'Leave the home clean and empty for the walkthrough'],
+      [0, 'Closing day: bring your photo ID']
+    ];
+    var html = '<section class="card"><div class="eyebrow">Moving countdown</div><h2>Your next few weeks</h2><ul class="move">';
+    steps.forEach(function (s) {
+      var d = parseDay(closing); d.setDate(d.getDate() - s[0]);
+      var past = d < today();
+      html += '<li class="' + (past ? 'past' : '') + '"><span class="d">' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + '</span><span>' + esc(s[1]) + '</span></li>';
+    });
+    html += '</ul><div class="warn"><b>Wire fraud warning:</b> never send money based on an email or text alone. Always call your closing attorney at a number you already know to confirm wire instructions.</div></section>';
+    return html;
+  }
+
+  function guideForm(g) {
+    var a = (g && g.answers) || {};
+    var html = '<section class="card"><div class="eyebrow">Home handoff guide</div><h2>Help the next owners <em>feel at home</em></h2>' +
+      '<p class="sub">Your agent turns this into a welcome guide for your buyers. Fill in what you know; skip the rest. Share alarm and door codes in person at closing, not here.</p><form id="guide">';
+    GUIDE.forEach(function (q) {
+      html += '<label class="f">' + esc(q[1]) + ' <small>' + esc(q[2]) + '</small><textarea class="t" name="' + q[0] + '" maxlength="1500">' + esc(a[q[0]] || '') + '</textarea></label>';
+    });
+    html += '<button class="btn" type="submit">Save my guide</button><span class="saved" id="guideSaved">' + (g && g.submitted ? 'Saved' : '') + '</span></form></section>';
+    return html;
+  }
+
+  function wire(d) {
+    Array.prototype.forEach.call(document.querySelectorAll('.check'), function (el) {
+      function toggle() {
+        var on = !el.classList.contains('on');
+        el.classList.toggle('on', on); el.setAttribute('aria-checked', on ? 'true' : 'false');
+        rpc('client_check', { t: token, item: el.getAttribute('data-item'), is_done: on }).catch(function () { el.classList.toggle('on', !on); alert('That didn’t save. Please try again.'); });
+      }
+      el.addEventListener('click', toggle);
+      el.addEventListener('keydown', function (e) { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); } });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.home'), function (el) {
+      var home = d.tour.homes[+el.getAttribute('data-home')];
+      var note = el.querySelector('.note'), current = 0;
+      var on = el.querySelector('.rate .on'); if (on) current = +on.getAttribute('data-r');
+      function save() {
+        return rpc('client_rate', { t: token, home: home.address, rating: current, note: note.value }).catch(function () { alert('That didn’t save. Please try again.'); });
+      }
+      Array.prototype.forEach.call(el.querySelectorAll('.rate button'), function (b) {
+        b.addEventListener('click', function () {
+          var r = +b.getAttribute('data-r');
+          current = current === r ? 0 : r;
+          Array.prototype.forEach.call(el.querySelectorAll('.rate button'), function (x) { x.classList.toggle('on', +x.getAttribute('data-r') === current); });
+          save();
+        });
+      });
+      note.addEventListener('change', function () { if (current) save(); });
+    });
+    var form = document.getElementById('guide');
+    if (form) form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var answers = {};
+      GUIDE.forEach(function (q) { var v = form.elements[q[0]].value.trim(); if (v) answers[q[0]] = v; });
+      var s = document.getElementById('guideSaved'); s.textContent = 'Saving…';
+      rpc('client_save_guide', { t: token, answers: answers }).then(function (ok) { s.textContent = ok ? 'Saved. Thank you!' : 'Couldn’t save. Try again.'; })
+        .catch(function () { s.textContent = 'Couldn’t save. Try again.'; });
+    });
+  }
+
+  function showGuide() {
+    rpc('home_guide', { g: guideToken }).then(function (d) {
+      if (!d) { app.innerHTML = '<div class="center">This guide isn’t available. Ask your agent for a new link.</div>'; return; }
+      var a = d.answers || {};
+      var html = '<header class="hero"><div class="wrap"><div class="brand"><span><img src="img/mark.png" alt="">VINTO</span><small>' + esc(d.brokerage || '') + '</small></div>' +
+        '<h1>Welcome home to<br><em>' + esc(d.street) + '</em></h1><div class="street">Everything the previous owners wanted you to know.</div></div></header><main><div class="wrap"><section class="card">';
+      var any = false;
+      GUIDE.forEach(function (q) { if (a[q[0]]) { any = true; html += '<div class="gsec"><h3>' + esc(q[1]) + '</h3><p>' + esc(a[q[0]]) + '</p></div>'; } });
+      if (!any) html += '<p class="empty">The guide is still being filled in.</p>';
+      html += '</section><p class="empty" style="text-align:center;margin-top:22px">Congratulations on your new home!</p></div></main>';
+      app.innerHTML = html;
+    }).catch(function () { app.innerHTML = '<div class="center">We couldn’t load this guide right now. Please try again in a minute.</div>'; });
+  }
+})();
+</script>
+</body>
+</html>
