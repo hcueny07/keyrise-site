@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Open house sign-in · Vinto</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#070B0A">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root { --obsidian:#070B0A; --ink:#0E1513; --ivory:#F4F3EF; --line:#E6E3DA; --muted:#55595A; --faint:#7B7F80; --gold:#9C7B3C; --champagne:#D6BD86; --champagne-2:#F0DEB4; --green:#2F8F6B; --red:#B42318;
+  --sans:"Inter",-apple-system,"Helvetica Neue",Arial,sans-serif; --serif:"Instrument Serif",Georgia,serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ivory); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 520px; margin: 0 auto; padding: 0 18px; }
+header { background: radial-gradient(ellipse 80% 70% at 80% 0%, rgba(214,189,134,.18), transparent 60%), var(--obsidian); color: #fff; padding: 22px 0 34px; }
+.brand { display: flex; align-items: center; gap: 8px; font-size: 13px; letter-spacing: .3em; color: var(--champagne); font-weight: 600; }
+.brand img { width: 20px; height: 20px; }
+.eyebrow { margin-top: 26px; font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--champagne); }
+h1 { font-size: 34px; line-height: 1.1; letter-spacing: -.03em; margin: 8px 0 0; font-weight: 700; }
+h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; background: linear-gradient(100deg, var(--champagne-2), var(--champagne) 45%, #B8964F); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.host { margin-top: 10px; color: rgba(255,255,255,.7); font-size: 15px; }
+.card { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 22px; margin-top: -18px; position: relative; }
+label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin: 14px 0 6px; }
+input[type=text], input[type=email], input[type=tel] { width: 100%; font: 16px var(--sans); padding: 13px 14px; border-radius: 12px; border: 1px solid var(--line); background: #fff; }
+input:focus { outline: 2px solid var(--champagne); border-color: var(--champagne); }
+.seg { display: flex; gap: 8px; }
+.seg button { flex: 1; font: 600 15px var(--sans); padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; }
+.seg button.on { background: var(--obsidian); border-color: var(--obsidian); color: var(--champagne-2); }
+.opt { display: flex; gap: 10px; align-items: flex-start; margin-top: 16px; font-size: 14.5px; font-weight: 400; color: var(--muted); cursor: pointer; }
+.opt input { width: 20px; height: 20px; accent-color: var(--gold); margin-top: 1px; flex: none; }
+.btn { width: 100%; margin-top: 20px; font: 600 16px var(--sans); padding: 16px; border-radius: 999px; border: 0; background: var(--obsidian); color: var(--champagne-2); cursor: pointer; }
+.btn:disabled { opacity: .6; }
+.err { color: var(--red); font-size: 14px; margin-top: 10px; min-height: 1em; }
+.fine { font-size: 12px; color: var(--faint); margin: 18px 0 30px; text-align: center; line-height: 1.5; }
+.done { text-align: center; padding: 30px 10px; }
+.done .ok { width: 64px; height: 64px; border-radius: 50%; background: #E8F4EE; color: var(--green); display: grid; place-items: center; font-size: 30px; margin: 0 auto 14px; }
+.done h2 { font-size: 24px; margin: 0; letter-spacing: -.02em; }
+.done p { color: var(--muted); }
+.center { text-align: center; padding: 80px 20px; color: var(--muted); }
+/* Sign mode for the agent: big QR to show at the door or print */
+.sign { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px 20px; background: var(--obsidian); color: #fff; }
+.sign h1 { font-size: 40px; }
+.sign .qr { background: #fff; padding: 22px; border-radius: 24px; margin: 28px 0 18px; }
+.sign .qr img, .sign .qr canvas { display: block; width: 280px; height: 280px; }
+.sign p { color: rgba(255,255,255,.75); font-size: 17px; margin: 4px 0; }
+.sign .print { margin-top: 26px; font: 600 15px var(--sans); padding: 12px 22px; border-radius: 999px; border: 1px solid rgba(214,189,134,.4); background: transparent; color: var(--champagne-2); cursor: pointer; }
+@media print { .sign { background: #fff; color: #000; min-height: auto; padding-top: 60px; } .sign p { color: #333; } .sign .print { display: none; } .sign .qr { border: 1px solid #ddd; } }
+</style>
+</head>
+<body>
+<div id="app"><div class="center">Loading…</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<script>
+(function () {
+  var SB = 'https://ovwsmktnufozcyaqaqfz.supabase.co/rest/v1/rpc/';
+  var KEY = 'sb_publishable_IvKFJC5hSi_ydgtLY5wk-A_FeJHikgb';
+  var hash = new URLSearchParams(location.hash.slice(1));
+  var token = hash.get('t'), demo = hash.has('demo'), signMode = hash.has('sign');
+  var app = document.getElementById('app');
+  var rpc = function (name, body) {
+    return fetch(SB + name, { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error((j && j.message) || 'HTTP ' + r.status); return j; }); });
+  };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  var brand = '<div class="brand"><img src="img/mark.png" alt="">VINTO</div>';
+
+  if (demo) { rpc = function (name) { return Promise.resolve(name === 'open_house_info' ? { street: '123 Sample Lane', agent: 'Taylor Brooks', brokerage: 'Sample Realty' } : true); }; token = 'demo'; }
+  if (!token) { app.innerHTML = '<div class="center">This sign-in link is missing part of its address. Ask the agent at the door for the QR code.</div>'; return; }
+
+  rpc('open_house_info', { t: token }).then(function (info) {
+    if (!info) { app.innerHTML = '<div class="center">This open house sign-in isn’t active anymore.</div>'; return; }
+    if (signMode) return showSign(info);
+    showForm(info);
+  }).catch(function () { app.innerHTML = '<div class="center">We couldn’t load the sign-in right now. Please sign in with the agent at the door.</div>'; });
+
+  function showSign(info) {
+    var url = location.origin + location.pathname + '#t=' + encodeURIComponent(token) + (demo ? '&demo' : '');
+    app.innerHTML = '<div class="sign">' + brand + '<div class="eyebrow">Welcome to the open house</div><h1>' + esc(info.street) + '</h1>' +
+      '<div class="qr" id="qr"></div><p><b>Scan with your phone camera to sign in.</b></p><p>Takes 20 seconds. No app needed.</p>' +
+      (info.agent ? '<p style="margin-top:14px">Hosted by ' + esc(info.agent) + (info.brokerage ? ' · ' + esc(info.brokerage) : '') + '</p>' : '') +
+      '<button class="print" onclick="window.print()">Print this sign</button></div>';
+    var tries = 0;
+    (function draw() {
+      if (window.QRCode) new QRCode(document.getElementById('qr'), { text: url, width: 560, height: 560, colorDark: '#070B0A', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+      else if (tries++ < 50) setTimeout(draw, 100);
+    })();
+  }
+
+  function showForm(info) {
+    var hasAgent = null;
+    app.innerHTML = '<header><div class="wrap">' + brand + '<div class="eyebrow">Open house</div><h1>Welcome to<br><em>' + esc(info.street) + '</em></h1>' +
+      (info.agent ? '<div class="host">Hosted by ' + esc(info.agent) + (info.brokerage ? ' · ' + esc(info.brokerage) : '') + '</div>' : '') + '</div></header>' +
+      '<main class="wrap"><form class="card" id="f" novalidate>' +
+      '<label for="n">Your name</label><input id="n" type="text" autocomplete="name" required maxlength="120">' +
+      '<label for="e">Email</label><input id="e" type="email" autocomplete="email" inputmode="email" maxlength="254">' +
+      '<label for="p">Phone</label><input id="p" type="tel" autocomplete="tel" inputmode="tel" maxlength="40">' +
+      '<label>Are you working with an agent?</label><div class="seg"><button type="button" data-v="1">Yes</button><button type="button" data-v="0">No</button></div>' +
+      '<label class="opt"><input type="checkbox" id="u"><span>Email me homes like this one and market updates. Unsubscribe anytime.</span></label>' +
+      '<button class="btn" type="submit">Sign in</button><div class="err" id="err"></div></form>' +
+      '<p class="fine">Your info goes only to the agent hosting this open house. It’s never sold or shared.</p></main>';
+    Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) {
+      b.addEventListener('click', function () {
+        hasAgent = b.getAttribute('data-v') === '1';
+        Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (x) { x.classList.toggle('on', x === b); });
+      });
+    });
+    document.getElementById('f').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var n = document.getElementById('n').value.trim(), em = document.getElementById('e').value.trim(), ph = document.getElementById('p').value.trim();
+      var err = document.getElementById('err');
+      if (!n) { err.textContent = 'Please add your name.'; return; }
+      if (!em && !ph) { err.textContent = 'Please add an email or phone number.'; return; }
+      var btn = this.querySelector('.btn'); btn.disabled = true; err.textContent = '';
+      rpc('open_house_signin', { t: token, p_name: n, p_email: em, p_phone: ph, p_has_agent: hasAgent, p_updates: document.getElementById('u').checked })
+        .then(function (ok) {
+          if (!ok) throw new Error('This sign-in isn’t active anymore.');
+          document.querySelector('main').innerHTML = '<div class="card done"><div class="ok">✓</div><h2>Thanks, ' + esc(n.split(' ')[0]) + '!</h2><p>You’re signed in. Enjoy the tour' + (info.agent ? ', and say hi to ' + esc(info.agent.split(' ')[0]) : '') + '.</p></div>';
+        })
+        .catch(function (x) { btn.disabled = false; err.textContent = x.message && x.message.length < 120 ? x.message : 'That didn’t go through. Please try again.'; });
+    });
+  }
+})();
+</script>
+</body>
+</html>

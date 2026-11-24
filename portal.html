@@ -67,6 +67,23 @@ h2 { font-size: 21px; letter-spacing: -0.02em; font-weight: 600; margin: 6px 0 0
 .rate button { font: 600 14px var(--sans); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; }
 .rate button.on.up { background: #E8F4EE; border-color: var(--green); color: var(--green); }
 .rate button.on.down { background: #FBECEA; border-color: var(--red); color: var(--red); }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.tools button { font: 600 13.5px var(--sans); padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(214,189,134,.35); background: rgba(255,255,255,.06); color: var(--champagne-2); cursor: pointer; }
+.ghost { font: 600 14px var(--sans); padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--ivory); color: var(--ink); cursor: pointer; margin-top: 12px; }
+.thread { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+.msg { max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 14.5px; line-height: 1.45; white-space: pre-wrap; }
+.msg.me { align-self: flex-end; background: var(--obsidian); color: #F4F3EF; border-bottom-right-radius: 6px; }
+.msg.them { align-self: flex-start; background: var(--cream); color: var(--ink); border-bottom-left-radius: 6px; }
+.msg small { display: block; font-size: 11.5px; opacity: .6; margin-top: 3px; }
+.ask { display: flex; gap: 8px; margin-top: 12px; align-items: flex-end; }
+.ask textarea { flex: 1; font: 15px var(--sans); padding: 10px 12px; border-radius: 14px; border: 1px solid var(--line); min-height: 44px; resize: vertical; }
+.ask button { font: 600 14px var(--sans); padding: 11px 16px; border-radius: 999px; border: 0; background: var(--obsidian); color: var(--champagne-2); cursor: pointer; }
+.member { padding: 12px 0; border-top: 1px solid var(--line2); }
+.member small { display: block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.member b { display: block; font-size: 15.5px; margin-top: 2px; }
+.member span { display: block; color: var(--muted); font-size: 13.5px; }
+.member .links { margin-top: 8px; }
+.celebrate canvas { width: 100%; height: auto; border-radius: 16px; margin-top: 12px; display: block; }
 .note { width: 100%; margin-top: 8px; font: 14.5px var(--sans); padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; resize: vertical; min-height: 42px; }
 .quote { padding: 12px 14px; margin-top: 10px; background: var(--cream); border-radius: 12px; font-size: 15px; }
 .quote::before { content: "“"; color: var(--gold); font-family: var(--serif); font-size: 26px; line-height: 0; margin-right: 4px; vertical-align: -8px; }
@@ -126,6 +143,73 @@ footer a { color: var(--gold); text-decoration: none; }
     ['neighborhood', 'Favorite local spots', 'Coffee, restaurants, parks, neighbors to meet']
   ];
 
+  // ---------- Español ----------
+  var LANG = (function () { try { var s = localStorage.getItem('vinto-lang'); if (s) return s; } catch (e) {} return /^es/i.test(navigator.language || '') ? 'es' : 'en'; })();
+  var LOC = LANG === 'es' ? 'es-US' : 'en-US';
+  var ES = {
+    'here’s where things stand.': 'así van las cosas.', '📅 Add dates to my calendar': '📅 Agregar fechas a mi calendario', 'Share with family': 'Compartir con la familia',
+    'Under contract': 'Bajo contrato', 'Active': 'En venta', 'Closed': 'Cerrada', 'Coming soon': 'Próximamente',
+    'Your timeline': 'Tu cronograma', 'Every step, in order': 'Cada paso, en orden', 'Done': 'Listo',
+    'Your agent will add your dates here as soon as they’re set.': 'Tu agente agregará tus fechas aquí en cuanto estén definidas.',
+    'What we need from you': 'Lo que necesitamos de ti', 'All done. Thank you!': '¡Todo listo, gracias!',
+    'Tap to check off. Your agent sees it right away. Send documents to your agent directly, never by replying to an unknown email.': 'Toca para marcarlo. Tu agente lo ve al instante. Envía documentos directamente a tu agente, nunca respondiendo a un correo desconocido.',
+    'Homes you’re seeing': 'Casas que vas a ver', 'Rate each one after you see it. Your agent sees your thoughts instantly.': 'Califica cada una después de verla. Tu agente ve tu opinión al instante.',
+    'Map': 'Mapa', '👍 Love it': '👍 Me encanta', '👎 Not for us': '👎 No es para nosotros', 'Anything to remember? (optional)': '¿Algo que recordar? (opcional)',
+    'Showings': 'Visitas', 'What buyers are saying': 'Lo que dicen los compradores', 'showings this week': 'visitas esta semana', 'showing this week': 'visita esta semana',
+    'Feedback from buyers’ agents will show up here, with no names.': 'Los comentarios de los agentes de compradores aparecerán aquí, sin nombres.',
+    'Moving countdown': 'Cuenta regresiva para la mudanza', 'Your next few weeks': 'Tus próximas semanas',
+    'Book movers and get quotes': 'Reserva la mudanza y pide cotizaciones', 'Set up power, water, gas and internet starting closing day': 'Activa luz, agua, gas e internet desde el día del cierre',
+    'Forward your mail (USPS) and update your address': 'Redirige tu correo (USPS) y actualiza tu dirección', 'Get homeowners insurance to your lender': 'Envía el seguro de vivienda a tu prestamista',
+    'Call your closing attorney to confirm wire instructions by phone': 'Llama a tu abogado de cierre para confirmar por teléfono las instrucciones de transferencia',
+    'Final walkthrough with your agent': 'Recorrido final con tu agente', 'Closing day: bring your photo ID': 'Día del cierre: trae tu identificación con foto',
+    'Book movers and start packing rooms you don’t use': 'Reserva la mudanza y empieza a empacar los cuartos que no usas', 'Schedule utilities to stop the day after closing': 'Programa la baja de servicios para el día después del cierre',
+    'Gather keys, remotes, codes and manuals for the buyer': 'Reúne llaves, controles, códigos y manuales para el comprador', 'Leave the home clean and empty for the walkthrough': 'Deja la casa limpia y vacía para el recorrido final',
+    'Wire fraud warning:': 'Alerta de fraude:', 'never send money based on an email or text alone. Always call your closing attorney at a number you already know to confirm wire instructions.': 'nunca envíes dinero solo por un correo o mensaje. Siempre llama a tu abogado de cierre a un número que ya conoces para confirmar las instrucciones de transferencia.',
+    'Home handoff guide': 'Guía de entrega de la casa', 'Help the next owners': 'Ayuda a los nuevos dueños a', 'feel at home': 'sentirse en casa',
+    'Your agent turns this into a welcome guide for your buyers. Fill in what you know; skip the rest. Share alarm and door codes in person at closing, not here.': 'Tu agente lo convierte en una guía de bienvenida para tus compradores. Llena lo que sepas; omite el resto. Comparte los códigos de alarma y puertas en persona en el cierre, no aquí.',
+    'Internet and Wi-Fi': 'Internet y Wi-Fi', 'Provider, and where the router is': 'Proveedor y dónde está el router', 'Trash and recycling': 'Basura y reciclaje', 'Pickup days and the company': 'Días de recolección y la compañía',
+    'Utilities': 'Servicios', 'Power, water, gas companies': 'Compañías de luz, agua y gas', 'Heating and air': 'Calefacción y aire', 'Filter size, service company, age': 'Tamaño del filtro, compañía de servicio, antigüedad',
+    'Appliances and warranties': 'Electrodomésticos y garantías', 'Makes, ages, any warranties that transfer': 'Marcas, antigüedad y garantías transferibles', 'Paint colors': 'Colores de pintura', 'Brand and color names by room': 'Marca y nombre del color por cuarto',
+    'Yard, sprinklers and pool': 'Jardín, riego y piscina', 'Sprinkler schedule, pool service, plants to know': 'Horario de riego, servicio de piscina, plantas', 'Service people you trust': 'Técnicos de confianza', 'Plumber, electrician, handyman, pest control': 'Plomero, electricista, mantenimiento, control de plagas',
+    'Good to know': 'Bueno saber', 'Breaker panel, water shutoff, any quirks': 'Panel eléctrico, llave de paso del agua, detalles', 'Favorite local spots': 'Lugares favoritos', 'Coffee, restaurants, parks, neighbors to meet': 'Cafés, restaurantes, parques, vecinos',
+    'Save my guide': 'Guardar mi guía', 'Saved': 'Guardado', 'Saved. Thank you!': 'Guardado. ¡Gracias!',
+    'Welcome home': 'Bienvenido a casa', 'Your agent,': 'Tu agente,', 'for life': 'para siempre',
+    'Questions about the house, a home value update or a friend who’s moving? Your agent is one tap away.': '¿Preguntas sobre la casa, una actualización del valor o un amigo que se muda? Tu agente está a un toque.',
+    'What’s my home worth now?': '¿Cuánto vale mi casa ahora?', 'Refer a friend': 'Recomienda a un amigo', 'Their name': 'Su nombre', 'Their phone or email': 'Su teléfono o correo',
+    'Buying, selling, or just curious? (optional)': '¿Comprar, vender o solo curiosidad? (opcional)', 'Send to my agent': 'Enviar a mi agente', 'Sent. Thank you!': 'Enviado. ¡Gracias!',
+    'Questions?': '¿Preguntas?', 'Message your agent': 'Escríbele a tu agente', 'Ask anything about your move. Your agent gets it in Vinto and the answer shows up here.': 'Pregunta lo que quieras sobre tu mudanza. Tu agente lo recibe en Vinto y la respuesta aparece aquí.',
+    'Type a question…': 'Escribe una pregunta…', 'Send': 'Enviar', 'The house': 'La casa', 'Key details': 'Detalles clave',
+    'Your team': 'Tu equipo', 'Who’s helping you': 'Quién te está ayudando', 'Your agent': 'Tu agente', 'Lender': 'Prestamista', 'Closing attorney': 'Abogado de cierre', 'Home inspector': 'Inspector de vivienda', 'Insurance': 'Seguro', 'Other agent': 'Otro agente',
+    'Congratulations': 'Felicidades', 'You did it.': '¡Lo lograron!', 'Welcome home.': 'Bienvenidos a casa.', 'Make a “We closed!” photo card to share with family and friends.': 'Crea una tarjeta de “¡Ya es nuestra!” para compartir con familia y amigos.', 'Share my card': 'Compartir mi tarjeta',
+    'Call': 'Llamar', 'Text': 'Mensaje', 'Email': 'Correo',
+    'Binding agreement': 'Contrato vinculante', 'Earnest money due': 'Depósito de garantía', 'Due diligence ends': 'Fin del período de revisión', 'Appraisal': 'Tasación', 'Financing contingency': 'Contingencia de financiamiento',
+    'Final walkthrough': 'Recorrido final', 'Closing': 'Cierre', 'Inspection': 'Inspección', 'Listing photos': 'Fotos del anuncio', 'Listing goes live': 'El anuncio se publica', 'Open house': 'Casa abierta',
+    'Send your mortgage pre-approval letter': 'Envía tu carta de preaprobación hipotecaria', 'Send a photo of your ID for the closing attorney': 'Envía una foto de tu identificación para el abogado de cierre',
+    'Deliver earnest money (within 3 business days of binding)': 'Entrega el depósito de garantía (dentro de 3 días hábiles)', 'Schedule the home inspection': 'Programa la inspección de la casa',
+    'Pick a homeowners insurance company and send it to your lender': 'Elige un seguro de vivienda y envíalo a tu prestamista', 'Confirm your closing time and bring a photo ID': 'Confirma la hora del cierre y trae identificación con foto',
+    'Sign the listing paperwork and seller’s disclosure': 'Firma los documentos del anuncio y la declaración del vendedor', 'Get the home photo-ready: declutter, clean, lights on': 'Prepara la casa para las fotos: ordena, limpia, luces encendidas',
+    'Share HOA contact info and documents (if any)': 'Comparte el contacto y documentos de la HOA (si hay)', 'Tell us about recent repairs and any warranties': 'Cuéntanos sobre reparaciones recientes y garantías',
+    'Fill in your home handoff guide on your portal': 'Llena tu guía de entrega en tu portal', 'Fill in your home handoff guide below': 'Llena tu guía de entrega abajo', 'Leave keys, garage remotes and manuals for the buyer': 'Deja llaves, controles del garaje y manuales para el comprador'
+  };
+  var PATTERNS = [
+    [/^Hi (.+),$/, 'Hola $1,'], [/^days to closing · (.+)$/, 'días para el cierre · $1'], [/^(\d+) things? left$/, function (m, n) { return n === '1' ? 'Queda 1' : 'Quedan ' + n; }],
+    [/^Due (.+)$/, 'Vence $1'], [/^Drive to (.+)$/, 'Ruta a $1'], [/^Your showing tour(.*)$/, 'Tu recorrido de visitas$1'], [/^You · (.+)$/, 'Tú · $1'], [/^Your agent · (.+)$/, 'Tu agente · $1'],
+    [/^Updated (.+)\. Questions\? Text your agent anytime\.$/, 'Actualizado $1. ¿Preguntas? Escríbele a tu agente cuando quieras.']
+  ];
+  function tx(s) {
+    var k = s.trim(); if (!k) return s;
+    if (ES[k]) return s.replace(k, ES[k]);
+    for (var i = 0; i < PATTERNS.length; i++) if (PATTERNS[i][0].test(k)) return s.replace(k, k.replace(PATTERNS[i][0], PATTERNS[i][1]));
+    return s;
+  }
+  function translate(root) {
+    if (LANG !== 'es' || !root) return;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), n;
+    while ((n = w.nextNode())) { var v = tx(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; }
+    Array.prototype.forEach.call(root.querySelectorAll('[placeholder]'), function (el) { el.placeholder = tx(el.placeholder); });
+  }
+  function langButton() { return '<button id="langBtn" type="button">' + (LANG === 'es' ? 'English' : 'Español') + '</button>'; }
+
   var rpc = function (name, body) {
     return fetch(BASE + name, { method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
@@ -134,8 +218,8 @@ footer a { color: var(--gold); text-decoration: none; }
   function parseDay(k) { var p = String(k).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
   function today() { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
   function daysUntil(k) { return Math.round((parseDay(k) - today()) / 86400000); }
-  function fmt(k) { return parseDay(k).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
-  function rel(k) { var n = daysUntil(k); return n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : n === -1 ? 'Yesterday' : n > 1 ? 'In ' + n + ' days' : Math.abs(n) + ' days ago'; }
+  function fmt(k) { return parseDay(k).toLocaleDateString(LOC, { weekday: 'short', month: 'short', day: 'numeric' }); }
+  function rel(k) { var n = daysUntil(k); if (LANG === 'es') return n === 0 ? 'Hoy' : n === 1 ? 'Mañana' : n === -1 ? 'Ayer' : n > 1 ? 'En ' + n + ' días' : 'Hace ' + Math.abs(n) + ' días'; return n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : n === -1 ? 'Yesterday' : n > 1 ? 'In ' + n + ' days' : Math.abs(n) + ' days ago'; }
   function maps(q) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); }
   function drive(from, to) { return 'https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=' + encodeURIComponent(from) + '&destination=' + encodeURIComponent(to); }
 
@@ -149,6 +233,7 @@ footer a { color: var(--gold); text-decoration: none; }
     rpc('client_status', { t: token }).then(function (d) {
       if (!d) { app.innerHTML = '<div class="center">This link isn’t active anymore. Ask your agent for a new one.</div>'; return; }
       render(d);
+      rpc('client_seen', { t: token }).catch(function () {});
     }).catch(function () { app.innerHTML = '<div class="center">We couldn’t load your portal right now. Please try again in a minute.</div>'; });
   }
 
@@ -162,6 +247,7 @@ footer a { color: var(--gold); text-decoration: none; }
       '<div class="street">' + esc(d.street) + '</div>' +
       '<span class="stage">' + esc(d.stage || '') + '</span>';
     if (d.closing && daysUntil(d.closing) >= 0) html += '<div class="count"><b>' + daysUntil(d.closing) + '</b><span>days to closing · ' + fmt(d.closing) + '</span></div>';
+    html += '<div class="tools">' + (dates.some(function (x) { return !x.done; }) ? '<button id="addCal" type="button">📅 Add dates to my calendar</button>' : '') + '<button id="shareLink" type="button">Share with family</button>' + langButton() + '</div>';
     html += '</div></header><main><div class="wrap">';
 
     // 1. Deal tracker
@@ -175,6 +261,9 @@ footer a { color: var(--gold); text-decoration: none; }
       html += '</ol>';
     } else html += '<p class="empty">Your agent will add your dates here as soon as they’re set.</p>';
     html += '</section>';
+
+    // Your team (filled in after load; hidden until the agent's account supports it)
+    html += '<section class="card" id="teamCard" style="display:none"><div class="eyebrow">Your team</div><h2>Who’s helping you</h2><div id="team"></div></section>';
 
     // 2. What we need from you
     var items = d.items || [];
@@ -219,6 +308,28 @@ footer a { color: var(--gold); text-decoration: none; }
     // 6. Sellers: home guide
     if (seller) html += guideForm(d.guide);
 
+    // Closing celebration: a shareable "We closed!" card (made on the phone, nothing uploaded)
+    var closedRecently = (d.stage === 'Closed' && (!d.closing || daysUntil(d.closing) >= -45)) || (d.closing && daysUntil(d.closing) <= 0 && daysUntil(d.closing) >= -45);
+    if (closedRecently) {
+      html += '<section class="card celebrate"><div class="eyebrow">Congratulations</div><h2>You did it. <em>Welcome home.</em></h2><p class="sub">Make a “We closed!” photo card to share with family and friends.</p>' +
+        '<canvas id="closedCard" width="1080" height="1350"></canvas><div class="links"><button class="ghost" type="button" id="shareCard">Share my card</button></div></section>';
+    }
+
+    // After closing: homeowner perks (uses the same message line to the agent)
+    if (d.stage === 'Closed') {
+      html += '<section class="card" id="afterCard" style="display:none"><div class="eyebrow">Welcome home</div><h2>Your agent, <em>for life</em></h2><p class="sub">Questions about the house, a home value update or a friend who’s moving? Your agent is one tap away.</p>' +
+        '<button class="ghost" type="button" id="askValue">What’s my home worth now?</button>' +
+        '<form id="refer" style="margin-top:16px"><div class="eyebrow" style="margin-bottom:6px">Refer a friend</div>' +
+        '<input class="note" id="refName" maxlength="80" placeholder="Their name">' +
+        '<input class="note" id="refContact" maxlength="120" placeholder="Their phone or email">' +
+        '<textarea class="note" id="refNote" maxlength="300" placeholder="Buying, selling, or just curious? (optional)"></textarea>' +
+        '<button class="ghost" type="submit">Send to my agent</button> <span class="saved" id="refSaved"></span></form></section>';
+    }
+
+    // Message your agent (shows once the agent's account supports it)
+    html += '<section class="card" id="msgCard" style="display:none"><div class="eyebrow">Questions?</div><h2>Message your agent</h2><p class="sub">Ask anything about your move. Your agent gets it in Vinto and the answer shows up here.</p><div class="thread" id="thread"></div>' +
+      '<form class="ask" id="askForm"><textarea id="askText" maxlength="1000" placeholder="Type a question…"></textarea><button type="submit">Send</button></form></section>';
+
     // 7. House facts
     var facts = d.facts || [];
     if (facts.length) {
@@ -227,10 +338,11 @@ footer a { color: var(--gold); text-decoration: none; }
       html += '</div></section>';
     }
 
-    html += '<p class="empty" style="text-align:center;margin-top:22px">Updated ' + new Date(d.updated || Date.now()).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + '. Questions? Text your agent anytime.</p>';
+    html += '<p class="empty" style="text-align:center;margin-top:22px">Updated ' + new Date(d.updated || Date.now()).toLocaleString(LOC, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + '. Questions? Text your agent anytime.</p>';
     html += '</div></main>';
     app.innerHTML = html;
     wire(d);
+    translate(app);
   }
 
   function moving(closing, buyer) {
@@ -254,7 +366,7 @@ footer a { color: var(--gold); text-decoration: none; }
     steps.forEach(function (s) {
       var d = parseDay(closing); d.setDate(d.getDate() - s[0]);
       var past = d < today();
-      html += '<li class="' + (past ? 'past' : '') + '"><span class="d">' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + '</span><span>' + esc(s[1]) + '</span></li>';
+      html += '<li class="' + (past ? 'past' : '') + '"><span class="d">' + d.toLocaleDateString(LOC, { month: 'short', day: 'numeric' }) + '</span><span>' + esc(s[1]) + '</span></li>';
     });
     html += '</ul><div class="warn"><b>Wire fraud warning:</b> never send money based on an email or text alone. Always call your closing attorney at a number you already know to confirm wire instructions.</div></section>';
     return html;
@@ -271,7 +383,142 @@ footer a { color: var(--gold); text-decoration: none; }
     return html;
   }
 
+  function icsDate(k) { return String(k).replace(/-/g, ''); }
+  function nextDay(k) { var x = parseDay(k); x.setDate(x.getDate() + 1); return x.getFullYear() + String(x.getMonth() + 1).padStart(2, '0') + String(x.getDate()).padStart(2, '0'); }
+  function calendarFile(d) {
+    var lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Vinto//Client portal//EN', 'CALSCALE:GREGORIAN'];
+    var stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+    (d.dates || []).filter(function (x) { return !x.done && x.date; }).forEach(function (x, i) {
+      lines.push('BEGIN:VEVENT', 'UID:vinto-' + icsDate(x.date) + '-' + i + '@vintorealty.com', 'DTSTAMP:' + stamp,
+        'DTSTART;VALUE=DATE:' + icsDate(x.date), 'DTEND;VALUE=DATE:' + nextDay(x.date),
+        'SUMMARY:' + String(x.label).replace(/[,;\\]/g, ' ') + ' · ' + String(d.street || '').replace(/[,;\\]/g, ' '),
+        'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:' + String(x.label).replace(/[,;\\]/g, ' ') + ' tomorrow', 'END:VALARM', 'END:VEVENT');
+    });
+    lines.push('END:VCALENDAR');
+    return lines.join('\r\n');
+  }
+  function renderThread(list) {
+    var t = document.getElementById('thread'); if (!t) return;
+    t.innerHTML = (list || []).map(function (m) {
+      return '<div class="msg ' + (m.fromClient ? 'me' : 'them') + '">' + esc(m.body) + '<small>' + (m.fromClient ? 'You' : 'Your agent') + ' · ' + new Date(m.at).toLocaleString(LOC, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + '</small></div>';
+    }).join('');
+    translate(t);
+  }
+  function wireMessages() {
+    var card = document.getElementById('msgCard'), form = document.getElementById('askForm');
+    if (!card || !form) return;
+    rpc('client_messages_for', { t: token }).then(function (list) {
+      card.style.display = '';
+      var after = document.getElementById('afterCard'); if (after) after.style.display = '';
+      renderThread(list);
+    }).catch(function () { /* not turned on yet for this agent */ });
+    function sendMsg(body) { return rpc('client_ask', { t: token, p_body: body }).then(function () { return rpc('client_messages_for', { t: token }).then(renderThread); }); }
+    var val = document.getElementById('askValue');
+    if (val) val.addEventListener('click', function () {
+      val.disabled = true;
+      sendMsg('Could you send me an update on what my home is worth in today’s market?').then(function () { val.textContent = 'Sent! Your agent will follow up.'; })
+        .catch(function () { val.disabled = false; alert('That didn’t send. Please try again.'); });
+    });
+    var ref = document.getElementById('refer');
+    if (ref) ref.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var n = document.getElementById('refName').value.trim(), c = document.getElementById('refContact').value.trim(), note = document.getElementById('refNote').value.trim();
+      if (!n || !c) { alert('Add their name and a phone number or email.'); return; }
+      sendMsg('Referral: ' + n + ' (' + c + ')' + (note ? ' · ' + note : '')).then(function () {
+        ref.reset(); document.getElementById('refSaved').textContent = 'Sent. Thank you!';
+      }).catch(function () { alert('That didn’t send. Please try again.'); });
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var box = document.getElementById('askText'), body = box.value.trim();
+      if (!body) return;
+      var btn = form.querySelector('button'); btn.disabled = true;
+      rpc('client_ask', { t: token, p_body: body }).then(function () {
+        box.value = '';
+        return rpc('client_messages_for', { t: token }).then(renderThread);
+      }).catch(function () { alert('That didn’t send. Please try again, or text your agent.'); })
+        .then(function () { btn.disabled = false; });
+    });
+  }
+
+  function wireTeam() {
+    rpc('client_team', { t: token }).then(function (t) {
+      if (!t || !t.agent) return;
+      var people = [t.agent].concat(t.team || []);
+      var tel = function (p) { return String(p).replace(/[^\d+]/g, ''); };
+      document.getElementById('team').innerHTML = people.map(function (m) {
+        return '<div class="member"><small>' + esc(m.role) + '</small><b>' + esc(m.name) + '</b>' + (m.company ? '<span>' + esc(m.company) + '</span>' : '') +
+          '<div class="links">' + (m.phone ? '<a href="tel:' + esc(tel(m.phone)) + '">Call</a><a href="sms:' + esc(tel(m.phone)) + '">Text</a>' : '') + (m.email ? '<a href="mailto:' + esc(m.email) + '">Email</a>' : '') + '</div></div>';
+      }).join('');
+      document.getElementById('teamCard').style.display = '';
+      translate(document.getElementById('teamCard'));
+    }).catch(function () {});
+  }
+
+  function drawCard(d, agentName) {
+    var c = document.getElementById('closedCard'); if (!c || !c.getContext) return;
+    var x = c.getContext('2d'), W = c.width, H = c.height;
+    var g = x.createRadialGradient(W * 0.8, 0, 50, W * 0.8, 0, H); g.addColorStop(0, '#2a2416'); g.addColorStop(0.6, '#070B0A'); g.addColorStop(1, '#070B0A');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    // confetti
+    var seed = 7; function r() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    for (var i = 0; i < 140; i++) { x.save(); x.translate(r() * W, r() * H * 0.55); x.rotate(r() * 6.28); x.fillStyle = ['#D6BD86', '#F0DEB4', '#9C7B3C', '#ffffff'][i % 4]; x.globalAlpha = 0.25 + r() * 0.6; x.fillRect(-6, -14, 12, 28); x.restore(); }
+    x.globalAlpha = 1;
+    // gold frame
+    x.strokeStyle = 'rgba(214,189,134,.55)'; x.lineWidth = 3; x.strokeRect(54, 54, W - 108, H - 108);
+    x.textAlign = 'center';
+    x.fillStyle = '#D6BD86'; x.font = '600 34px Inter, Helvetica, Arial, sans-serif';
+    if (x.letterSpacing !== undefined) x.letterSpacing = '12px';
+    x.fillText(LANG === 'es' ? '¡YA ES NUESTRA!' : 'WE CLOSED!', W / 2, 520);
+    if (x.letterSpacing !== undefined) x.letterSpacing = '0px';
+    var grd = x.createLinearGradient(0, 560, W, 700); grd.addColorStop(0, '#F0DEB4'); grd.addColorStop(0.5, '#D6BD86'); grd.addColorStop(1, '#B8964F');
+    x.fillStyle = grd; x.font = 'italic 104px "Instrument Serif", Georgia, serif';
+    x.fillText(LANG === 'es' ? 'Bienvenidos' : 'Welcome home', W / 2, 660);
+    x.fillStyle = '#ffffff'; x.font = '700 64px Inter, Helvetica, Arial, sans-serif';
+    var st = String(d.street || ''); while (x.measureText(st).width > W - 200 && st.length > 4) st = st.slice(0, -2);
+    x.fillText(st, W / 2, 780);
+    x.fillStyle = 'rgba(255,255,255,.7)'; x.font = '400 34px Inter, Helvetica, Arial, sans-serif';
+    var dt = d.closing ? parseDay(d.closing).toLocaleDateString(LOC, { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+    if (dt) x.fillText(dt, W / 2, 846);
+    if (agentName) { x.fillStyle = '#D6BD86'; x.font = '500 34px Inter, Helvetica, Arial, sans-serif'; x.fillText((LANG === 'es' ? 'Gracias, ' : 'Thank you, ') + agentName, W / 2, 1150); }
+    x.fillStyle = 'rgba(255,255,255,.45)'; x.font = '600 24px Inter, Helvetica, Arial, sans-serif';
+    if (x.letterSpacing !== undefined) x.letterSpacing = '8px';
+    x.fillText('VINTO', W / 2, 1240);
+  }
+
+  function wireCard(d) {
+    var c = document.getElementById('closedCard'); if (!c) return;
+    var draw = function (name) { (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { drawCard(d, name); }); };
+    draw('');
+    rpc('client_team', { t: token }).then(function (t) { if (t && t.agent && t.agent.name && t.agent.name !== 'Your agent') draw(t.agent.name); }).catch(function () {});
+    document.getElementById('shareCard').addEventListener('click', function () {
+      c.toBlob(function (blob) {
+        var file = new File([blob], 'we-closed.png', { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file], title: 'We closed!' }).catch(function () {});
+        else { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'we-closed.png'; document.body.appendChild(a); a.click(); setTimeout(function () { a.remove(); }, 500); }
+      }, 'image/png');
+    });
+  }
+
   function wire(d) {
+    wireCard(d);
+    var cal = document.getElementById('addCal');
+    if (cal) cal.addEventListener('click', function () {
+      var blob = new Blob([calendarFile(d)], { type: 'text/calendar;charset=utf-8' });
+      var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'closing-dates.ics';
+      document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    });
+    var share = document.getElementById('shareLink');
+    if (share) share.addEventListener('click', function () {
+      var note = 'Anyone with this link can see this page. Only share it with people helping with your move.';
+      if (navigator.share) navigator.share({ title: 'Our home timeline', text: 'Here’s where things stand with ' + (d.street || 'our home') + '.', url: location.href }).catch(function () {});
+      else if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(function () { alert('Link copied. ' + note); });
+      else prompt(note, location.href);
+    });
+    wireMessages();
+    wireTeam();
+    var lb = document.getElementById('langBtn');
+    if (lb) lb.addEventListener('click', function () { try { localStorage.setItem('vinto-lang', LANG === 'es' ? 'en' : 'es'); } catch (e) {} location.reload(); });
     Array.prototype.forEach.call(document.querySelectorAll('.check'), function (el) {
       function toggle() {
         var on = !el.classList.contains('on');
@@ -313,7 +560,15 @@ footer a { color: var(--gold); text-decoration: none; }
   // A live sample with made-up data (linked from vintorealty.com). Nothing is saved.
   function showDemo(kind) {
     function key(n) { var d = new Date(); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
-    rpc = function (name) { return Promise.resolve(name === 'client_status' ? null : true); };
+    rpc = function (name) {
+      if (name === 'client_team') return Promise.resolve({ agent: { role: 'Your agent', name: 'Taylor Brooks', phone: '(404) 555-0123', email: 'taylor@example.com', company: 'Sample Realty' },
+        team: kind === 'seller' ? [{ role: 'Closing attorney', name: 'Morgan Ellis', company: 'Ellis Law Group', phone: '(404) 555-0188', email: 'closings@example.com' }]
+          : [{ role: 'Lender', name: 'Sam Ortiz', company: 'Peach State Mortgage', phone: '(404) 555-0144', email: 'sam@example.com' }, { role: 'Closing attorney', name: 'Morgan Ellis', company: 'Ellis Law Group', phone: '(404) 555-0188', email: 'closings@example.com' }, { role: 'Home inspector', name: 'Chris Nguyen', company: 'Southern Home Inspections', phone: '(678) 555-0102', email: '' }] });
+      if (name === 'client_messages_for') return Promise.resolve([
+        { body: kind === 'seller' ? 'Should we leave the lights on for showings this weekend?' : 'Can we schedule a second look at the house before the inspection?', fromClient: true, at: new Date(Date.now() - 7200000).toISOString() },
+        { body: kind === 'seller' ? 'Yes, please! Lights on and blinds open. I’ll handle the rest.' : 'Absolutely. I asked the listing agent for Thursday at 5. I’ll confirm here.', fromClient: false, at: new Date(Date.now() - 5400000).toISOString() }]);
+      return Promise.resolve(name === 'client_status' ? null : true);
+    };
     var seller = kind === 'seller';
     var d = {
       street: seller ? '88 Haven Ridge Ln' : '412 Oak Hollow Ln', stage: seller ? 'Active' : 'Under contract',
@@ -331,6 +586,7 @@ footer a { color: var(--gold); text-decoration: none; }
       facts: seller ? [{ label: 'Bedrooms and baths', value: '5 bedrooms, 4 baths' }, { label: 'Year built', value: '2008' }] : [{ label: 'Bedrooms and baths', value: '4 bedrooms, 3 baths' }, { label: 'Schools', value: 'Milton High School' }, { label: 'HOA', value: 'Swim and tennis community' }],
       updated: new Date().toISOString()
     };
+    if (kind === 'closed') { d.stage = 'Closed'; d.closing = key(-30); d.dates.forEach(function (x) { x.done = true; }); d.items.forEach(function (x) { x.done = true; }); d.tour = null; }
     render(d);
     var b = document.createElement('div');
     b.className = 'demo-bar';
