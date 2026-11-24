@@ -43,6 +43,7 @@ p { margin: 0; }
 .nav a { color: rgba(255,255,255,.72); text-decoration: none; font-size: 14.5px; font-weight: 500; padding: 8px 14px; border-radius: 999px; }
 .nav a:hover { color: #fff; background: rgba(255,255,255,.06); }
 .nav .btn { margin-left: 8px; }
+.nav a.btn-gold, .nav a.btn-gold:hover { color: var(--obsidian); background: linear-gradient(180deg, var(--champagne-2), var(--champagne)); }
 .page .top { position: sticky; top: 0; background: rgba(7,11,10,.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--edge-soft); }
 
 /* Buttons */

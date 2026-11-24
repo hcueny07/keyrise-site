@@ -86,6 +86,7 @@ input:focus { outline: 2px solid var(--champagne); border-color: var(--champagne
     (function draw() {
       if (window.QRCode) new QRCode(document.getElementById('qr'), { text: url, width: 560, height: 560, colorDark: '#070B0A', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
       else if (tries++ < 50) setTimeout(draw, 100);
+      else document.getElementById('qr').outerHTML = '<p style="word-break:break-all;font-size:15px;margin:18px 0">Open this link on your phone to sign in:<br><b>' + esc(url) + '</b></p>';
     })();
   }
 

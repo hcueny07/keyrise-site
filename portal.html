@@ -224,7 +224,7 @@ footer a { color: var(--gold); text-decoration: none; }
   function drive(from, to) { return 'https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=' + encodeURIComponent(from) + '&destination=' + encodeURIComponent(to); }
 
   var demo = hash.get('demo');
-  if (demo) return showDemo(demo);
+  if (demo !== null) return showDemo(demo || 'buyer');
   if (guideToken) return showGuide();
   if (!token) { app.innerHTML = '<div class="center">This link is missing part of its address. Ask your agent to send it again.</div>'; return; }
   load();
