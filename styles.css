@@ -359,3 +359,17 @@ footer a:hover { color: var(--champagne); }
 @keyframes spin { to { --ang: 360deg; } }
 @media (prefers-reduced-motion: reduce) { .tile.ink::after { animation: none; } }
 a.badge { text-decoration: none; } a.badge:hover { border-color: rgba(214,189,134,.5); }
+
+/* Features: three pillars (Nov 24 cleanup) */
+.pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 56px; }
+.pillar { padding: 34px 32px; display: flex; flex-direction: column; }
+.pillar h3 { font-size: 24px; margin-top: 14px; }
+.pillar ul { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 16px; }
+.pillar li { position: relative; padding-left: 22px; font-size: 15.5px; line-height: 1.55; color: var(--muted); }
+.pillar li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 8px; border-radius: 50%; background: var(--champagne); }
+.pillar li b { color: var(--ink); font-weight: 600; }
+.pillar.ink li { color: var(--muted-dark); }
+.pillar.ink li b { color: #fff; }
+.also { margin-top: 26px; text-align: center; color: var(--muted); font-size: 15px; }
+.also span { color: var(--gold); font-weight: 600; letter-spacing: .04em; }
+@media (max-width: 980px) { .pillars { grid-template-columns: 1fr; } .pillar { padding: 28px 24px; } }
