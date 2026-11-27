@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Office setup · Vinto</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Set up your office in Vinto in about 10 minutes, before your first login.">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .steps-nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+  .steps-nav span{padding:6px 12px;border-radius:99px;border:1px solid #ddd;font-size:13px;color:#666}
+  .steps-nav span.on{background:#14171A;color:#fff;border-color:#14171A}
+  .pane{display:none}.pane.on{display:block}
+  .pick{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #eee;font-size:15px}
+  .pick input{margin-top:4px}
+  textarea,input[type=text]{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:10px;padding:10px 12px;font:inherit;font-size:15px}
+  textarea{min-height:110px}
+  .row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+  pre{white-space:pre-wrap;background:#F6F3EC;border-radius:10px;padding:14px;font-size:13px;max-height:320px;overflow:auto}
+</style>
+</head>
+<body class="page">
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="img/mark.png" alt=""><span>VINTO</span></a>
+    <nav class="nav"><a href="brokers.html">For brokers</a><a href="support.html">Support</a></nav>
+  </div>
+</header>
+<main class="doc"><div class="wrap">
+<span class="eyebrow">For brokers</span>
+<h1>Set up your office</h1>
+<p class="meta">About 10 minutes. Your agents see all of this on their first login. Nothing here is sent until you press Send at the end.</p>
+<div class="steps-nav" id="nav"><span class="on">1 · Office</span><span>2 · Required documents</span><span>3 · Listing checklist</span><span>4 · Vendors</span><span>5 · Send</span></div>
+
+<form id="wiz" novalidate>
+<section class="pane on">
+  <h2>Your office</h2>
+  <p><label>Brokerage name<br><input type="text" id="office" maxlength="80" required></label></p>
+  <p><label>How many agents?<br><input type="text" id="agents" maxlength="6" inputmode="numeric"></label></p>
+  <p><label>Your work email (the one you'll sign in with)<br><input type="text" id="email" maxlength="120" autocomplete="email"></label></p>
+</section>
+
+<section class="pane">
+  <h2>Documents every file needs before broker review</h2>
+  <p class="meta">Pick what your office requires. Add your own below.</p>
+  <div id="docs"></div>
+  <p><label>Anything else (one per line)<br><textarea id="docsMore"></textarea></label></p>
+</section>
+
+<section class="pane">
+  <h2>Steps added to every new listing</h2>
+  <div id="list"></div>
+  <p><label>Anything else (one per line)<br><textarea id="listMore"></textarea></label></p>
+</section>
+
+<section class="pane">
+  <h2>Preferred vendors</h2>
+  <p class="meta">Lenders, closing attorneys, inspectors, photographers. One per line: role, name, phone or email. Agents see these as suggestions only.</p>
+  <textarea id="vendors" placeholder="Closing attorney, Smith Law, 555-0100"></textarea>
+</section>
+
+<section class="pane">
+  <h2>Check and send</h2>
+  <p class="meta">This goes to the Vinto team, who load it into your office before your first login. Copy it if your email app doesn't open.</p>
+  <pre id="out"></pre>
+  <div class="row"><button type="button" class="btn" id="copy">Copy</button><a class="btn btn-gold" id="send" href="#">Send to Vinto</a></div>
+  <p class="meta">Or email it to support@vintorealty.com.</p>
+</section>
+
+<div class="row"><button type="button" class="btn" id="back">Back</button><button type="button" class="btn btn-gold" id="next">Next</button></div>
+</form>
+</div></main>
+<footer><div class="wrap"><p>© 2026 Cueny Ventures LLC · Vinto</p><nav><a href="privacy.html">Privacy</a><a href="support.html">Support</a></nav></div></footer>
+<script>
+(function () {
+  // Broker setup wizard (idea 76). Not linked from the site yet; publish only with Hudson's OK.
+  var DOCS = ['Purchase and Sale Agreement (all pages, signed)', 'Agency agreement (buyer or listing)', 'Seller’s Property Disclosure', 'Lead-based paint disclosure (homes built before 1978)', 'Earnest money receipt', 'Due diligence and amendments', 'Closing statement (settlement statement)', 'Wire-fraud warning, signed'];
+  var LIST = ['Listing agreement signed', 'Seller’s Property Disclosure from seller', 'Photos scheduled', 'Sign and lockbox ordered', 'Showing instructions set', 'Broker review of listing before going live'];
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var picks = function (id, items) { document.getElementById(id).innerHTML = items.map(function (x) { return '<label class="pick"><input type="checkbox" checked value="' + esc(x) + '"><span>' + esc(x) + '</span></label>'; }).join(''); };
+  picks('docs', DOCS); picks('list', LIST);
+  var panes = [].slice.call(document.querySelectorAll('.pane')), dots = [].slice.call(document.querySelectorAll('#nav span')), at = 0;
+  var lines = function (id) { return document.getElementById(id).value.split('\n').map(function (x) { return x.trim(); }).filter(Boolean); };
+  var checked = function (id) { return [].slice.call(document.querySelectorAll('#' + id + ' input:checked')).map(function (x) { return x.value; }); };
+  function summary() {
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    return ['Office: ' + v('office'), 'Agents: ' + (v('agents') || '?'), 'Broker email: ' + v('email'), '',
+      'Required documents:', ].concat(checked('docs').concat(lines('docsMore')).map(function (x) { return '- ' + x; }),
+      ['', 'Listing checklist:'], checked('list').concat(lines('listMore')).map(function (x) { return '- ' + x; }),
+      ['', 'Preferred vendors:'], lines('vendors').map(function (x) { return '- ' + x; })).join('\n');
+  }
+  function show(i) {
+    at = Math.max(0, Math.min(panes.length - 1, i));
+    panes.forEach(function (p, k) { p.classList.toggle('on', k === at); });
+    dots.forEach(function (d, k) { d.classList.toggle('on', k === at); });
+    document.getElementById('back').style.visibility = at ? 'visible' : 'hidden';
+    document.getElementById('next').style.display = at === panes.length - 1 ? 'none' : '';
+    if (at === panes.length - 1) {
+      var s = summary();
+      document.getElementById('out').textContent = s;
+      document.getElementById('send').href = 'mailto:support@vintorealty.com?subject=' + encodeURIComponent('Office setup: ' + document.getElementById('office').value.trim()) + '&body=' + encodeURIComponent(s);
+    }
+    window.scrollTo(0, 0);
+  }
+  document.getElementById('next').onclick = function () {
+    if (at === 0 && !document.getElementById('office').value.trim()) { document.getElementById('office').focus(); return; }
+    show(at + 1);
+  };
+  document.getElementById('back').onclick = function () { show(at - 1); };
+  document.getElementById('copy').onclick = function () {
+    var b = this, t = document.getElementById('out').textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { b.textContent = 'Copied'; }, function () {
+      var r = document.createRange(); r.selectNodeContents(document.getElementById('out')); var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    });
+  };
+  show(0);
+})();
+</script>
+</body>
+</html>
