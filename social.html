@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vinto · Social graphic</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root { --obsidian: #070B0A; --ivory: #F4F3EF; --gold: #9C7B3C; --champagne: #D6BD86; --line: #E6E3DA; --muted: #55595A; --sans: Inter, -apple-system, Helvetica, Arial, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ivory); color: #0E1513; font-family: var(--sans); }
+.wrap { max-width: 560px; margin: 0 auto; padding: 20px max(16px, env(safe-area-inset-left, 0px)) 40px max(16px, env(safe-area-inset-right, 0px)); }
+h1 { font-size: 22px; font-weight: 600; margin: 4px 0 6px; }
+p { color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.row button, .btn { font: 600 14px var(--sans); border-radius: 999px; padding: 10px 16px; border: 1px solid var(--line); background: #fff; color: #0E1513; cursor: pointer; }
+.row button.on { background: var(--obsidian); color: #fff; border-color: var(--obsidian); }
+.btn.primary { background: var(--obsidian); color: #fff; border-color: var(--obsidian); width: 100%; margin-top: 10px; }
+label { display: block; font-size: 13px; color: var(--muted); margin-top: 10px; }
+input[type=text] { width: 100%; font: 16px var(--sans); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); }
+canvas { width: 100%; height: auto; border-radius: 14px; margin-top: 14px; background: #111; }
+.fine { font-size: 12px; color: #7B7F80; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Make a social graphic</h1>
+  <p>Pick a photo you took or have the rights to. Vinto adds your branding. Nothing is uploaded: it’s made on this phone.</p>
+  <div class="row" id="kinds"></div>
+  <label for="photo">Photo of the home</label>
+  <input type="file" id="photo" accept="image/*">
+  <label for="line">Headline line (address, open house time…)</label>
+  <input type="text" id="line" maxlength="60">
+  <label for="sub">Details line (beds, baths, city…)</label>
+  <input type="text" id="sub" maxlength="70">
+  <canvas id="c" width="1080" height="1350"></canvas>
+  <button class="btn primary" type="button" id="share">Share or save the image</button>
+  <p class="fine">Square photos work best centered. Post it with the caption Vinto wrote for you in the app. Describe the home, not who should live there.</p>
+</div>
+<script>
+(function () {
+  var q = new URLSearchParams(location.hash.slice(1));
+  var KINDS = ['Just Listed', 'Open House', 'Under Contract', 'Just Sold', 'Coming Soon', 'Price Improvement'];
+  var kind = KINDS.indexOf(q.get('kind')) >= 0 ? q.get('kind') : 'Just Listed';
+  var agent = (q.get('agent') || '').slice(0, 50), brokerage = (q.get('brokerage') || '').slice(0, 50);
+  var line = document.getElementById('line'), sub = document.getElementById('sub');
+  line.value = (q.get('line') || '').slice(0, 60); sub.value = (q.get('sub') || '').slice(0, 70);
+  var img = null, c = document.getElementById('c'), x = c.getContext('2d');
+  var kinds = document.getElementById('kinds');
+  KINDS.forEach(function (k) {
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = k; if (k === kind) b.className = 'on';
+    b.addEventListener('click', function () { kind = k; Array.prototype.forEach.call(kinds.children, function (n) { n.className = n.textContent === k ? 'on' : ''; }); draw(); });
+    kinds.appendChild(b);
+  });
+  function fit(text, max, font) { x.font = font; var t = String(text); while (x.measureText(t).width > max && t.length > 3) t = t.slice(0, -2); return t === String(text) ? t : t + '…'; }
+  function draw() {
+    var W = c.width, H = c.height;
+    x.fillStyle = '#070B0A'; x.fillRect(0, 0, W, H);
+    if (img) {
+      var ph = 1000, s = Math.max(W / img.width, ph / img.height), w = img.width * s, h = img.height * s;
+      x.save(); x.beginPath(); x.rect(0, 0, W, ph); x.clip(); x.drawImage(img, (W - w) / 2, (ph - h) / 2, w, h); x.restore();
+      var g = x.createLinearGradient(0, 640, 0, 1000); g.addColorStop(0, 'rgba(7,11,10,0)'); g.addColorStop(1, 'rgba(7,11,10,.92)'); x.fillStyle = g; x.fillRect(0, 640, W, 360);
+    } else {
+      x.fillStyle = '#1a1f1d'; x.fillRect(0, 0, W, 1000); x.fillStyle = 'rgba(255,255,255,.35)'; x.font = '500 40px Inter, Helvetica, Arial'; x.textAlign = 'center'; x.fillText('Pick a photo above', W / 2, 500);
+    }
+    x.textAlign = 'left';
+    // Kind ribbon
+    x.font = '600 34px Inter, Helvetica, Arial'; var kw = x.measureText(kind.toUpperCase()).width + 64;
+    x.fillStyle = '#D6BD86'; x.fillRect(60, 60, kw, 74); x.fillStyle = '#070B0A';
+    if (x.letterSpacing !== undefined) x.letterSpacing = '6px';
+    x.fillText(kind.toUpperCase(), 92, 110);
+    if (x.letterSpacing !== undefined) x.letterSpacing = '0px';
+    // Headline + details over the bottom of the photo
+    x.fillStyle = '#ffffff'; x.font = 'italic 96px "Instrument Serif", Georgia, serif';
+    x.fillText(fit(line.value || 'Your headline', W - 120, x.font), 60, 900);
+    x.fillStyle = 'rgba(255,255,255,.8)'; x.font = '400 38px Inter, Helvetica, Arial';
+    x.fillText(fit(sub.value, W - 120, x.font), 60, 960);
+    // Agent band
+    x.fillStyle = '#D6BD86'; x.fillRect(60, 1060, 120, 4);
+    x.fillStyle = '#ffffff'; x.font = '600 44px Inter, Helvetica, Arial'; x.fillText(fit(agent || 'Your name', W - 120, x.font), 60, 1140);
+    x.fillStyle = 'rgba(255,255,255,.65)'; x.font = '400 34px Inter, Helvetica, Arial'; x.fillText(fit(brokerage, W - 120, x.font), 60, 1192);
+    x.fillStyle = 'rgba(214,189,134,.8)'; x.font = '600 24px Inter, Helvetica, Arial';
+    if (x.letterSpacing !== undefined) x.letterSpacing = '8px';
+    x.textAlign = 'right'; x.fillText('VINTO', W - 60, 1290); x.textAlign = 'left';
+    if (x.letterSpacing !== undefined) x.letterSpacing = '0px';
+  }
+  document.getElementById('photo').addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0]; if (!f) return;
+    var u = URL.createObjectURL(f), im = new Image();
+    im.onload = function () { img = im; draw(); };
+    im.src = u;
+  });
+  line.addEventListener('input', draw); sub.addEventListener('input', draw);
+  document.getElementById('share').addEventListener('click', function () {
+    c.toBlob(function (blob) {
+      var name = kind.toLowerCase().replace(/\s+/g, '-') + '.png', file = new File([blob], name, { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file], title: kind }).catch(function () {});
+      else { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { a.remove(); }, 500); }
+    }, 'image/png');
+  });
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(draw);
+})();
+</script>
+</body>
+</html>
