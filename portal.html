@@ -337,7 +337,7 @@ footer a { color: var(--gold); text-decoration: none; }
       if (d.closing) { var c = parseDay(d.closing), now = today(), nx = new Date(now.getFullYear(), c.getMonth(), c.getDate()); if (nx < now) nx.setFullYear(nx.getFullYear() + 1); var dd = Math.round((nx - now) / 864e5); ann = dd === 0 ? 'Happy home anniversary!' : dd + ' days to your home anniversary'; }
       html += '<section class="card"><div class="eyebrow">Your home binder</div><h2>Everything about <em>your home</em></h2>' +
         (d.closing ? '<div class="facts"><div><small>Closed</small><span>' + esc(fmt(d.closing)) + '</span></div><div><small>Anniversary</small><span>' + esc(ann) + '</span></div></div>' : '') +
-        '<p class="sub" style="margin-top:12px">Keep these papers somewhere safe:</p><ul class="move">' +
+        '<p class="sub" id="hvLine" style="margin-top:12px;display:none"></p><p class="sub" style="margin-top:12px">Keep these papers somewhere safe:</p><ul class="move">' +
         '<li><span>Settlement statement</span></li><li><span>Recorded deed (the closing attorney mails it after recording)</span></li><li><span>Owner’s title insurance policy</span></li><li><span>Survey, if one was done</span></li><li><span>Home warranty, manuals and receipts</span></li></ul>' +
         '<p class="sub">Your agent can email you copies of the closing papers they have. Your team and the house details stay on this page.</p></section>';
     }
@@ -604,6 +604,8 @@ footer a { color: var(--gold); text-decoration: none; }
     wireMessages();
     wireTeam();
     wirePublic();
+    var hv = document.getElementById('hvLine');
+    if (hv) rpc('client_home_value', { t: token }).then(function (r) { if (!r) return; hv.textContent = (LANG === 'es' ? 'Los precios de las casas en ' + (r.area === 'Georgia' ? 'Georgia' : 'el área de Atlanta') + ' han ' + (r.pct >= 0 ? 'subido' : 'bajado') + ' cerca de ' + Math.abs(r.pct) + '% desde que compraste (índice FHFA, hasta ' + r.through + '). Pídele a tu agente una estimación real.' : 'Home prices in ' + r.area + ' are ' + (r.pct >= 0 ? 'up' : 'down') + ' about ' + Math.abs(r.pct) + '% since you bought (FHFA price index, through ' + r.through + '). Ask your agent for a real estimate anytime.'); hv.style.display = ''; }).catch(function () {});
     var lb = document.getElementById('langBtn');
     if (lb) lb.addEventListener('click', function () { try { localStorage.setItem('vinto-lang', LANG === 'es' ? 'en' : 'es'); } catch (e) {} location.reload(); });
     Array.prototype.forEach.call(document.querySelectorAll('.check'), function (el) {
