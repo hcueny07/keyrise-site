@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vinto · Deal page</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root { --obsidian: #070B0A; --ink: #0E1513; --ivory: #F4F3EF; --line: #E6E3DA; --muted: #55595A; --faint: #7B7F80; --gold: #9C7B3C; --champagne: #D6BD86; --sans: Inter, -apple-system, Helvetica, Arial, sans-serif; --serif: "Instrument Serif", Georgia, serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ivory); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.55; }
+.hero { background: var(--obsidian); color: #fff; padding: 28px 0 24px; }
+.wrap { max-width: 620px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.brand { font-size: 12px; letter-spacing: .3em; color: var(--champagne); font-weight: 600; }
+h1 { font-weight: 500; font-size: 28px; margin: 10px 0 4px; }
+h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--champagne); }
+.street { color: rgba(255,255,255,.75); }
+main { padding: 18px 0 40px; }
+.card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 18px; margin-bottom: 14px; }
+.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+h2 { font-size: 19px; font-weight: 600; margin: 4px 0 8px; }
+.sub { color: var(--muted); font-size: 14.5px; }
+.check { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-top: 1px solid var(--line); cursor: pointer; }
+.check .box { width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid var(--line); flex: none; margin-top: 2px; }
+.check.on .box { background: var(--gold); border-color: var(--gold); }
+.check.on .lbl { color: var(--faint); text-decoration: line-through; }
+.row { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 15px; }
+.row .d { color: var(--gold); font-weight: 600; white-space: nowrap; }
+.row.done { color: var(--faint); }
+.links a { color: var(--gold); font-weight: 600; margin-right: 16px; text-decoration: none; }
+.center { text-align: center; padding: 60px 16px; color: var(--muted); }
+.fine { font-size: 12.5px; color: var(--faint); text-align: center; margin-top: 18px; }
+.saved { font-size: 13.5px; color: var(--muted); margin-top: 8px; }
+</style>
+</head>
+<body>
+<div id="app"><div class="center">Loading…</div></div>
+<script>
+(function () {
+  var BASE = 'https://ovwsmktnufozcyaqaqfz.supabase.co/rest/v1/rpc/';
+  var KEY = 'sb_publishable_IvKFJC5hSi_ydgtLY5wk-A_FeJHikgb';
+  var token = new URLSearchParams(location.hash.slice(1)).get('p') || '';
+  var app = document.getElementById('app');
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function rpc(name, body) { return fetch(BASE + name, { method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(function (r) { return r.json(); }); }
+  function fmt(k) { var p = String(k).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
+  if (!/^[A-Za-z0-9_-]{24,64}$/.test(token)) { app.innerHTML = '<div class="center">This link is missing part of its address. Ask the agent to send it again.</div>'; return; }
+  rpc('party_status', { t: token }).then(function (d) {
+    if (!d || !d.street) { app.innerHTML = '<div class="center">This link isn’t active anymore. Ask the agent for a new one.</div>'; return; }
+    var a = d.agent || {}, tel = String(a.phone || '').replace(/[^\d+]/g, '');
+    var open = (d.items || []).filter(function (x) { return !x.done; }).length;
+    var html = '<header class="hero"><div class="wrap"><div class="brand">VINTO' + (a.brokerage ? ' · ' + esc(a.brokerage) : '') + '</div>' +
+      '<h1>Hi' + (d.name ? ' ' + esc(String(d.name).split(' ')[0]) : '') + ', <em>here’s the deal.</em></h1><div class="street">' + esc(d.street) + ' · ' + esc(d.stage) + '</div></div></header><main><div class="wrap">';
+    if ((d.items || []).length) {
+      html += '<section class="card"><div class="eyebrow">What we need from you · ' + esc(d.role) + '</div><h2>' + (open ? open + ' item' + (open === 1 ? '' : 's') + ' left' : 'All done. Thank you!') + '</h2><p class="sub">Tap to check off. ' + esc((a.name || 'The agent').split(' ')[0]) + ' gets a notice right away.</p>';
+      d.items.forEach(function (x) { html += '<div class="check' + (x.done ? ' on' : '') + '" data-id="' + esc(x.id) + '" role="checkbox" aria-checked="' + (x.done ? 'true' : 'false') + '" tabindex="0"><span class="box"></span><span class="lbl">' + esc(x.label) + '</span></div>'; });
+      html += '</section>';
+    }
+    var dates = d.dates || [];
+    html += '<section class="card"><div class="eyebrow">Key dates</div><h2>From the contract</h2>' + (dates.length ? dates.map(function (x) { return '<div class="row' + (x.done ? ' done' : '') + '"><span>' + esc(x.label) + '</span><span class="d">' + (x.done ? 'Done' : esc(fmt(x.date))) + '</span></div>'; }).join('') : '<p class="sub">Dates show here once they’re set.</p>') + '</section>';
+    html += '<section class="card"><div class="eyebrow">Send a file</div><h2>Share a document with ' + esc((a.name || 'the agent').split(' ')[0]) + '</h2><p class="sub">PDF or photo, up to 10 MB. Never send wiring instructions here: give the buyer a phone number to verify them instead.</p><input type="file" id="f" accept="application/pdf,image/jpeg,image/png,image/heic" style="margin-top:8px"><div class="saved" id="m"></div></section>';
+    html += '<section class="card"><div class="eyebrow">Your contact</div><h2>' + esc(a.name || 'The agent') + '</h2><div class="links">' + (tel ? '<a href="tel:' + esc(tel) + '">Call</a><a href="sms:' + esc(tel) + '">Text</a>' : '') + (a.email ? '<a href="mailto:' + esc(a.email) + '">Email</a>' : '') + '</div>' + (tel ? '<p class="sub">' + esc(a.phone) + '</p>' : '') + '</section>';
+    html += '<p class="fine">A private page for this transaction only. Powered by <a href="https://vintorealty.com/" style="color:inherit">Vinto</a>.</p></div></main>';
+    app.innerHTML = html;
+    Array.prototype.forEach.call(document.querySelectorAll('.check'), function (el) {
+      var flip = function () {
+        var on = !el.classList.contains('on'); el.classList.toggle('on', on); el.setAttribute('aria-checked', on ? 'true' : 'false');
+        rpc('party_check', { t: token, item: el.getAttribute('data-id'), is_done: on }).then(function (ok) { if (!ok) throw 0; }).catch(function () { el.classList.toggle('on', !on); });
+      };
+      el.addEventListener('click', flip);
+      el.addEventListener('keydown', function (e) { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); } });
+    });
+    var f = document.getElementById('f'), m = document.getElementById('m');
+    f.addEventListener('change', function () {
+      var file = f.files && f.files[0]; if (!file) return;
+      if (file.size > 10 * 1024 * 1024) { m.textContent = 'That file is over 10 MB.'; return; }
+      m.textContent = 'Sending…';
+      var rd = new FileReader();
+      rd.onload = function () {
+        fetch(BASE.replace('/rest/v1/rpc/', '/functions/v1/portal-upload'), { method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ p: token, name: file.name, mime: file.type, data: String(rd.result).split(',')[1] || '' }) })
+          .then(function (r) { return r.json(); })
+          .then(function (j) { m.textContent = j && j.ok ? 'Sent! ' + ((a.name || 'The agent').split(' ')[0]) + ' has it.' : (j && j.error) || 'That didn’t send. Please try again.'; f.value = ''; })
+          .catch(function () { m.textContent = 'That didn’t send. Please try again.'; });
+      };
+      rd.readAsDataURL(file);
+    });
+  }).catch(function () { app.innerHTML = '<div class="center">We couldn’t load this page right now. Please try again in a minute.</div>'; });
+})();
+</script>
+</body>
+</html>
