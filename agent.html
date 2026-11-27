@@ -45,6 +45,7 @@ textarea { min-height: 90px; resize: vertical; }
 .ok { text-align: center; padding: 20px 0; }
 .ok h3 { font-size: 22px; margin: 0 0 6px; }
 .tq { margin: 12px 0 0; padding: 0 0 12px; border-bottom: 1px solid var(--line); font-size: 16px; line-height: 1.5; font-style: italic; } .tq cite { display: block; font-style: normal; font-size: 13px; color: var(--faint); margin-top: 4px; }
+.lang { background: transparent; border: 1px solid rgba(255,255,255,.4); color: inherit; border-radius: 999px; padding: 8px 14px; font: inherit; cursor: pointer; }
 .calcout { margin: 14px 0 6px; } .calcout b { display: block; font-size: 26px; } .calcout span { display: block; color: var(--faint); font-size: 14px; margin-top: 2px; }
 .fine { text-align: center; font-size: 12.5px; color: var(--faint); margin: 18px 0 36px; }
 .fine a { color: var(--gold); text-decoration: none; }
@@ -107,6 +108,8 @@ textarea { min-height: 90px; resize: vertical; }
       (active.length ? '<section class="card"><div class="eyebrow">For sale</div><h2>Current listings</h2>' + homes(active) + '</section>' : '') +
       (done.length ? '<section class="card"><div class="eyebrow">Recent</div><h2>Just sold</h2>' + homes(done) + '</section>' : '') +
       ((p.testimonials || []).length ? '<section class="card"><div class="eyebrow">Kind words</div><h2>What clients say</h2>' + p.testimonials.map(function (t) { return '<blockquote class="tq">“' + esc(t.quote) + '”' + (t.byline ? '<cite>' + esc(t.byline) + '</cite>' : '') + '</blockquote>'; }).join('') + '</section>' : '') +
+      '<section class="card" id="worth"><div class="eyebrow">Thinking of selling?</div><h2>What’s my home worth?</h2><p class="meta">Get a free, no-pressure estimate from ' + esc((p.name || 'me').split(' ')[0]) + ', based on real recent sales near you.</p>' +
+      '<input id="wAddr" maxlength="120" placeholder="Your home’s address" style="margin-top:10px"><button class="btn" type="button" id="wGo" style="margin-top:10px">Request my estimate</button></section>' +
       '<section class="card" id="calc"><div class="eyebrow">Plan ahead</div><h2>What could you afford?</h2>' +
       '<div class="calc"><label for="ci">Household income per year</label><input id="ci" inputmode="decimal" value="100000">' +
       '<label for="cd">Monthly debts (car, cards, loans)</label><input id="cd" inputmode="decimal" value="500">' +
@@ -135,6 +138,32 @@ textarea { min-height: 90px; resize: vertical; }
     };
     ['ci', 'cd', 'cr', 'cp'].forEach(function (id) { document.getElementById(id).addEventListener('input', calc); });
     calc();
+
+    document.getElementById('wGo').addEventListener('click', function () {
+      var a = document.getElementById('wAddr').value.trim();
+      document.getElementById('about').value = 'Home value request' + (a ? ': ' + a : '');
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(function () { document.getElementById('n').focus(); }, 400);
+    });
+    // Built to be found (idea 53): structured facts search engines and AI assistants read. Agent-entered only, no IDX.
+    try {
+      var ld = { '@context': 'https://schema.org', '@type': 'RealEstateAgent', name: p.name || undefined, jobTitle: p.title || undefined, telephone: p.phone || undefined, email: p.email || undefined,
+        description: p.bio || undefined, image: p.photo || undefined, url: location.href.split('#')[0] + '#u=' + slug,
+        worksFor: p.brokerage ? { '@type': 'Organization', name: p.brokerage } : undefined, areaServed: { '@type': 'State', name: 'Georgia' },
+        review: (p.testimonials || []).map(function (t) { return { '@type': 'Review', reviewBody: t.quote, author: { '@type': 'Person', name: t.byline || 'Client' } }; }) };
+      var sc = document.createElement('script'); sc.type = 'application/ld+json'; sc.textContent = JSON.stringify(ld); document.head.appendChild(sc);
+      var md = document.querySelector('meta[name="description"]') || document.head.appendChild(Object.assign(document.createElement('meta'), { name: 'description' }));
+      md.content = (p.name || 'Real estate agent') + (p.brokerage ? ' with ' + p.brokerage : '') + '. ' + (p.bio || 'Buying or selling in Georgia? Get in touch.');
+    } catch (e) {}
+    // Español (idea 19): one tap, the page's own text only.
+    var ESA = { 'For sale': 'En venta', 'Current listings': 'Propiedades disponibles', 'Recent': 'Recientes', 'Just sold': 'Vendidas', 'Kind words': 'Opiniones', 'What clients say': 'Lo que dicen los clientes', 'Thinking of selling?': '¿Piensas vender?', 'What’s my home worth?': '¿Cuánto vale mi casa?', 'Request my estimate': 'Pedir mi estimación', 'Plan ahead': 'Planea', 'What could you afford?': '¿Cuánto podrías pagar?', 'Let’s talk': 'Hablemos', 'Buying, selling or just curious?': '¿Comprar, vender o solo curiosidad?', 'Send': 'Enviar', 'Call': 'Llamar', 'Text': 'Mensaje', 'Email': 'Correo', 'Get in touch': 'Contáctame', 'I’m interested': 'Me interesa', 'Your name': 'Tu nombre', 'Phone': 'Teléfono', 'About': 'Sobre', 'Message (optional)': 'Mensaje (opcional)' };
+    var lb = document.createElement('button'); lb.type = 'button'; lb.className = 'lang'; lb.textContent = 'Español';
+    lb.addEventListener('click', function () {
+      var w = document.createTreeWalker(app, NodeFilter.SHOW_TEXT), n;
+      while ((n = w.nextNode())) { var k = n.nodeValue.trim(); if (ESA[k]) n.nodeValue = n.nodeValue.replace(k, ESA[k]); }
+      lb.remove();
+    });
+    var acts = app.querySelector('.actions'); if (acts) acts.appendChild(lb);
 
     Array.prototype.forEach.call(document.querySelectorAll('[data-about]'), function (b) {
       b.addEventListener('click', function () { document.getElementById('about').value = b.getAttribute('data-about'); document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }); setTimeout(function () { document.getElementById('n').focus(); }, 400); });
