@@ -104,6 +104,7 @@ h2 { font-size: 21px; letter-spacing: -0.02em; font-weight: 600; margin: 6px 0 0
 .nextrow small { display: block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
 .nextrow p { margin: 4px 0 0; font-size: 15.5px; line-height: 1.5; }
 .nextafter { margin-top: 14px; }
+.chips .qa { margin: 4px 4px 0 0; font-size: 13.5px; } .qaA p { margin: 8px 0 0; line-height: 1.5; } .qaA .q { font-weight: 600; }
 .shield { border: 1.5px solid #E7B9B3; }
 .shieldsteps { margin: 12px 0 0; padding-left: 20px; font-size: 15px; line-height: 1.55; }
 .shieldsteps li { margin-bottom: 6px; }
@@ -156,6 +157,7 @@ footer a { color: var(--gold); text-decoration: none; }
   var LANG = (function () { try { var s = localStorage.getItem('vinto-lang'); if (s) return s; } catch (e) {} return /^es/i.test(navigator.language || '') ? 'es' : 'en'; })();
   var LOC = LANG === 'es' ? 'es-US' : 'en-US';
   var ES = {
+    'Questions': 'Preguntas', 'Ask about your deal': 'Pregunta sobre tu compra o venta', 'When is closing?': '¿Cuándo es el cierre?', 'What is due diligence?': '¿Qué es el período de diligencia?', 'Who is my lender?': '¿Quién es mi prestamista?', 'What do I bring to closing?': '¿Qué llevo al cierre?', 'How do I wire money safely?': '¿Cómo transfiero dinero de forma segura?', 'Send to my agent': 'Enviar a mi agente', 'I don’t know that one. Send it to your agent and they’ll answer here.': 'No sé esa. Envíasela a tu agente y te responderá aquí.',
     'Send a document': 'Enviar un documento', 'Share a file with your agent': 'Comparte un archivo con tu agente', 'A pre-approval letter, a signed form or a photo of your ID for the closing attorney. PDF or photo, up to 10 MB. Never send bank account or wiring details here.': 'Una carta de preaprobación, un formulario firmado o una foto de tu identificación para el abogado de cierre. PDF o foto, hasta 10 MB. Nunca envíes aquí datos bancarios o de transferencias.',
     'Your home binder': 'Tu carpeta de la casa', 'Everything about': 'Todo sobre', 'your home': 'tu casa', 'Closed': 'Cerrada', 'Anniversary': 'Aniversario', 'Happy home anniversary!': '¡Feliz aniversario de tu casa!', 'Keep these papers somewhere safe:': 'Guarda estos papeles en un lugar seguro:', 'Settlement statement': 'Estado de cierre', 'Recorded deed (the closing attorney mails it after recording)': 'Escritura registrada (el abogado de cierre la envía después de registrarla)', 'Owner’s title insurance policy': 'Póliza de seguro de título del dueño', 'Survey, if one was done': 'Agrimensura, si se hizo', 'Home warranty, manuals and receipts': 'Garantía de la casa, manuales y recibos', 'Your agent can email you copies of the closing papers they have. Your team and the house details stay on this page.': 'Tu agente puede enviarte por correo copias de los papeles de cierre que tiene. Tu equipo y los detalles de la casa se quedan en esta página.',
     'Public records (county)': 'Registros públicos (condado)', 'What the county has on file': 'Lo que el condado tiene registrado', 'From the county’s tax records, not the MLS. They may be outdated. Tell your agent if anything looks wrong.': 'De los registros de impuestos del condado, no del MLS. Pueden estar desactualizados. Dile a tu agente si algo parece incorrecto.', 'County': 'Condado', 'Parcel ID': 'Número de parcela', 'Acres': 'Acres', 'Subdivision': 'Subdivisión', 'Zoning': 'Zonificación', 'Tax year': 'Año fiscal', 'Year built': 'Año de construcción',
@@ -278,6 +280,11 @@ footer a { color: var(--gold); text-decoration: none; }
       html += '</ol>';
     } else html += '<p class="empty">Your agent will add your dates here as soon as they’re set.</p>';
     html += '</section>';
+
+    // Ask about my deal (idea 50): answered in the browser from this deal's own dates, team and checklist. No AI.
+    if (d.stage !== 'Closed') html += '<section class="card" id="qaCard"><div class="eyebrow">Questions</div><h2>Ask about your deal</h2>' +
+      '<div class="chips" id="qaChips">' + ['When is closing?', 'What is due diligence?', 'Who is my lender?', 'What do I bring to closing?', 'How do I wire money safely?'].map(function (q) { return '<button type="button" class="ghost qa" data-q="' + esc(q) + '">' + esc(q) + '</button>'; }).join(' ') + '</div>' +
+      '<form id="qaForm" class="ask" style="margin-top:10px"><textarea id="qaText" maxlength="200" placeholder="Type a question…"></textarea><button type="submit">Ask</button></form><div class="qaA" id="qaA"></div></section>';
 
     // Your team (filled in after load; hidden until the agent's account supports it)
     html += '<section class="card" id="teamCard" style="display:none"><div class="eyebrow">Your team</div><h2>Who’s helping you</h2><div id="team"></div></section>';
@@ -421,6 +428,30 @@ footer a { color: var(--gold); text-decoration: none; }
       '<li>Treat any change to wiring instructions as fraud until the attorney confirms it by phone.</li>' +
       '<li>Call the attorney again the same day to confirm the money arrived.</li></ol>' +
       '<div class="warn"><b>If something feels off:</b> call your bank right away and ask them to recall the wire, then report it at ic3.gov.</div></section>';
+  }
+
+  function answerDeal(q, d, team) {
+    var t = q.toLowerCase(), dates = d.dates || [], buyer = /buyer/i.test(d.role || ''), seller = /seller/i.test(d.role || '');
+    var find = function (re) { for (var i = 0; i < dates.length; i++) if (re.test(dates[i].label) && !/disclos/i.test(dates[i].label)) return dates[i]; return null; };
+    var when = function (x) { return x.done ? x.label + ' is done.' : x.label + ' is ' + fmt(x.date) + ' (' + rel(x.date) + ').'; };
+    var TOPICS = [[/clos/, /clos/i], [/due diligence|inspect/, /due diligence|inspection/i], [/apprais/, /apprais/i], [/financ|loan/, /financ|loan/i], [/earnest|deposit/, /earnest/i], [/walk/, /walk/i], [/possess|keys|move/, /possess/i]];
+    if (/wire|wiring|transfer money|send money/.test(t)) return 'Only wire money after you call the closing attorney at a number you already know, never one from an email or text. Confirm the amount and account out loud, and treat any “changed instructions” as fraud until the attorney confirms by phone. Your agent will never send you wiring instructions.';
+    if (/bring|need at closing|closing day/.test(t)) return 'Bring a photo ID. ' + (buyer ? 'If you’re wiring funds, do it only after calling the attorney to confirm. ' : '') + 'Your agent will confirm the time and place.';
+    if (/^(who|what is my|contact|phone|number|email)|\bwho\b/.test(t) && team) {
+      var roles = [[/lend|loan/, /lend/i], [/attorney|lawyer|closing/, /attorney|closing/i], [/inspect/, /inspect/i], [/insur/, /insur/i], [/other agent|their agent|seller'?s agent|buyer'?s agent/, /other agent/i], [/agent|you|realtor/, /your agent/i]];
+      var people = [team.agent].concat(team.team || []);
+      for (var r = 0; r < roles.length; r++) if (roles[r][0].test(t)) { for (var p = 0; p < people.length; p++) if (people[p] && roles[r][1].test(people[p].role)) return people[p].role + ': ' + people[p].name + (people[p].company ? ', ' + people[p].company : '') + (people[p].phone ? ' · ' + people[p].phone : '') + (people[p].email ? ' · ' + people[p].email : ''); return 'Your agent hasn’t added that person here yet. Ask them below.'; }
+    }
+    for (var k = 0; k < TOPICS.length; k++) if (TOPICS[k][0].test(t)) {
+      var x = find(TOPICS[k][1]), e = explain(x ? x.label : q, buyer || !seller);
+      var isWhat = /what (is|are|does|happens)|explain|mean/.test(t);
+      if (x && !isWhat) return when(x) + (e ? ' ' + e[1] : '');
+      if (e) return e[0] + ' ' + e[1] + (x ? ' ' + when(x) : '');
+      return x ? when(x) : 'That date isn’t set yet. Your agent will add it here.';
+    }
+    if (/next|now|what happens/.test(t)) { var n = null; for (var i2 = 0; i2 < dates.length; i2++) if (!dates[i2].done) { n = dates[i2]; break; } return n ? 'Next up: ' + when(n) : 'Nothing is scheduled right now. Your agent will add the next step here.'; }
+    if (/price|offer|commission|how much|cost/.test(t)) return 'For money questions, please ask your agent directly. They’ll walk you through it.';
+    return null;
   }
 
   function moving(closing, buyer) {
@@ -609,6 +640,20 @@ footer a { color: var(--gold); text-decoration: none; }
     wireMessages();
     wireTeam();
     wirePublic();
+    var qaF = document.getElementById('qaForm');
+    if (qaF) {
+      var teamCache = null;
+      rpc('client_team', { t: token }).then(function (t) { teamCache = t; }).catch(function () {});
+      var ask = function (q) {
+        var a = answerDeal(q, d, teamCache), box = document.getElementById('qaA');
+        box.innerHTML = '<p class="q">' + esc(q) + '</p><p>' + esc(a || 'I don’t know that one. Send it to your agent and they’ll answer here.') + '</p>' + (a ? '' : (document.getElementById('msgCard') && document.getElementById('msgCard').style.display !== 'none' ? '<button type="button" class="ghost" id="qaSend">Send to my agent</button>' : ''));
+        translate(box);
+        var send = document.getElementById('qaSend');
+        if (send) send.addEventListener('click', function () { var ta = document.getElementById('askText'); if (ta) { ta.value = q; document.getElementById('msgCard').scrollIntoView({ behavior: 'smooth' }); ta.focus(); } });
+      };
+      qaF.addEventListener('submit', function (e) { e.preventDefault(); var q = document.getElementById('qaText').value.trim(); if (q) ask(q); });
+      Array.prototype.forEach.call(document.querySelectorAll('.qa'), function (b) { b.addEventListener('click', function () { ask(b.getAttribute('data-q')); }); });
+    }
     var up = document.getElementById('upFile');
     if (up) up.addEventListener('change', function () {
       var f = up.files && up.files[0], msg = document.getElementById('upMsg');
