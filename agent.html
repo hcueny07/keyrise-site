@@ -44,6 +44,7 @@ textarea { min-height: 90px; resize: vertical; }
 .err { color: var(--red); font-size: 14px; margin-top: 8px; min-height: 1em; }
 .ok { text-align: center; padding: 20px 0; }
 .ok h3 { font-size: 22px; margin: 0 0 6px; }
+.tq { margin: 12px 0 0; padding: 0 0 12px; border-bottom: 1px solid var(--line); font-size: 16px; line-height: 1.5; font-style: italic; } .tq cite { display: block; font-style: normal; font-size: 13px; color: var(--faint); margin-top: 4px; }
 .calcout { margin: 14px 0 6px; } .calcout b { display: block; font-size: 26px; } .calcout span { display: block; color: var(--faint); font-size: 14px; margin-top: 2px; }
 .fine { text-align: center; font-size: 12.5px; color: var(--faint); margin: 18px 0 36px; }
 .fine a { color: var(--gold); text-decoration: none; }
@@ -105,6 +106,7 @@ textarea { min-height: 90px; resize: vertical; }
       '<main class="wrap">' +
       (active.length ? '<section class="card"><div class="eyebrow">For sale</div><h2>Current listings</h2>' + homes(active) + '</section>' : '') +
       (done.length ? '<section class="card"><div class="eyebrow">Recent</div><h2>Just sold</h2>' + homes(done) + '</section>' : '') +
+      ((p.testimonials || []).length ? '<section class="card"><div class="eyebrow">Kind words</div><h2>What clients say</h2>' + p.testimonials.map(function (t) { return '<blockquote class="tq">“' + esc(t.quote) + '”' + (t.byline ? '<cite>' + esc(t.byline) + '</cite>' : '') + '</blockquote>'; }).join('') + '</section>' : '') +
       '<section class="card" id="calc"><div class="eyebrow">Plan ahead</div><h2>What could you afford?</h2>' +
       '<div class="calc"><label for="ci">Household income per year</label><input id="ci" inputmode="decimal" value="100000">' +
       '<label for="cd">Monthly debts (car, cards, loans)</label><input id="cd" inputmode="decimal" value="500">' +
