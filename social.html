@@ -33,13 +33,14 @@ canvas { width: 100%; height: auto; border-radius: 14px; margin-top: 14px; backg
   <div class="row" id="kinds"></div>
   <label for="photo">Photo of the home</label>
   <input type="file" id="photo" accept="image/*">
+  <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="staged"> This photo is virtually staged or AI-edited</label>
   <label for="line">Headline line (address, open house time…)</label>
   <input type="text" id="line" maxlength="60">
   <label for="sub">Details line (beds, baths, city…)</label>
   <input type="text" id="sub" maxlength="70">
   <canvas id="c" width="1080" height="1350"></canvas>
   <button class="btn primary" type="button" id="share">Share or save the image</button>
-  <p class="fine">Square photos work best centered. Post it with the caption Vinto wrote for you in the app. Describe the home, not who should live there.</p>
+  <p class="fine">Edited or virtually staged photos must be labeled; keep the original photo too. Square photos work best centered. Post it with the caption Vinto wrote for you in the app. Describe the home, not who should live there.</p>
 </div>
 <script>
 (function () {
@@ -63,6 +64,12 @@ canvas { width: 100%; height: auto; border-radius: 14px; margin-top: 14px; backg
     if (img) {
       var ph = 1000, s = Math.max(W / img.width, ph / img.height), w = img.width * s, h = img.height * s;
       x.save(); x.beginPath(); x.rect(0, 0, W, ph); x.clip(); x.drawImage(img, (W - w) / 2, (ph - h) / 2, w, h); x.restore();
+      if (document.getElementById('staged').checked) {
+        // AI photo label (idea 51): MLS and consumer-protection rules expect edited photos to say so, on the image.
+        x.font = '600 28px Inter, Helvetica, Arial'; var lw = x.measureText('VIRTUALLY STAGED').width + 40;
+        x.fillStyle = 'rgba(7,11,10,.78)'; x.fillRect(W - 60 - lw, 60, lw, 56);
+        x.fillStyle = '#ffffff'; x.textAlign = 'center'; x.fillText('VIRTUALLY STAGED', W - 60 - lw / 2, 98); x.textAlign = 'left';
+      }
       var g = x.createLinearGradient(0, 640, 0, 1000); g.addColorStop(0, 'rgba(7,11,10,0)'); g.addColorStop(1, 'rgba(7,11,10,.92)'); x.fillStyle = g; x.fillRect(0, 640, W, 360);
     } else {
       x.fillStyle = '#1a1f1d'; x.fillRect(0, 0, W, 1000); x.fillStyle = 'rgba(255,255,255,.35)'; x.font = '500 40px Inter, Helvetica, Arial'; x.textAlign = 'center'; x.fillText('Pick a photo above', W / 2, 500);
@@ -94,6 +101,7 @@ canvas { width: 100%; height: auto; border-radius: 14px; margin-top: 14px; backg
     im.onload = function () { img = im; draw(); };
     im.src = u;
   });
+  document.getElementById('staged').addEventListener('change', draw);
   line.addEventListener('input', draw); sub.addEventListener('input', draw);
   document.getElementById('share').addEventListener('click', function () {
     c.toBlob(function (blob) {
