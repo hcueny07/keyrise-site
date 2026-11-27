@@ -134,6 +134,7 @@ footer a { color: var(--gold); text-decoration: none; }
 <script>
 (function () {
   var BASE = 'https://ovwsmktnufozcyaqaqfz.supabase.co/rest/v1/rpc/';
+  var PULSE = false; // idea 74, off until tested
   var KEY = 'sb_publishable_IvKFJC5hSi_ydgtLY5wk-A_FeJHikgb';
   var hash = new URLSearchParams(location.hash.slice(1));
   var token = hash.get('t'), guideToken = hash.get('g');
@@ -380,6 +381,13 @@ footer a { color: var(--gold); text-decoration: none; }
       html += '</div></section>';
     }
 
+    // Satisfaction pulse (idea 74): one question at the midpoint and after closing. The answer goes to the agent
+    // only, as a private portal message (no new database table). Off until tested: PULSE = false.
+    var pulsePhase = pulseFor(d);
+    if (PULSE && pulsePhase) html += '<section class="card" id="pulseCard"><div class="eyebrow">Quick check-in</div><h2>' + (pulsePhase === 'after' ? 'How did we do?' : 'How are we doing?') + '</h2><p class="sub">Only your agent sees this.</p>' +
+      '<div class="chips" id="pulseBtns">' + [1, 2, 3, 4, 5].map(function (n) { return '<button type="button" class="ghost" data-n="' + n + '">' + n + '</button>'; }).join(' ') + '</div><p class="sub">1 = not great · 5 = great</p>' +
+      '<form id="pulseForm" class="ask" style="display:none;margin-top:10px"><textarea id="pulseNote" maxlength="300" placeholder="Anything we could do better? (optional)"></textarea><button type="submit">Send</button></form><div class="qaA" id="pulseDone"></div></section>';
+
     html += '<p class="empty" style="text-align:center;margin-top:22px">Updated ' + new Date(d.updated || Date.now()).toLocaleString(LOC, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + '. Questions? Text your agent anytime.</p>';
     html += '</div></main>';
     app.innerHTML = html;
@@ -561,6 +569,37 @@ footer a { color: var(--gold); text-decoration: none; }
     }).catch(function () {});
   }
 
+  function pulseKey(phase) { return 'vinto.pulse.' + token.slice(0, 12) + '.' + phase; }
+  function pulseFor(d) {
+    var dates = d.dates || [], done = dates.filter(function (x) { return x.done; }).length, phase = null;
+    if (d.stage === 'Closed') phase = 'after';
+    else if (dates.length >= 4 && done / dates.length >= 0.4 && done / dates.length < 0.9) phase = 'mid';
+    if (!phase) return null;
+    try { if (localStorage.getItem(pulseKey(phase))) return null; } catch (e) {}
+    return phase;
+  }
+  function wirePulse(phase) {
+    var score = 0, form = document.getElementById('pulseForm'), out = document.getElementById('pulseDone');
+    document.querySelectorAll('#pulseBtns button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        score = +b.getAttribute('data-n');
+        document.querySelectorAll('#pulseBtns button').forEach(function (x) { x.classList.toggle('on', x === b); });
+        form.style.display = '';
+      });
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!score) return;
+      var note = document.getElementById('pulseNote').value.trim();
+      var body = (phase === 'after' ? 'After-closing check-in: ' : 'Check-in: ') + score + '/5' + (note ? ' · ' + note : '');
+      rpc('client_ask', { t: token, p_body: body }).then(function () {
+        try { localStorage.setItem(pulseKey(phase), String(score)); } catch (e) {}
+        form.style.display = 'none';
+        document.getElementById('pulseBtns').style.display = 'none';
+        out.textContent = score >= 4 ? (LANG === 'es' ? '¡Gracias! Nos alegra mucho.' : 'Thank you! That means a lot.') : (LANG === 'es' ? 'Gracias por decirnos. Tu agente se comunicará contigo.' : 'Thanks for telling us. Your agent will reach out.');
+      }).catch(function () { out.textContent = LANG === 'es' ? 'No se guardó. Intenta de nuevo.' : 'That didn’t save. Please try again.'; });
+    });
+  }
   function wireTeam() {
     rpc('client_team', { t: token }).then(function (t) {
       if (!t || !t.agent) return;
@@ -639,6 +678,7 @@ footer a { color: var(--gold); text-decoration: none; }
     });
     wireMessages();
     wireTeam();
+    if (PULSE && pulsePhase) wirePulse(pulsePhase);
     wirePublic();
     var qaF = document.getElementById('qaForm');
     if (qaF) {
