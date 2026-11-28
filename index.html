@@ -2,169 +2,431 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vinto · The command center for real estate agents</title>
-<meta name="description" content="Vinto keeps every deal, deadline and client in one place. It reads your contracts, tracks every date that matters and tells you what to do today.">
-<meta property="og:title" content="Vinto · The command center for real estate agents">
-<meta property="og:description" content="Every deal, deadline and client. Won.">
-<meta property="og:image" content="img/og.png">
+<link rel="canonical" href="https://vintorealty.com/">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vinto · Every deal. Every client. Every detail.</title>
+<meta name="description" content="Vinto is the daily app for real estate agents and their brokers. It reads the Georgia contract, tracks every date, keeps clients in the loop with a private portal and gets a clean file to broker review.">
+<meta property="og:title" content="Vinto · The daily app for real estate agents">
+<meta property="og:description" content="Every deal. Every client. Every detail.">
+<meta property="og:image" content="https://vintorealty.com/img/og.png">
+<meta property="og:url" content="https://vintorealty.com/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#070B0A">
 <link rel="icon" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Vinto","operatingSystem":"iOS","applicationCategory":"BusinessApplication","description":"The daily app for real estate agents and brokers: transactions, deadlines, client portal and broker file review, built for Georgia brokerages.","url":"https://vintorealty.com/","offers":{"@type":"Offer","price":"11.99","priceCurrency":"USD","description":"Per agent per month for brokerages and teams"},"publisher":{"@type":"Organization","name":"Cueny Ventures LLC","url":"https://vintorealty.com/","email":"support@vintorealty.com"}}
+</script>
+<style>
+:root{--ink:#0E1513;--obsidian:#070B0A;--champagne:#D6BD86;--champagne-2:#F0DEB4;--gold:#9C7B3C;--ivory:#F4F3EF;--line:#E6E3DA;--muted:#55595A;--muted-d:rgba(255,255,255,.64);--edge:rgba(214,189,134,.18);--edge-s:rgba(255,255,255,.08);--sans:"Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;--serif:"Instrument Serif",Georgia,serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--ivory);color:var(--ink);font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}img{display:block;max-width:100%}p{margin:0}button{font-family:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.035em;line-height:1.05}
+h1{font-size:clamp(44px,7vw,84px)}h2{font-size:clamp(32px,4.4vw,54px)}h3{font-size:21px;letter-spacing:-.02em;line-height:1.25}
+em.s{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.01em;background:linear-gradient(100deg,var(--champagne-2),var(--champagne) 45%,#B8964F);-webkit-background-clip:text;background-clip:text;color:transparent}
+.light em.s{background:none;color:var(--gold)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.eyebrow::before{content:"";width:18px;height:1px;background:currentColor;opacity:.7}
+.dark{background:var(--obsidian);color:#fff}.dark .eyebrow{color:var(--champagne)}
+section{padding:112px 0}
+.head{max-width:700px}.head h2{margin-top:16px}.head p{margin-top:16px;color:var(--muted);font-size:18.5px}.dark .head p{color:var(--muted-d)}
+.center{text-align:center;margin-inline:auto}
+:focus-visible{outline:2px solid var(--champagne);outline-offset:3px;border-radius:6px}
+
+.top{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .25s,border-color .25s;border-bottom:1px solid transparent}
+.top.stuck{background:rgba(7,11,10,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--edge-s)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}.brand img{width:30px;height:30px}.brand span{font-weight:600;font-size:15px;letter-spacing:.32em}
+.nav{display:flex;gap:4px;align-items:center}
+.nav a{color:rgba(255,255,255,.74);text-decoration:none;font-size:14.5px;font-weight:500;padding:8px 13px;border-radius:999px}
+.nav a:hover{color:#fff;background:rgba(255,255,255,.07)}
+.menu{display:none;background:none;border:1px solid var(--edge-s);color:#fff;border-radius:999px;padding:9px 14px;font-weight:600;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .15s,background .2s,box-shadow .2s;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn-gold{background:linear-gradient(180deg,var(--champagne-2),var(--champagne));color:var(--obsidian)!important;box-shadow:0 8px 30px -10px rgba(214,189,134,.6),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn-glass{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.16);color:#fff}
+.btn-ink{background:var(--ink);color:#fff}.btn-line{background:#fff;border-color:var(--line);color:var(--ink)}
+.nav .btn{margin-left:8px;padding:10px 18px}
+
+.hero{position:relative;overflow:hidden;background:var(--obsidian);color:#fff;padding:150px 0 90px}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;pointer-events:none;animation:drift 18s ease-in-out infinite alternate}
+.orb.a{width:520px;height:520px;right:-80px;top:-120px;background:radial-gradient(circle,rgba(214,189,134,.42),transparent 65%)}
+.orb.b{width:560px;height:560px;left:-200px;top:40px;background:radial-gradient(circle,rgba(47,98,80,.6),transparent 65%);animation-delay:-6s}
+@keyframes drift{to{transform:translate3d(40px,30px,0) scale(1.08)}}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse at 50% 25%,#000 25%,transparent 72%);mask-image:radial-gradient(ellipse at 50% 25%,#000 25%,transparent 72%)}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:999px;border:1px solid var(--edge);background:rgba(255,255,255,.03);font-size:13.5px;color:rgba(255,255,255,.82);text-decoration:none}
+.badge b{font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--obsidian);background:var(--champagne);padding:4px 9px;border-radius:999px}
+.hero h1{margin-top:26px}.lede{margin-top:24px;max-width:540px;font-size:19px;color:var(--muted-d)}
+.actions{margin-top:34px;display:flex;gap:12px;flex-wrap:wrap}
+.proof{margin-top:32px;display:flex;gap:10px 24px;flex-wrap:wrap;font-size:13.5px;color:rgba(255,255,255,.6)}
+.proof span::before{content:"✓";color:var(--champagne);margin-right:8px}
+
+.device{justify-self:center;display:grid;gap:18px;justify-items:center}
+.phone{width:316px;border-radius:46px;padding:11px;background:linear-gradient(160deg,#2a302e,#0b0f0e);box-shadow:0 60px 120px -30px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.08);transform:perspective(1400px) rotateY(var(--ry,-6deg)) rotateX(var(--rx,3deg));transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.screen{border-radius:36px;overflow:hidden;background:var(--ivory);height:610px;position:relative;color:var(--ink)}
+.view{position:absolute;inset:0;opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s;pointer-events:none}
+.view.on{opacity:1;transform:none}
+.bar{background:var(--obsidian);color:#fff;padding:44px 18px 16px}
+.bar small{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--champagne);font-weight:600}
+.bar h4{margin:4px 0 0;font-size:23px;font-weight:600;letter-spacing:-.03em}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.stats div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px 10px}
+.stats b{display:block;font-size:18px}.stats span{font-size:10px;color:rgba(255,255,255,.6)}
+.stats b.ok{color:#5FD3A2}
+.list{padding:12px 12px 0;display:grid;gap:8px}
+.item{background:#fff;border:1px solid #ECE9E1;border-radius:14px;padding:10px 12px;display:grid;grid-template-columns:8px 1fr auto;gap:10px;align-items:center}
+.item i{width:8px;height:8px;border-radius:50%;background:var(--champagne)}.item i.r{background:#D9534F}.item i.g{background:#2F8F6B}
+.item b{display:block;font-size:13px;font-weight:600}.item span{font-size:11px;color:#6b6f70}
+.item em{font-style:normal;font-size:10.5px;font-weight:600;padding:4px 8px;border-radius:999px;background:#F4EDDF;color:#7A5F2B}
+.item em.ok{background:#E3F1EA;color:#1F6B4E}.item em.no{background:#FBE9E7;color:#8A2626}
+.askbar{position:absolute;left:12px;right:12px;bottom:14px;background:var(--obsidian);color:rgba(255,255,255,.78);border-radius:16px;padding:11px 14px;font-size:12px}
+.askbar b{color:var(--champagne)}
+.seg{display:inline-flex;padding:4px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--edge-s)}
+.seg button{border:0;background:transparent;color:rgba(255,255,255,.7);font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer}
+.seg button[aria-selected=true]{background:var(--champagne);color:var(--obsidian)}
+
+.strip{background:var(--obsidian);border-top:1px solid var(--edge-s);color:rgba(255,255,255,.55);padding:24px 0}
+.strip .wrap{display:flex;justify-content:center;gap:12px 40px;flex-wrap:wrap;font-size:13.5px}
+.strip b{color:rgba(255,255,255,.9);font-weight:500}
+
+.day{background:#fff;border-bottom:1px solid var(--line)}
+.rail{margin-top:52px;display:grid;grid-template-columns:repeat(5,1fr);position:relative}
+.rail::before{content:"";position:absolute;left:0;right:0;top:11px;height:2px;background:var(--line)}
+.rail .prog{position:absolute;left:0;top:11px;height:2px;background:var(--gold);width:0;transition:width .5s}
+.stop{position:relative;background:none;border:0;text-align:left;padding:32px 12px 0 0;cursor:pointer;color:var(--muted)}
+.stop::before{content:"";position:absolute;left:0;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--line);transition:.3s}
+.stop[aria-selected=true]::before,.stop.past::before{border-color:var(--gold);background:var(--gold);box-shadow:0 0 0 5px rgba(156,123,60,.14)}
+.stop b{display:block;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.stop span{display:block;font-weight:600;font-size:16.5px;letter-spacing:-.015em;color:var(--ink);margin-top:2px}
+.stop[aria-selected=false] span{color:#8a8d8e}
+.stage{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;min-height:300px}
+.stage h3{font-size:30px;letter-spacing:-.03em}.stage p{margin-top:14px;color:var(--muted);font-size:17.5px}
+.stage ul{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:9px}
+.stage li{display:grid;grid-template-columns:22px 1fr;font-size:15.5px}.stage li::before{content:"✓";color:var(--gold);font-weight:600}
+.mock{background:var(--ivory);border:1px solid var(--line);border-radius:22px;padding:18px;display:grid;gap:9px;box-shadow:0 30px 60px -40px rgba(14,21,19,.35)}
+.mk{font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:2px}
+.fade{animation:fade .45s both}@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+
+.tabs{display:inline-flex;padding:5px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--edge-s);margin-top:36px}
+.tabs button{border:0;background:transparent;color:rgba(255,255,255,.72);font-weight:600;font-size:15px;padding:11px 24px;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--champagne);color:var(--obsidian)}
+.aud{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card-d{background:rgba(255,255,255,.035);border:1px solid var(--edge-s);border-radius:22px;padding:26px;position:relative;overflow:hidden}
+.card-d::after{content:"";position:absolute;inset:0;background:radial-gradient(360px circle at var(--mx,50%) var(--my,-40%),rgba(214,189,134,.13),transparent 60%);pointer-events:none}
+.card-d .k{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--champagne)}
+.card-d h3{margin-top:12px}.card-d p{margin-top:8px;color:var(--muted-d);font-size:15.5px}
+
+.portal{background:linear-gradient(180deg,#fff,var(--ivory))}
+.portal .wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.browser{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 50px 90px -50px rgba(14,21,19,.45)}
+.bbar{display:flex;align-items:center;gap:6px;padding:11px 14px;background:#F0EEE8;font-size:12px;color:#7b7f80}
+.bbar i{width:9px;height:9px;border-radius:50%;background:#d7d3c8}.bbar span{margin-left:10px}
+.pv-hero{background:var(--obsidian);color:#fff;padding:22px}
+.pv-hero small{font-size:10px;letter-spacing:.16em;color:var(--champagne);font-weight:600}
+.pv-hero h4{margin:8px 0 0;font-size:24px;font-weight:600;letter-spacing:-.03em;line-height:1.15}
+.pv-hero h4 em{font-family:var(--serif);font-weight:400;color:var(--champagne)}
+.count{margin-top:14px;display:flex;align-items:baseline;gap:8px}.count b{font-size:40px;letter-spacing:-.04em;line-height:1}.count span{font-size:13px;color:var(--muted-d)}
+.pv-body{padding:16px;display:grid;gap:10px;background:var(--ivory)}
+.pv-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.steps{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:7px;font-size:13.5px}
+.steps li{display:grid;grid-template-columns:20px 1fr;align-items:center;color:#8a8d8e}
+.steps li::before{content:"";width:10px;height:10px;border-radius:50%;border:2px solid var(--line)}
+.steps li.done{color:var(--ink)}.steps li.done::before{background:var(--gold);border-color:var(--gold)}
+.steps li.next{color:var(--ink);font-weight:600}.steps li.next::before{border-color:var(--gold);box-shadow:0 0 0 4px rgba(156,123,60,.16)}
+.warn{background:#FBECEA;color:#7A1A12;border-radius:12px;padding:10px 12px;font-size:12.5px}
+.points{margin:26px 0 0;padding:0;list-style:none;display:grid;gap:14px}
+.points li{display:grid;grid-template-columns:26px 1fr;gap:6px}.points li::before{content:"✓";color:var(--gold);font-weight:700}
+.points b{display:block;font-weight:600}.points span{color:var(--muted);font-size:15.5px}
+
+.index{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:52px}
+.col{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px}
+.col .k{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.col h3{margin-top:10px;font-size:19px}
+.col ul{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:9px;font-size:15px;color:#33373A}
+.col li{padding-left:16px;position:relative}.col li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--champagne)}
+
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:48px}
+.check{padding:22px;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid var(--edge-s)}
+.check b{display:block;font-weight:600}.check span{color:var(--muted-d);font-size:15px}
+
+.price-grid{margin-top:52px;display:grid;grid-template-columns:1.05fr .95fr;gap:20px;align-items:stretch}
+.plan{background:var(--obsidian);color:#fff;border-radius:28px;padding:38px;box-shadow:0 40px 80px -40px rgba(7,11,10,.6),inset 0 0 0 1px var(--edge)}
+.tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:999px;background:rgba(214,189,134,.14);color:var(--champagne)}
+.amount{font-size:62px;font-weight:600;letter-spacing:-.05em;line-height:1}.per{color:var(--muted-d);font-size:15px}
+.plan ul{list-style:none;padding:0;margin:26px 0 30px;display:grid;gap:11px}
+.plan li{font-size:15.5px;display:grid;grid-template-columns:24px 1fr;color:rgba(255,255,255,.88)}.plan li::before{content:"✓";color:var(--champagne);font-weight:600}
+.note-d{margin-top:16px;padding:12px 14px;border-radius:14px;border:1px solid var(--edge);background:rgba(214,189,134,.07);font-size:14.5px;color:rgba(255,255,255,.86)}
+.note-d b{color:var(--champagne);font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:2px}
+.calc{background:#fff;border:1px solid var(--line);border-radius:28px;padding:38px;display:flex;flex-direction:column}
+.calc output{font-size:54px;font-weight:600;letter-spacing:-.045em;line-height:1;display:block;margin-top:18px}
+.calc input[type=range]{width:100%;margin-top:26px;accent-color:var(--gold)}
+.calc .rows{margin-top:22px;display:grid;gap:10px;font-size:15px}
+.calc .rows div{display:flex;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.calc .rows span{color:var(--muted)}
+.fine{margin-top:auto;padding-top:18px;color:var(--muted);font-size:13.5px}
+
+.faq{background:#fff;border-top:1px solid var(--line)}
+.faq .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:72px}
+details{border-bottom:1px solid var(--line);padding:22px 0}details:first-child{border-top:1px solid var(--line)}
+summary{cursor:pointer;list-style:none;font-size:19px;font-weight:600;letter-spacing:-.015em;display:flex;justify-content:space-between;gap:20px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--gold);font-weight:400;font-size:24px;line-height:1;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin-top:12px;color:var(--muted);font-size:16px}
+
+.cta{text-align:center;position:relative;overflow:hidden}
+.cta::before{content:"";position:absolute;inset:0;background:radial-gradient(700px 400px at 50% 0%,rgba(214,189,134,.2),transparent 70%)}
+.cta .wrap{position:relative}.cta h2{max-width:780px;margin:16px auto 0}.cta p{margin:18px auto 0;max-width:540px;color:var(--muted-d);font-size:18px}
+.cta .actions{justify-content:center}
+footer{background:var(--obsidian);color:rgba(255,255,255,.5);padding:34px 0 44px;font-size:14px;border-top:1px solid var(--edge-s)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer nav{display:flex;gap:22px;flex-wrap:wrap}footer a{color:rgba(255,255,255,.72);text-decoration:none}footer a:hover{color:var(--champagne)}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s;transition-delay:var(--d,0s)}.reveal.in{opacity:1;transform:none}
+
+@media (max-width:980px){
+  .hero .wrap,.stage,.portal .wrap,.price-grid,.faq .wrap{grid-template-columns:1fr;gap:44px}
+  .index{grid-template-columns:1fr 1fr}.phone{transform:none}
+  .menu{display:inline-flex}.nav{position:absolute;top:72px;left:16px;right:16px;flex-direction:column;align-items:stretch;background:rgba(7,11,10,.97);border:1px solid var(--edge-s);border-radius:20px;padding:10px;display:none}
+  .nav.open{display:flex}.nav a{padding:12px 14px}.nav .btn{margin:6px 0 0}
+}
+@media (max-width:680px){
+  body{font-size:16px}.wrap{padding:0 18px}section{padding:80px 0}.hero{padding:120px 0 64px}
+  .rail{grid-template-columns:1fr;gap:4px}.rail::before,.rail .prog{display:none}
+  .stop{padding:10px 0 10px 30px}.stop::before{top:13px}
+  .aud,.checks,.index{grid-template-columns:1fr}.tabs button{padding:10px 16px;font-size:14px}
+  .plan,.calc{padding:26px}.amount{font-size:52px}.phone{width:292px}.screen{height:570px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
 </head>
 <body>
 
-<header class="top">
+<header class="top" id="top">
   <div class="wrap">
     <a class="brand" href="./"><img src="img/mark.png" alt=""><span>VINTO</span></a>
-    <nav class="nav">
-      <a href="#features">Product</a>
-      <a href="#privacy">Privacy</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav">
+      <a href="#day">How it works</a>
+      <a href="#who">Who it’s for</a>
+      <a href="brokers.html">For brokers</a>
+      <a href="#portal">Client portal</a>
+      <a href="#inside">Everything inside</a>
       <a href="#pricing">Pricing</a>
       <a href="support.html">Support</a>
-      <a class="btn btn-gold" href="#pricing">Get started</a>
+      <a class="btn btn-gold" data-plan="demo" href="#">Book a demo</a>
     </nav>
   </div>
 </header>
 
 <main>
 <section class="hero">
+  <div class="orb a" aria-hidden="true"></div><div class="orb b" aria-hidden="true"></div><div class="grid-bg" aria-hidden="true"></div>
   <div class="wrap">
     <div>
-      <span class="badge"><b>New</b> Now on iPhone for real estate teams</span>
-      <h1>Every deal.<br>Every date.<br><em class="serif gold-text">Won.</em></h1>
-      <p class="lede">Vinto is the command center for real estate agents. It reads your contracts, counts down every deadline and tells you exactly what to do today.</p>
+      <a class="badge" href="#pricing"><b id="launchTag">Jan 19</b> <span id="launchText">Coming to the App Store on January 19, 2027</span></a>
+      <h1>Every deal.<br>Every client.<br><em class="s">Every detail.</em></h1>
+      <p class="lede">Vinto is the daily app for real estate agents and their brokers. It reads the contract, counts down every date, keeps clients in the loop and gets a clean file to broker review.</p>
       <div class="actions">
-        <a class="btn btn-gold" href="#pricing">See pricing <span class="arrow">→</span></a>
-        <a class="btn btn-glass" data-plan="demo" href="#">Book a demo</a>
+        <a class="btn btn-gold" data-plan="demo" href="#">Book a 15-minute demo <span aria-hidden="true">→</span></a>
+        <a class="btn btn-glass" href="#day">See a day with Vinto</a>
       </div>
-      <div class="proof"><span>Built with working agents</span><span>Georgia contracts ready</span><span>Invite-only and private</span></div>
+      <div class="proof"><span>Built with a Georgia brokerage team</span><span>Reads the Georgia contract</span><span>Invite-only and private</span></div>
     </div>
-    <div class="phone" aria-hidden="true">
-      <div class="screen">
-        <div class="bar">
-          <small>Monday · Today</small>
-          <h4>Good morning</h4>
-          <div class="stats"><div><b>3</b><span>Showings</span></div><div><b>2</b><span>Deadlines</span></div><div><b>5</b><span>Follow-ups</span></div></div>
+    <div class="device">
+      <div class="phone" id="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="view on" data-view="today">
+            <div class="bar"><small>Monday · Today</small><h4>Good morning</h4>
+              <div class="stats"><div><b>3</b><span>Showings</span></div><div><b>2</b><span>Deadlines</span></div><div><b>5</b><span>Follow-ups</span></div></div></div>
+            <div class="list">
+              <div class="item"><i class="r"></i><div><b>Due diligence ends</b><span>123 Sample Lane</span></div><em class="no">Today</em></div>
+              <div class="item"><i></i><div><b>Showing tour · 3 homes</b><span>Rivera family · 1:00 PM</span></div><em>1:00</em></div>
+              <div class="item"><i class="g"></i><div><b>Contract read</b><span>Price, parties and 7 dates saved</span></div><em class="ok">Done</em></div>
+              <div class="item"><i></i><div><b>Call Taylor Brooks</b><span>New lead · day 3 follow-up</span></div><em>Call</em></div>
+            </div>
+            <div class="askbar">✦ Ask Vinto: <b>“When is financing due on Sample Lane?”</b></div>
+          </div>
+          <div class="view" data-view="deal">
+            <div class="bar"><small>Under contract · Buyer</small><h4>123 Sample Lane</h4>
+              <div class="stats"><div><b>25</b><span>Days to close</span></div><div><b>7</b><span>Dates saved</span></div><div><b class="ok">●</b><span>Deal health</span></div></div></div>
+            <div class="list">
+              <div class="item"><i class="g"></i><div><b>Binding Agreement Date</b><span>Every date counts from here</span></div><em class="ok">Nov 30</em></div>
+              <div class="item"><i class="r"></i><div><b>Due diligence ends</b><span>Reminder set for the day before</span></div><em class="no">Dec 10</em></div>
+              <div class="item"><i></i><div><b>Financing</b><span>Lender sees this date live</span></div><em>Dec 21</em></div>
+              <div class="item"><i></i><div><b>Closing</b><span>Client portal counts it down</span></div><em>Dec 30</em></div>
+            </div>
+            <div class="askbar">✦ Intro emails drafted for the <b>lender and attorney</b></div>
+          </div>
+          <div class="view" data-view="review">
+            <div class="bar"><small>Broker · File review</small><h4>Ready for review</h4>
+              <div class="stats"><div><b>4</b><span>Waiting</span></div><div><b>11</b><span>Docs checked</span></div><div><b>2</b><span>Sent back</span></div></div></div>
+            <div class="list">
+              <div class="item"><i class="g"></i><div><b>48 Magnolia Ct</b><span>All required documents in</span></div><em class="ok">Approve</em></div>
+              <div class="item"><i class="r"></i><div><b>123 Sample Lane</b><span>Missing: seller disclosure</span></div><em class="no">Send back</em></div>
+              <div class="item"><i class="g"></i><div><b>9 Willow Bend</b><span>Approved Friday · history saved</span></div><em class="ok">Done</em></div>
+              <div class="item"><i></i><div><b>77 Cedar Row</b><span>Submitted this morning</span></div><em>New</em></div>
+            </div>
+            <div class="askbar">✦ Every decision keeps a <b>dated history</b></div>
+          </div>
         </div>
-        <div class="list">
-          <div class="item"><i class="r"></i><div><b>Due diligence ends</b><span>123 Sample Lane</span></div><em>Today</em></div>
-          <div class="item"><i></i><div><b>Showing tour · 3 homes</b><span>Rivera family · 1:00 PM</span></div><em>1:00</em></div>
-          <div class="item"><i class="g"></i><div><b>Contract read</b><span>Price, parties and 7 dates saved</span></div><em>Done</em></div>
-          <div class="item"><i></i><div><b>Call Taylor Brooks</b><span>New lead · day 3 follow-up</span></div><em>Call</em></div>
-          <div class="item"><i></i><div><b>Appraisal ordered?</b><span>48 Magnolia Court</span></div><em>Wed</em></div>
-        </div>
-        <div class="ask">✦ <span>Ask Vinto: <b>"When is financing due on Sample Lane?"</b></span></div>
+      </div>
+      <div class="seg" role="tablist" aria-label="App screens" id="seg">
+        <button role="tab" aria-selected="true" data-go="today">Today</button>
+        <button role="tab" aria-selected="false" data-go="deal">A deal</button>
+        <button role="tab" aria-selected="false" data-go="review">Broker review</button>
       </div>
     </div>
   </div>
 </section>
 
-<div class="strip"><div class="wrap"><span><b>Contracts</b> read in seconds</span><span><b>Every Georgia date</b> tracked</span><span><b>Remine, FMLS, GAMLS</b> reports supported</span><span><b>DocuSign</b>-ready forms</span></div></div>
+<div class="strip"><div class="wrap"><span><b>Contracts</b> read in under a minute</span><span><b>Every date</b> counted from the Binding Agreement Date</span><span><b>Property facts</b> from public county records</span><span>Client portal in <b>English and Español</b></span></div></div>
 
-<section id="features">
+<section class="day light" id="day">
   <div class="wrap">
     <div class="head">
-      <span class="eyebrow">The product</span>
-      <h2>One app for the whole transaction.</h2>
-      <p>From the first call with a lead to the review request after closing, Vinto keeps the work moving so nothing slips.</p>
+      <span class="eyebrow">A day with Vinto</span>
+      <h2>From the first coffee to the <em class="s">last signature.</em></h2>
+      <p>Pick a time. This is what an agent’s day looks like when the app does the tracking.</p>
     </div>
-    <div class="bento">
-      <div class="tile t-a ink">
-        <span class="k">Contracts</span>
-        <h3>Upload a purchase agreement. Get the whole deal back.</h3>
-        <p>Price, earnest money, contingencies, parties and every date, filled in for you and checked for the blanks agents miss.</p>
-        <div class="chiprow"><span>Purchase price</span><span>Earnest money</span><span>Due diligence</span><span>Financing</span><span>Closing</span><span>Missing initials</span></div>
+    <div class="rail" role="tablist" aria-label="Times of day" id="rail"><div class="prog" id="prog"></div></div>
+    <div class="stage" id="stage" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="dark" id="who">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Who it’s for</span>
+      <h2>One app. <em class="s">Three people</em> stop chasing each other.</h2>
+      <p>The agent, the broker and the client each see exactly what they need, and nothing they shouldn’t.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Audience" id="tabs">
+      <button role="tab" aria-selected="true" data-who="agents">Agents</button>
+      <button role="tab" aria-selected="false" data-who="brokers">Brokers</button>
+      <button role="tab" aria-selected="false" data-who="clients">Clients</button>
+    </div>
+    <div class="aud" id="aud"></div>
+  </div>
+</section>
+
+<section class="portal light" id="portal">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Client portal</span>
+      <h2 style="margin-top:16px">Your clients stop texting <em class="s">“where are we?”</em></h2>
+      <p style="margin-top:16px;color:var(--muted);font-size:18.5px">Every buyer and seller gets one private link. No app to download and no password to forget. It updates itself from the deal.</p>
+      <ul class="points">
+        <li><div><b>What happens next</b><span>Each step explained in plain words, with what the client needs to do.</span></div></li>
+        <li><div><b>Countdown and checklist</b><span>Clients tick off their own to-dos. The agent sees it right away.</span></div></li>
+        <li><div><b>Wire-fraud warning built in</b><span>Before money moves, they’re told to call the attorney at a number they already know.</span></div></li>
+        <li><div><b>Never a price or commission</b><span>Dates and next steps only.</span></div></li>
+      </ul>
+      <div class="actions">
+        <a class="btn btn-ink" href="portal.html#demo=buyer" target="_blank" rel="noopener">Open a live sample <span aria-hidden="true">→</span></a>
+        <a class="btn btn-line" href="portal.html#demo=seller" target="_blank" rel="noopener">Seller view</a>
       </div>
-      <div class="tile t-b">
-        <span class="k">Deadlines</span>
-        <h3>Dates that count themselves.</h3>
-        <div class="dates"><div><b>Due diligence</b><span class="due">Today</span></div><div><b>Financing</b><span>12 days</span></div><div><b>Closing</b><span>25 days</span></div></div>
+    </div>
+    <div class="browser reveal" aria-hidden="true">
+      <div class="bbar"><i></i><i></i><i></i><span>vintorealty.com/portal</span></div>
+      <div class="pv-hero"><small>VINTO · YOUR HOME PORTAL</small><h4>Hi Maya,<br><em>here’s where things stand.</em></h4><div class="count"><b id="count">0</b><span>days to closing</span></div></div>
+      <div class="pv-body">
+        <div class="pv-card"><div class="mk">Your timeline</div>
+          <ol class="steps" id="steps"><li>Binding agreement</li><li>Earnest money</li><li>Due diligence ends</li><li>Appraisal</li><li>Closing</li></ol></div>
+        <div class="warn"><b>Wire fraud warning:</b> never send money based on an email alone. Call your closing attorney first.</div>
       </div>
-      <div class="tile t-c"><span class="k">Clients</span><h3>Leads that never go cold.</h3><p>Instant replies, follow-ups on day 1, 3 and 7, buyer consultations and review asks.</p></div>
-      <div class="tile t-d"><span class="k">Showings</span><h3>Tours in the right order.</h3><p>Drive times, a map route and a one-page brief for every home.</p></div>
-      <div class="tile t-e"><span class="k">Signatures</span><h3>DocuSign-ready in a tap.</h3><p>Signature, initial and date boxes added to Georgia forms automatically.</p></div>
-      <div class="tile t-f"><span class="k">Listings</span><h3>Your MLS reports, read for you.</h3><p>Share a Remine or MLS listing report or CMA. Vinto fills in the house, answers questions and prices it from recent sales.</p></div>
-      <div class="tile t-g"><span class="k">For brokers</span><h3>A clean file before review.</h3><p>Every file checked against the office's required documents, plus a broker view of every agent's deals and dates.</p></div>
     </div>
   </div>
 </section>
 
-<section class="dark privacy" id="privacy">
-  <div class="wrap grid">
+<section id="inside" class="light">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Everything inside</span>
+      <h2>The whole job, in four places.</h2>
+      <p>No add-ons and no tiers. Every agent gets all of it.</p>
+    </div>
+    <div class="index">
+      <div class="col reveal"><span class="k">01 · Transactions</span><h3>Run the deal</h3><ul><li>Contract reading with blanks flagged</li><li>Deadlines, reminders and calendar sync</li><li>Deal health at a glance</li><li>Intro emails to every party</li><li>Offers side by side with seller net</li><li>Earnest money and extension watch</li><li>Property facts from county records</li></ul></div>
+      <div class="col reveal" style="--d:.07s"><span class="k">02 · Clients</span><h3>Keep them in the loop</h3><ul><li>Private portal, English or Español</li><li>Client to-dos and document uploads</li><li>Messages in one thread</li><li>Tours in driving order with ratings</li><li>Weekly seller report</li><li>Live dates page for lender and attorney</li><li>Home binder after closing</li></ul></div>
+      <div class="col reveal" style="--d:.14s"><span class="k">03 · Growth</span><h3>Stay in front of people</h3><ul><li>Just Listed and Just Sold email blasts</li><li>Branded social graphics</li><li>Open house sign-in by QR code</li><li>Your own agent page with a lead form</li><li>Lead follow-ups on day 1, 3 and 7</li><li>Five people to reach each week</li><li>Review asks and testimonials</li></ul></div>
+      <div class="col reveal" style="--d:.21s"><span class="k">04 · Office</span><h3>Run the brokerage</h3><ul><li>Broker review queue with history</li><li>Required documents checked first</li><li>Office checklists, vendors and resources</li><li>A record of every AI draft and who approved it</li><li>Step-by-step guide for new agents</li><li>Safety check-in for showings</li><li>Team sharing with roles</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="privacy">
+  <div class="wrap">
     <div class="head">
       <span class="eyebrow">Private by design</span>
-      <h2>Your clients' business stays <em class="serif gold-text">yours.</em></h2>
-      <p>Built for licensed professionals handling other people's biggest purchase. Privacy isn't a setting. It's the default.</p>
+      <h2>Your clients’ business stays <em class="s">yours.</em></h2>
+      <p>Built for licensed professionals handling other people’s biggest purchase.</p>
     </div>
     <div class="checks">
-      <div class="check"><div class="ico">⌁</div><div><b>Locked with Face ID</b><span>The app hides its screen in the app switcher.</span></div></div>
-      <div class="check"><div class="ico">$</div><div><b>Commission stays private</b><span>Prices and commission never appear on a screen a client might see.</span></div></div>
-      <div class="check"><div class="ico">◎</div><div><b>Each agent sees only their deals</b><span>Brokers see their own office, never another brokerage's.</span></div></div>
-      <div class="check"><div class="ico">✦</div><div><b>MLS data never goes to AI</b><span>Listing reports are read by the app's own code. Your data is never used to train AI.</span></div></div>
+      <div class="check reveal"><b>Locked with Face ID</b><span>The app hides its screen in the app switcher.</span></div>
+      <div class="check reveal"><b>Each agent sees only their own deals</b><span>Brokers see their own office, never another brokerage’s.</span></div>
+      <div class="check reveal"><b>Commission stays private</b><span>Prices and commission never appear on a screen a client can see.</span></div>
+      <div class="check reveal"><b>Never used to train AI</b><span>Wire instructions, bank details and Social Security numbers are kept away from AI, and nothing you add is used to train it.</span></div>
     </div>
   </div>
 </section>
 
-<section id="pricing">
+<section id="pricing" class="light">
   <div class="wrap">
-    <div class="head center" style="text-align:center">
+    <div class="head center">
       <span class="eyebrow">Pricing</span>
-      <h2>Simple pricing. Cancel anytime.</h2>
-      <p>Brokerages get the best rate for every agent. Independent agents can start on their own.</p>
+      <h2>One plan. Every feature.</h2>
+      <p>For brokerages and teams. Month to month, cancel anytime.</p>
     </div>
-    <div class="plans">
-      <div class="plan featured">
-        <span class="tag">For brokerages</span>
-        <h3>Brokerage</h3>
-        <div class="price"><span class="amount" data-price="brokerage">$11.99</span><span class="per">per agent / month</span></div>
-        <p class="alt" data-alt="brokerage">$250 one-time setup · or pay yearly and get 2 months free</p>
-        <div class="toggle" role="group" aria-label="Billing period" data-for="brokerage"><button aria-pressed="true" data-period="month">Monthly</button><button aria-pressed="false" data-period="year">Yearly</button></div>
+    <div class="price-grid">
+      <div class="plan reveal">
+        <span class="tag">Brokerages and teams</span>
+        <div style="margin-top:20px;display:flex;align-items:baseline;gap:10px"><span class="amount">$11.99</span><span class="per">per agent / month</span></div>
+        <p class="per" style="margin-top:8px">Plus a $200 one-time setup.</p>
+        <div class="note-d" id="status"><b>Launching January 19, 2027</b>Vinto is in a private pilot with a Georgia brokerage team. Want an early look for your office? Book a demo.</div>
         <ul>
           <li>Every Vinto feature for every agent</li>
-          <li>Broker view of every agent's deals and dates</li>
-          <li>Your office's checklists, required documents and vendors</li>
+          <li>Broker review queue and office view</li>
+          <li>Your office’s checklists, required documents and vendors</li>
           <li>Setup and agent training included</li>
           <li>Invite-only: only the agents you approve can join</li>
         </ul>
-        <a class="btn btn-gold" data-plan="brokerage" href="#">Set up my brokerage <span class="arrow">→</span></a>
+        <a class="btn btn-gold" data-plan="brokerage" href="#">Book a demo for your brokerage <span aria-hidden="true">→</span></a>
       </div>
-      <div class="plan">
-        <span class="tag">For independent agents</span>
-        <h3>Individual</h3>
-        <div class="price"><span class="amount" data-price="individual">$19.99</span><span class="per">per month</span></div>
-        <p class="alt" data-alt="individual">or $199 a year (save $40)</p>
-        <div class="toggle" role="group" aria-label="Billing period" data-for="individual"><button aria-pressed="true" data-period="month">Monthly</button><button aria-pressed="false" data-period="year">Yearly</button></div>
-        <ul>
-          <li>Every agent feature</li>
-          <li>Contract reading and deadline tracking</li>
-          <li>Leads, clients, showings and listings</li>
-          <li>DocuSign-ready Georgia forms</li>
-          <li>Move to your brokerage's plan anytime</li>
-        </ul>
-        <a class="btn btn-ink" data-plan="individual" href="#">Start as an agent <span class="arrow">→</span></a>
+      <div class="calc reveal" style="--d:.08s">
+        <span class="eyebrow">What it costs your office</span>
+        <label for="agents" style="margin-top:14px;font-weight:600;font-size:18px"><span id="n">25</span> agents</label>
+        <output id="total" for="agents">$299.75</output>
+        <span style="color:var(--muted);font-size:15px">per month</span>
+        <input type="range" id="agents" min="3" max="150" value="25" step="1">
+        <div class="rows">
+          <div><span>Per agent, per day</span><b id="perday">$0.40</b></div>
+          <div><span>One-time setup</span><b>$200</b></div>
+          <div><span>Contract</span><b>Month to month</b></div>
+        </div>
+        <p class="fine">Prices in US dollars. Works alongside the compliance tool your brokerage already uses.</p>
       </div>
     </div>
-    <p class="fine">Prices in US dollars. Brokerage pricing applies to brokerages that sign up their agents together.</p>
   </div>
 </section>
 
-<section class="faq" style="background:#fff;border-top:1px solid var(--line)">
-  <div class="wrap grid">
-    <div class="head">
-      <span class="eyebrow">Questions</span>
-      <h2>Good to know.</h2>
-    </div>
+<section class="faq light">
+  <div class="wrap">
+    <div class="head"><span class="eyebrow">Questions</span><h2>Good to know.</h2></div>
     <div>
-      <details><summary>Who can use Vinto?</summary><p>Licensed real estate agents and brokers. Accounts are invite-only: once you sign up, we set up your account and invite you, and brokers approve their own agents.</p></details>
-      <details><summary>Does it work with my MLS and e-signature service?</summary><p>Yes. Vinto reads listing reports and CMAs you export from Remine, FMLS, Georgia MLS, Flexmls or Matrix, and prepares Georgia forms with signature boxes for DocuSign.</p></details>
-      <details><summary>Is my data used to train AI?</summary><p>No. The AI that reads contracts runs under commercial terms that forbid training on your data, and MLS listing reports are never sent to AI at all.</p></details>
-      <details><summary>What phones does it run on?</summary><p>iPhone today. Brokers review their office from the same app.</p></details>
-      <details><summary>Can I cancel?</summary><p>Anytime. Monthly plans stop at the end of the month. Your data is yours: ask and we'll send you a copy or delete it.</p></details>
+      <details><summary>Who can use Vinto?</summary><p>Licensed real estate agents and brokers at brokerages and teams that sign up. Accounts are invite-only: the broker approves each agent.</p></details>
+      <details><summary>Does it replace our compliance or e-signature tool?</summary><p>No. Vinto is the agent’s daily app and works alongside the tools your brokerage already uses. It prepares Georgia forms with signature boxes for DocuSign and gets a complete file ready for broker review.</p></details>
+      <details><summary>Where do property details come from?</summary><p>From the documents the agent adds and from public county tax records. Vinto is not connected to an MLS.</p></details>
+      <details><summary>Is my data used to train AI?</summary><p>No. The AI that reads contracts runs under commercial terms that forbid training on your data, and sensitive documents like wire instructions and bank statements are kept away from it.</p></details>
+      <details><summary>What phones does it run on?</summary><p>iPhone. The client portal works in any browser, on any phone or computer.</p></details>
+      <details><summary>Can we cancel?</summary><p>Anytime. Plans are month to month. Your data is yours: ask and we’ll send you a copy or delete it.</p></details>
     </div>
   </div>
 </section>
@@ -172,12 +434,9 @@
 <section class="dark cta">
   <div class="wrap">
     <span class="eyebrow">Ready when you are</span>
-    <h2>See Vinto run your <em class="serif gold-text">own</em> deals.</h2>
-    <p>A 20-minute walkthrough on Zoom or in person in metro Atlanta. Bring a contract and watch it fill in.</p>
-    <div class="actions">
-      <a class="btn btn-gold" data-plan="demo" href="#">Book a demo <span class="arrow">→</span></a>
-      <a class="btn btn-glass" href="#pricing">See pricing</a>
-    </div>
+    <h2>See Vinto run your <em class="s">own</em> office.</h2>
+    <p>Fifteen minutes on Zoom or in person in metro Atlanta. Bring a contract and watch it fill in.</p>
+    <div class="actions"><a class="btn btn-gold" data-plan="demo" href="#">Book a 15-minute demo <span aria-hidden="true">→</span></a><a class="btn btn-glass" href="portal.html#demo=buyer" target="_blank" rel="noopener">Try the client portal</a></div>
   </div>
 </section>
 </main>
@@ -185,53 +444,106 @@
 <footer>
   <div class="wrap">
     <p>© <span id="y">2026</span> Cueny Ventures LLC · Vinto</p>
-    <nav><a href="privacy.html">Privacy</a><a href="support.html">Support</a><a href="mailto:hudsoncueny@gmail.com">Contact</a></nav>
+    <nav><a href="privacy.html">Privacy</a><a href="support.html">Support</a><a href="mailto:support@vintorealty.com">Contact</a></nav>
   </div>
 </footer>
 
 <script>
-// Payment links. Paste each Stripe Payment Link here once Stripe is set up; until then the buttons open an email.
-const PAY = {
-  brokerage: { month: "", year: "" },
-  individual: { month: "", year: "" },
-};
-const EMAIL = "hudsoncueny@gmail.com";
-const PRICES = {
-  brokerage: { month: ["$11.99", "per agent / month", "$250 one-time setup · or pay yearly and get 2 months free"],
-               year: ["$119.90", "per agent / year", "$250 one-time setup · 2 months free"] },
-  individual: { month: ["$19.99", "per month", "or $199 a year (save $40)"],
-                year: ["$199", "per year", "2 months free"] },
-};
-const SUBJECT = { brokerage: "Vinto for my brokerage", individual: "Vinto for me", demo: "Vinto demo" };
-const BODY = {
-  brokerage: "Hi Hudson,\n\nI'd like to set up Vinto for our brokerage.\n\nBrokerage name:\nNumber of agents:\nBest phone:\nBilling: monthly / yearly\n",
-  individual: "Hi Hudson,\n\nI'd like to start Vinto as an individual agent.\n\nName:\nBrokerage:\nBilling: monthly / yearly\n",
-  demo: "Hi Hudson,\n\nI'd like a Vinto demo.\n\nName:\nBrokerage:\nBest times:\n",
-};
-const period = { brokerage: "month", individual: "month" };
-function href(plan) {
-  const link = PAY[plan] && PAY[plan][period[plan]];
-  if (link) return link;
-  const body = (BODY[plan] || "").replace("monthly / yearly", period[plan] === "year" ? "yearly" : "monthly");
-  return "mailto:" + EMAIL + "?subject=" + encodeURIComponent(SUBJECT[plan]) + "&body=" + encodeURIComponent(body);
-}
-function refresh() {
-  document.querySelectorAll("[data-plan]").forEach(a => { a.href = href(a.dataset.plan); });
-  for (const plan of Object.keys(PRICES)) {
-    const [amount, per, alt] = PRICES[plan][period[plan]];
-    const box = document.querySelector('[data-price="' + plan + '"]');
-    box.textContent = amount; box.nextElementSibling.textContent = per;
-    document.querySelector('[data-alt="' + plan + '"]').textContent = alt;
+(function () {
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function (s, r) { return (r || document).querySelector(s); }, $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
+
+  // Demo and brokerage buttons open an email until booking links exist. Paste links into LINKS.
+  var LINKS = { demo: '', brokerage: '' }, EMAIL = 'support@vintorealty.com';
+  var SUBJECT = { demo: 'Vinto demo', brokerage: 'Vinto for my brokerage' };
+  var BODY = { demo: 'Hi Hudson,\n\nI’d like a 15-minute Vinto demo.\n\nName:\nBrokerage:\nNumber of agents:\nBest times:\n', brokerage: 'Hi Hudson,\n\nI’d like to see Vinto for our brokerage.\n\nBrokerage name:\nNumber of agents:\nBest phone:\nBest times:\n' };
+  $$('[data-plan]').forEach(function (a) { var p = a.dataset.plan; a.href = LINKS[p] || 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(SUBJECT[p]) + '&body=' + encodeURIComponent(BODY[p]); });
+  $('#y').textContent = new Date().getFullYear();
+
+  // Launch day and the founding offer switch themselves on by date (Eastern time).
+  var now = new Date(), launch = new Date('2027-01-19T00:00:00-05:00'), offerEnd = new Date('2027-02-20T00:00:00-05:00');
+  if (now >= launch) {
+    $('#launchTag').textContent = 'Now live'; $('#launchText').textContent = 'Vinto is on the App Store';
+    $('#status').innerHTML = now < offerEnd
+      ? '<b>Founding brokerage offer</b>Commit by February 19 and prepay 3 months, and the $200 setup fee is waived. Month to month after that.'
+      : '<b>Now on the App Store</b>Book a 15-minute demo for your brokerage and we’ll set up your office.';
   }
-}
-document.querySelectorAll(".toggle").forEach(t => t.addEventListener("click", e => {
-  const b = e.target.closest("button"); if (!b) return;
-  period[t.dataset.for] = b.dataset.period;
-  t.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-  refresh();
-}));
-document.getElementById("y").textContent = new Date().getFullYear();
-refresh();
+
+  var top = $('#top'), nav = $('#nav'), menu = $('.menu');
+  function stick() { top.classList.toggle('stuck', scrollY > 24); } stick(); addEventListener('scroll', stick, { passive: true });
+  menu.addEventListener('click', function () { var o = nav.classList.toggle('open'); menu.setAttribute('aria-expanded', String(o)); });
+  nav.addEventListener('click', function (e) { if (e.target.closest('a')) { nav.classList.remove('open'); menu.setAttribute('aria-expanded', 'false'); } });
+
+  // Hero phone: three screens, rotating until someone picks one.
+  var seg = $('#seg'), views = $$('.view'), order = ['today', 'deal', 'review'], vi = 0, auto = true;
+  function show(name) { views.forEach(function (v) { v.classList.toggle('on', v.dataset.view === name); }); $$('button', seg).forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.go === name)); }); vi = order.indexOf(name); }
+  seg.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { auto = false; show(b.dataset.go); } });
+  if (!still) setInterval(function () { if (auto && !document.hidden) show(order[(vi + 1) % 3]); }, 4200);
+  var phone = $('#phone'), hero = $('.hero');
+  if (!still && matchMedia('(pointer: fine)').matches) {
+    hero.addEventListener('pointermove', function (e) { var r = hero.getBoundingClientRect(); phone.style.setProperty('--ry', (((e.clientX - r.left) / r.width - .5) * 14 - 4).toFixed(2) + 'deg'); phone.style.setProperty('--rx', (-((e.clientY - r.top) / r.height - .5) * 9 + 2).toFixed(2) + 'deg'); });
+    hero.addEventListener('pointerleave', function () { phone.style.removeProperty('--ry'); phone.style.removeProperty('--rx'); });
+  }
+
+  // A day with Vinto
+  function item(dot, t, s, tag, cls) { return '<div class="item"><i class="' + dot + '"></i><div><b>' + t + '</b><span>' + s + '</span></div><em class="' + (cls || '') + '">' + tag + '</em></div>'; }
+  var DAY = [
+    { t: '7:30 AM', k: 'Morning plan', h: 'Start with the three things that matter today.', p: 'Today puts deadlines, showings and follow-ups in one list, in the order they need to happen.', l: ['Deadlines due today sit at the top', 'Leads on day 1, 3 and 7 of follow-up', 'Have the morning brief read aloud on the drive'], m: ['Today', item('r', 'Due diligence ends', '123 Sample Lane', 'Today', 'no') + item('', 'Showing tour · 3 homes', 'Rivera family · 1:00 PM', '1:00') + item('', 'Call Taylor Brooks', 'New lead · day 3', 'Call')] },
+    { t: '10:00 AM', k: 'New contract', h: 'Add the contract. Get the whole deal back.', p: 'Vinto reads the Georgia purchase agreement and saves the price, the parties and every date, counted from the Binding Agreement Date.', l: ['Blanks and missing initials flagged', 'Intro emails drafted for the lender, attorney and other agent', 'You review and send. Nothing goes out on its own'], m: ['Contract read', item('g', 'Price and parties', 'Saved to the transaction', 'Done', 'ok') + item('g', '7 dates', 'Counted from Nov 30', 'Done', 'ok') + item('r', 'Buyer initials, page 4', 'Fix before you send it on', 'Check', 'no')] },
+    { t: '1:00 PM', k: 'Showing tour', h: 'Three homes, in the right order.', p: 'The tour is laid out by drive time. Buyers rate each home from their portal while it’s still fresh.', l: ['One tap opens the route in Maps', 'A one-page brief for every home', 'Safety check-in for the agent, with a trusted contact'], m: ['Saturday tour', item('g', '412 Oak Hollow Ln', 'Rated by the Riveras', 'Love it', 'ok') + item('', '18 Lake Dr', '12 min drive', 'Next') + item('', '9 Willow Bend', '8 min drive', '3:10')] },
+    { t: '4:00 PM', k: 'Client update', h: 'The client already knows.', p: 'The private portal moves to the next step by itself, so the “where are we?” text never gets sent.', l: ['What happens next, in plain words', 'A closing countdown and their own checklist', 'A wire-fraud warning before any money moves'], m: ['Maya’s portal', item('g', 'Earnest money', 'Delivered and confirmed', 'Done', 'ok') + item('r', 'Due diligence ends', 'What this means for you', 'Next', 'no') + item('', 'Send your pre-approval letter', 'Checked off by Maya', 'New')] },
+    { t: '6:00 PM', k: 'Broker review', h: 'A clean file, approved the first time.', p: 'Required documents are checked before the file reaches the broker. Approve it, or send it back with a note.', l: ['Every office sets its own required documents', 'A dated history of every decision', 'Brokers see their office, never another brokerage'], m: ['File review', item('g', '48 Magnolia Ct', 'All required documents in', 'Approve', 'ok') + item('r', '123 Sample Lane', 'Missing: seller disclosure', 'Send back', 'no')] }
+  ];
+  var rail = $('#rail'), stage = $('#stage'), prog = $('#prog'), di = 0, dayAuto = true;
+  DAY.forEach(function (d, i) { var b = document.createElement('button'); b.className = 'stop'; b.type = 'button'; b.setAttribute('role', 'tab'); b.innerHTML = '<b>' + d.t + '</b><span>' + d.k + '</span>'; b.addEventListener('click', function () { dayAuto = false; day(i); }); rail.appendChild(b); });
+  function day(i) {
+    di = i; var d = DAY[i];
+    $$('.stop', rail).forEach(function (b, j) { b.setAttribute('aria-selected', String(j === i)); b.classList.toggle('past', j < i); });
+    prog.style.width = (i * 20) + '%';
+    stage.innerHTML = '<div class="fade"><span class="eyebrow">' + d.t + '</span><h3 style="margin-top:12px">' + d.h + '</h3><p>' + d.p + '</p><ul>' + d.l.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul></div><div class="mock fade"><div class="mk">' + d.m[0] + '</div>' + d.m[1] + '</div>';
+  }
+  day(0);
+  var dayTimer = null;
+  function dayRun() { if (still || dayTimer) return; dayTimer = setInterval(function () { if (dayAuto && !document.hidden) day((di + 1) % DAY.length); }, 5200); }
+
+  // Agents / Brokers / Clients
+  var WHO = {
+    agents: [['Georgia-native coordinator', 'It reads your contract.', 'Every date saved and counted from the Binding Agreement Date, with a reminder before each one.'], ['Today', 'A plan every morning.', 'Deadlines, showings and follow-ups in the order they need to happen.'], ['Ask Vinto', 'Answers from your own deals.', '“When is financing due on Sample Lane?” gets the date, not a search.'], ['Marketing', 'Just Listed in one tap.', 'Email blasts, social graphics and an agent page that turns visitors into leads.']],
+    brokers: [['Review queue', 'Files arrive ready.', 'Required documents are checked first. Approve, or send back with a note.'], ['Office view', 'Every agent’s deals and dates.', 'See what is due across the office without asking anyone.'], ['License in the loop', 'A record of every AI draft.', 'Who approved it and when, in a monthly list for the broker.'], ['Onboarding', 'New agents get a guide.', 'A first deal laid out step by step, with links to your own training files.']],
+    clients: [['One private link', 'No app. No password.', 'Buyers and sellers open their portal from a text or an email.'], ['What happens next', 'Plain words at every step.', 'What the next date means and what they need to do, in English or Español.'], ['Checklist and uploads', 'Their part, made simple.', 'They tick off to-dos and send documents straight to their agent.'], ['After closing', 'A home binder.', 'The papers worth keeping, and a yearly check-in from their agent.']]
+  };
+  var aud = $('#aud'), tabs = $('#tabs');
+  function who(name) {
+    $$('button', tabs).forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.who === name)); });
+    aud.innerHTML = WHO[name].map(function (c, i) { return '<div class="card-d fade" style="animation-delay:' + i * 0.06 + 's"><span class="k">' + c[0] + '</span><h3>' + c[1] + '</h3><p>' + c[2] + '</p></div>'; }).join('');
+    $$('.card-d', aud).forEach(function (t) { t.addEventListener('pointermove', function (e) { var r = t.getBoundingClientRect(); t.style.setProperty('--mx', (e.clientX - r.left) + 'px'); t.style.setProperty('--my', (e.clientY - r.top) + 'px'); }); });
+  }
+  tabs.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) who(b.dataset.who); });
+  who('agents');
+
+  // Portal preview
+  var steps = $$('#steps li'), count = $('#count'), ran = false;
+  function setSteps(n) { steps.forEach(function (li, i) { li.classList.toggle('done', i < n); li.classList.toggle('next', i === n); }); }
+  function portalRun() {
+    if (ran) return; ran = true;
+    if (still) { count.textContent = 25; setSteps(2); return; }
+    var v = 0, id = setInterval(function () { count.textContent = ++v; if (v >= 25) clearInterval(id); }, 40), n = 0;
+    setInterval(function () { n = (n + 1) % 5; setSteps(n); }, 1700);
+  }
+  setSteps(0);
+
+  // Pricing calculator
+  var agents = $('#agents'), money = function (v) { return '$' + v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+  function calc() { var n = +agents.value; $('#n').textContent = n; $('#total').textContent = money(n * 11.99); $('#perday').textContent = money(11.99 / 30); }
+  agents.addEventListener('input', calc); calc();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+    $$('.reveal').forEach(function (el) { io.observe(el); });
+    new IntersectionObserver(function (es) { if (es[0].isIntersecting) portalRun(); }, { threshold: .3 }).observe($('.browser'));
+    new IntersectionObserver(function (es) { if (es[0].isIntersecting) dayRun(); }, { threshold: .4 }).observe(stage);
+  } else { $$('.reveal').forEach(function (el) { el.classList.add('in'); }); portalRun(); }
+})();
 </script>
 </body>
 </html>

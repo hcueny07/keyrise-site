@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="canonical" href="https://vintorealty.com/brokers.html">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vinto for brokers · A clean file before review</title>
+<meta name="description" content="Vinto for brokers: a review queue where files arrive with required documents already checked, an office view of every agent's dates, and a record of every AI draft. $11.99 per agent.">
+<meta property="og:title" content="Vinto for brokers">
+<meta property="og:description" content="A clean file before review. Every deal. Every client. Every detail.">
+<meta property="og:image" content="https://vintorealty.com/img/og.png">
+<meta name="theme-color" content="#070B0A">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1513;--obsidian:#070B0A;--champagne:#D6BD86;--champagne-2:#F0DEB4;--gold:#9C7B3C;--ivory:#F4F3EF;--line:#E6E3DA;--muted:#55595A;--muted-d:rgba(255,255,255,.64);--edge:rgba(214,189,134,.18);--edge-s:rgba(255,255,255,.08);--sans:"Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;--serif:"Instrument Serif",Georgia,serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--ivory);color:var(--ink);font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}img{display:block;max-width:100%}p{margin:0}button{font-family:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.035em;line-height:1.05}
+h1{font-size:clamp(40px,6.2vw,74px)}h2{font-size:clamp(30px,4.2vw,50px)}h3{font-size:20px;letter-spacing:-.02em;line-height:1.25}
+em.s{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--champagne)}.light em.s{color:var(--gold)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.eyebrow::before{content:"";width:18px;height:1px;background:currentColor;opacity:.7}
+.dark{background:var(--obsidian);color:#fff}.dark .eyebrow{color:var(--champagne)}
+section{padding:100px 0}
+:focus-visible{outline:2px solid var(--champagne);outline-offset:3px;border-radius:6px}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}.brand img{width:30px;height:30px}.brand span{font-weight:600;font-size:15px;letter-spacing:.32em}
+.nav{display:flex;gap:4px;align-items:center}.nav a{color:rgba(255,255,255,.74);text-decoration:none;font-size:14.5px;font-weight:500;padding:8px 13px;border-radius:999px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid transparent;cursor:pointer;white-space:nowrap}
+.btn-gold{background:linear-gradient(180deg,var(--champagne-2),var(--champagne));color:var(--obsidian)!important}
+.btn-glass{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.16);color:#fff}
+.hero{position:relative;overflow:hidden;padding:0 0 90px}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 500px at 80% 0%,rgba(214,189,134,.2),transparent 60%),radial-gradient(700px 500px at 0% 30%,rgba(47,98,80,.4),transparent 60%)}
+.hero>*{position:relative}
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding-top:56px}
+.lede{margin-top:22px;font-size:19px;color:var(--muted-d);max-width:520px}
+.actions{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
+
+/* Working review queue */
+.queue{background:var(--ivory);color:var(--ink);border-radius:26px;padding:18px;box-shadow:0 50px 100px -40px rgba(0,0,0,.8)}
+.qhead{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 14px}
+.qhead b{font-size:18px;letter-spacing:-.02em}.qhead span{font-size:13px;color:var(--muted)}
+.file{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:10px;transition:opacity .3s,transform .3s}
+.file.gone{opacity:.55}
+.frow{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.file h4{margin:0;font-size:16px;font-weight:600}.file small{color:var(--muted);font-size:13px}
+.pill{font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:#E3F1EA;color:#1F6B4E}.pill.no{background:#FBE9E7;color:#8A2626}.pill.done{background:#F4EDDF;color:#7A5F2B}
+.docs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.docs span{font-size:12px;padding:4px 9px;border-radius:999px;background:var(--ivory);border:1px solid var(--line)}
+.docs span.miss{background:#FBE9E7;border-color:#F3C9C4;color:#8A2626}
+.fbtn{display:flex;gap:8px;margin-top:12px}
+.fbtn button{flex:1;border-radius:12px;padding:10px;font-weight:600;font-size:14px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.fbtn button.go{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hist{margin-top:10px;font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.qfoot{font-size:12.5px;color:var(--muted);padding:12px 8px 2px;display:flex;justify-content:space-between;gap:10px}
+.qfoot button{background:none;border:0;color:var(--gold);font-weight:600;cursor:pointer;font-size:12.5px}
+
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px}
+.card .k{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.card h3{margin-top:12px}.card p{margin-top:8px;color:var(--muted);font-size:15.5px}
+.side{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px}
+.box{border:1px solid var(--edge-s);background:rgba(255,255,255,.035);border-radius:22px;padding:26px}
+.box h3{color:var(--champagne)}
+.box ul{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:10px;color:rgba(255,255,255,.86);font-size:15.5px}
+.box li{display:grid;grid-template-columns:22px 1fr}.box li::before{content:"✓";color:var(--champagne);font-weight:600}
+.steps3{counter-reset:s;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.steps3 .card::before{counter-increment:s;content:"0" counter(s);font-family:var(--serif);font-style:italic;font-size:40px;color:var(--gold);line-height:1}
+.cta{text-align:center}.cta p{margin:16px auto 0;max-width:560px;color:var(--muted-d);font-size:18px}.cta .actions{justify-content:center}
+footer{background:var(--obsidian);color:rgba(255,255,255,.5);padding:34px 0 44px;font-size:14px;border-top:1px solid var(--edge-s)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}footer nav{display:flex;gap:22px}footer a{color:rgba(255,255,255,.72);text-decoration:none}
+@media (max-width:900px){.hgrid,.side{grid-template-columns:1fr;gap:40px}.three,.steps3{grid-template-columns:1fr}.nav a:not(.btn){display:none}section{padding:76px 0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<section class="dark hero">
+  <header class="top"><div class="wrap">
+    <a class="brand" href="./"><img src="img/mark.png" alt=""><span>VINTO</span></a>
+    <nav class="nav"><a href="./">Home</a><a href="./#portal">Client portal</a><a href="./#pricing">Pricing</a><a class="btn btn-gold" data-demo href="#">Book a demo</a></nav>
+  </div></header>
+  <div class="wrap hgrid">
+    <div>
+      <span class="eyebrow">For brokers</span>
+      <h1 style="margin-top:18px">A clean file <em class="s">before</em> it reaches you.</h1>
+      <p class="lede">Vinto checks every transaction against your office’s required documents first. You approve it, or send it back with a note. Try it: the queue on this page works.</p>
+      <div class="actions"><a class="btn btn-gold" data-demo href="#">Book a 15-minute demo →</a><a class="btn btn-glass" href="./#pricing">See pricing</a></div>
+    </div>
+    <div class="queue" id="queue" aria-label="Sample review queue">
+      <div class="qhead"><b>Ready for review</b><span id="qcount"></span></div>
+      <div id="files"></div>
+      <div class="qfoot"><span>Sample data · Vinto Demo Realty</span><button type="button" id="reset">Start over</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <span class="eyebrow">What you get</span>
+    <h2 style="margin-top:16px;max-width:720px">Your office, on <em class="s">one screen.</em></h2>
+    <div class="three">
+      <div class="card"><span class="k">Review queue</span><h3>Files arrive complete.</h3><p>You set the required documents for listings and for buyers. Vinto checks each file against them before the agent can send it to you.</p></div>
+      <div class="card"><span class="k">Office view</span><h3>Every agent’s dates.</h3><p>See what is due this week across the office without asking anyone. Each agent still sees only their own deals.</p></div>
+      <div class="card"><span class="k">License in the loop</span><h3>A record of every AI draft.</h3><p>Who approved it and when, in a monthly list. Wire instructions and bank details are kept away from AI.</p></div>
+      <div class="card"><span class="k">Onboarding</span><h3>New agents get a guide.</h3><p>A first deal laid out step by step, linked to your own training files.</p></div>
+      <div class="card"><span class="k">Your standards</span><h3>Your checklists and vendors.</h3><p>Listing steps, required documents, preferred vendors and office resources, the same for every agent.</p></div>
+      <div class="card"><span class="k">Control</span><h3>Invite-only.</h3><p>Only the agents you approve can join, and you can turn off an agent’s access in one tap.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <span class="eyebrow">Where it fits</span>
+    <h2 style="margin-top:16px;max-width:760px">Keep the tools you have. <em class="s">Add the one agents open.</em></h2>
+    <div class="side">
+      <div class="box"><h3>Your compliance tool keeps doing</h3><ul><li>The official transaction record</li><li>E-signatures</li><li>Long-term file storage</li></ul></div>
+      <div class="box"><h3>Vinto does the daily work</h3><ul><li>Reads the contract and tracks every date</li><li>Keeps each client informed through a private portal</li><li>Checks the file is complete before it reaches you</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <span class="eyebrow">Getting started</span>
+    <h2 style="margin-top:16px">Set up in <em class="s">about an hour.</em></h2>
+    <div class="steps3">
+      <div class="card"><h3 style="margin-top:10px">A 15-minute demo</h3><p>On Zoom or in person in metro Atlanta. Bring a contract and watch it fill in.</p></div>
+      <div class="card"><h3 style="margin-top:10px">We set up your office</h3><p>Your required documents, checklists and vendors go in. Setup and agent training are included.</p></div>
+      <div class="card"><h3 style="margin-top:10px">Agents are in within 10 minutes</h3><p>You add their emails. Each one creates an account and adds a first transaction.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark cta">
+  <div class="wrap">
+    <span class="eyebrow">$11.99 per agent / month · $200 one-time setup</span>
+    <h2 style="margin-top:16px">See it with your <em class="s">own</em> file.</h2>
+    <p>Month to month. Cancel anytime. Your data is yours.</p>
+    <div class="actions" style="margin-top:30px"><a class="btn btn-gold" data-demo href="#">Book a 15-minute demo →</a><a class="btn btn-glass" href="roi.html">What status updates cost your office</a></div>
+  </div>
+</section>
+
+<footer><div class="wrap"><p>© <span id="y">2026</span> Cueny Ventures LLC · Vinto</p><nav><a href="./">Home</a><a href="privacy.html">Privacy</a><a href="support.html">Support</a></nav></div></footer>
+
+<script>
+(function () {
+  document.getElementById('y').textContent = new Date().getFullYear();
+  var mail = 'mailto:support@vintorealty.com?subject=' + encodeURIComponent('Vinto demo for my brokerage') + '&body=' + encodeURIComponent('Hi Hudson,\n\nI’d like a 15-minute Vinto demo.\n\nName:\nBrokerage:\nNumber of agents:\nBest times:\n');
+  [].forEach.call(document.querySelectorAll('[data-demo]'), function (a) { a.href = mail; });
+
+  // A working sample of the review queue. Nothing is saved or sent: it lives on this page only.
+  var START = [
+    { id: 'a', addr: '48 Magnolia Ct', who: 'Listing · submitted today', docs: ['Listing agreement', 'Seller disclosure', 'Purchase contract', 'Closing statement'], miss: [] },
+    { id: 'b', addr: '123 Sample Lane', who: 'Buyer · submitted today', docs: ['Buyer agreement', 'Purchase contract', 'Inspection report'], miss: ['Seller disclosure'] },
+    { id: 'c', addr: '77 Cedar Row', who: 'Buyer · submitted yesterday', docs: ['Buyer agreement', 'Purchase contract', 'Amendment 1'], miss: [] }
+  ];
+  var state, box = document.getElementById('files'), count = document.getElementById('qcount');
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function now() { return new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }); }
+  function render() {
+    var waiting = state.filter(function (f) { return !f.result; }).length;
+    count.textContent = waiting ? waiting + ' waiting' : 'All caught up';
+    box.innerHTML = state.map(function (f) {
+      var pill = f.result === 'approved' ? '<span class="pill done">Approved</span>' : f.result === 'back' ? '<span class="pill done">Sent back</span>' : f.miss.length ? '<span class="pill no">' + f.miss.length + ' missing</span>' : '<span class="pill ok">Complete</span>';
+      var docs = f.docs.map(function (d) { return '<span>✓ ' + esc(d) + '</span>'; }).join('') + f.miss.map(function (d) { return '<span class="miss">Missing: ' + esc(d) + '</span>'; }).join('');
+      var btn = f.result ? '' : '<div class="fbtn"><button type="button" class="' + (f.miss.length ? '' : 'go') + '" data-act="approved" data-id="' + f.id + '">Approve</button><button type="button" class="' + (f.miss.length ? 'go' : '') + '" data-act="back" data-id="' + f.id + '">Send back with a note</button></div>';
+      var hist = f.result ? '<div class="hist">' + (f.result === 'approved' ? 'Approved' : 'Sent back') + ' at ' + f.at + (f.note ? ' · “' + esc(f.note) + '”' : '') + ' · saved to the file’s history</div>' : '';
+      return '<div class="file' + (f.result ? ' gone' : '') + '"><div class="frow"><div><h4>' + esc(f.addr) + '</h4><small>' + esc(f.who) + '</small></div>' + pill + '</div><div class="docs">' + docs + '</div>' + btn + hist + '</div>';
+    }).join('');
+  }
+  function reset() { state = START.map(function (f) { return { id: f.id, addr: f.addr, who: f.who, docs: f.docs.slice(), miss: f.miss.slice() }; }); render(); }
+  box.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-act]'); if (!b) return;
+    var f = state.filter(function (x) { return x.id === b.dataset.id; })[0]; if (!f) return;
+    f.result = b.dataset.act; f.at = now();
+    f.note = f.result === 'back' ? (f.miss.length ? 'Please add the ' + f.miss[0].toLowerCase() + '.' : 'One thing to fix before I approve.') : '';
+    render();
+  });
+  document.getElementById('reset').addEventListener('click', reset);
+  reset();
+})();
+</script>
+</body>
+</html>

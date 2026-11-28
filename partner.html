@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Transaction dates · Vinto</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#070B0A">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root { --obsidian:#070B0A; --ink:#0E1513; --ivory:#F4F3EF; --line:#E6E3DA; --line2:#EEEBE4; --muted:#55595A; --faint:#7B7F80; --gold:#9C7B3C; --champagne:#D6BD86; --champagne-2:#F0DEB4; --green:#2F8F6B; --red:#B42318;
+  --sans:"Inter",-apple-system,"Helvetica Neue",Arial,sans-serif; --serif:"Instrument Serif",Georgia,serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ivory); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 0 18px; }
+header { background: radial-gradient(ellipse 80% 70% at 80% 0%, rgba(214,189,134,.16), transparent 60%), var(--obsidian); color: #fff; padding: 22px 0 30px; }
+.brand { display: flex; align-items: center; gap: 8px; font-size: 13px; letter-spacing: .3em; color: var(--champagne); font-weight: 600; }
+.brand img { width: 20px; height: 20px; }
+.eyebrow { font-size: 11.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+header .eyebrow { margin-top: 24px; color: var(--champagne); }
+h1 { font-size: 32px; line-height: 1.12; letter-spacing: -.03em; margin: 8px 0 0; font-weight: 700; }
+h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--champagne-2); }
+.stage { display: inline-block; margin-top: 14px; padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; background: rgba(214,189,134,.16); color: var(--champagne); border: 1px solid rgba(214,189,134,.3); }
+.card { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 22px; margin-top: 14px; }
+h2 { font-size: 20px; margin: 6px 0 10px; letter-spacing: -.02em; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+td { padding: 12px 0; border-top: 1px solid var(--line2); vertical-align: top; }
+td.when { text-align: right; white-space: nowrap; color: var(--muted); padding-left: 12px; }
+tr.done td { color: var(--faint); }
+tr.done td:first-child { text-decoration: line-through; }
+tr.next td { font-weight: 600; }
+tr.next td.when { color: var(--gold); }
+.agent b { display: block; font-size: 16px; }
+.agent span { color: var(--muted); font-size: 14px; }
+.links { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.links a, .links button { font: 500 14px var(--sans); color: var(--ink); text-decoration: none; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--ivory); cursor: pointer; }
+.fine { text-align: center; color: var(--faint); font-size: 12.5px; margin: 20px 0 30px; }
+.center { text-align: center; padding: 80px 20px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div id="app"><div class="center">Loading…</div></div>
+<script>
+(function () {
+  var SB = 'https://ovwsmktnufozcyaqaqfz.supabase.co/rest/v1/rpc/';
+  var KEY = 'sb_publishable_IvKFJC5hSi_ydgtLY5wk-A_FeJHikgb';
+  var hash = new URLSearchParams(location.hash.slice(1));
+  var token = hash.get('t'), demo = hash.has('demo');
+  var app = document.getElementById('app');
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function parseDay(k) { var p = String(k).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function daysUntil(k) { var d = new Date(); d = new Date(d.getFullYear(), d.getMonth(), d.getDate()); return Math.round((parseDay(k) - d) / 86400000); }
+  function fmt(k) { return parseDay(k).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
+  function rel(k) { var n = daysUntil(k); return n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : n > 1 ? 'in ' + n + ' days' : Math.abs(n) + ' days ago'; }
+  function key(n) { var d = new Date(); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  var load = demo
+    ? Promise.resolve({ street: '412 Oak Hollow Ln', stage: 'Under contract', for: 'Lender', agent: { name: 'Taylor Brooks', phone: '(404) 555-0123', email: 'taylor@example.com', company: 'Sample Realty' },
+        dates: [{ label: 'Binding agreement', date: key(-9), done: true }, { label: 'Earnest money due', date: key(-6), done: true }, { label: 'Due diligence ends', date: key(2), done: false }, { label: 'Appraisal', date: key(11), done: false }, { label: 'Financing contingency', date: key(14), done: false }, { label: 'Closing', date: key(25), done: false }], updated: new Date().toISOString() })
+    : token ? fetch(SB + 'partner_status', { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ t: token }) }).then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+    : Promise.reject();
+  load.then(function (d) {
+    if (!d) { app.innerHTML = '<div class="center">This link isn’t active anymore. Ask the agent for a new one.</div>'; return; }
+    var dates = d.dates || [], next = null;
+    for (var i = 0; i < dates.length; i++) if (!dates[i].done) { next = dates[i]; break; }
+    var rows = dates.map(function (x) {
+      return '<tr class="' + (x.done ? 'done' : x === next ? 'next' : '') + '"><td>' + esc(x.label) + '</td><td class="when">' + fmt(x.date) + (x.done ? ' · done' : ' · ' + rel(x.date)) + '</td></tr>';
+    }).join('');
+    var a = d.agent || {}, tel = String(a.phone || '').replace(/[^\d+]/g, '');
+    app.innerHTML = '<header><div class="wrap"><div class="brand"><img src="img/mark.png" alt="">VINTO</div><div class="eyebrow">Transaction dates' + (d.for ? ' · for the ' + esc(String(d.for).toLowerCase()) : '') + '</div>' +
+      '<h1>' + esc(d.street) + '</h1><span class="stage">' + esc(d.stage || '') + '</span></div></header>' +
+      '<main class="wrap"><section class="card"><div class="eyebrow">Live</div><h2>Every date, in order</h2>' + (rows ? '<table>' + rows + '</table>' : '<p>No dates yet.</p>') + '</section>' +
+      '<section class="card agent"><div class="eyebrow">Questions?</div><b style="margin-top:6px">' + esc(a.name || 'The agent') + '</b>' + (a.company ? '<span>' + esc(a.company) + '</span>' : '') +
+      '<div class="links">' + (tel ? '<a href="tel:' + esc(tel) + '">Call</a><a href="sms:' + esc(tel) + '">Text</a>' : '') + (a.email ? '<a href="mailto:' + esc(a.email) + '?subject=' + encodeURIComponent(d.street || '') + '">Email</a>' : '') + '</div></section>' +
+      '<p class="fine">Updates live from the agent’s file. Updated ' + new Date(d.updated || Date.now()).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + '.</p></main>';
+  }).catch(function () { app.innerHTML = '<div class="center">We couldn’t load these dates right now. Please try again in a minute.</div>'; });
+})();
+</script>
+</body>
+</html>
